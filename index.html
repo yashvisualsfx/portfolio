@@ -50,7 +50,7 @@
         .aurora-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
+            filter: blur(80px);
             opacity: 0.28;
             pointer-events: none;
             will-change: transform;
@@ -84,13 +84,13 @@
         /* Glassmorphism Navigation & Cards */
         .apple-nav-glass { transition: all 0.4s ease; }
         .dark .apple-nav-glass {
-            background: rgba(20, 20, 22, 0.75);
+            background: rgba(20, 20, 22, 0.85);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.12);
         }
         html:not(.dark) .apple-nav-glass {
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(0, 0, 0, 0.08);
@@ -121,6 +121,24 @@
             border-color: rgba(0, 0, 0, 0.12);
             transform: translateY(-3px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Responsive Media & Video Overflow Fixes */
+        .responsive-media-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 1rem;
+        }
+
+        .responsive-video-player {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 70vh;
+            object-fit: contain !important;
         }
 
         /* Typography Gradients */
@@ -169,9 +187,9 @@
 
     <!-- FLUID DYNAMIC BACKGROUND MOTION -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-grid-pattern">
-        <div class="aurora-orb w-[300px] sm:w-[650px] h-[300px] sm:h-[600px] bg-apple-blue top-[-100px] left-[-100px]"></div>
-        <div class="aurora-orb w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] bg-apple-purple top-[35%] right-[-150px]" style="animation-delay: -5s;"></div>
-        <div class="aurora-orb w-[280px] sm:w-[550px] h-[280px] sm:h-[550px] bg-apple-cyan bottom-[-50px] left-[10%]" style="animation-delay: -10s;"></div>
+        <div class="aurora-orb w-[250px] sm:w-[650px] h-[250px] sm:h-[600px] bg-apple-blue top-[-50px] left-[-50px]"></div>
+        <div class="aurora-orb w-[280px] sm:w-[700px] h-[280px] sm:h-[700px] bg-apple-purple top-[35%] right-[-100px]" style="animation-delay: -5s;"></div>
+        <div class="aurora-orb w-[220px] sm:w-[550px] h-[220px] sm:h-[550px] bg-apple-cyan bottom-[-50px] left-[10%]" style="animation-delay: -10s;"></div>
     </div>
 
     <!-- PRELOADER -->
@@ -189,9 +207,9 @@
         </div>
     </div>
 
-    <!-- FLOATING APPLE NAVIGATION PILL (RESPONSIVE FOR ALL SCREENS) -->
-    <header class="fixed top-4 sm:top-6 left-0 w-full z-40 px-4 transition-all duration-300" id="main-header">
-        <nav class="max-w-4xl mx-auto apple-nav-glass rounded-full px-5 py-3 flex justify-between items-center shadow-lg">
+    <!-- FLOATING APPLE NAVIGATION PILL -->
+    <header class="fixed top-3 sm:top-6 left-0 w-full z-50 px-3 sm:px-4 transition-all duration-300" id="main-header">
+        <nav class="max-w-4xl mx-auto apple-nav-glass rounded-full px-4 sm:px-5 py-2.5 sm:py-3 flex justify-between items-center shadow-lg">
             <a href="#hero" class="font-sans font-semibold text-lg tracking-tight hover:opacity-80 transition-opacity">
                 AO<span class="text-apple-blue">.</span>
             </a>
@@ -225,7 +243,7 @@
         </nav>
 
         <!-- Mobile Drawer Menu -->
-        <div id="mobile-menu" class="hidden md:hidden max-w-4xl mx-auto mt-2 apple-nav-glass rounded-3xl p-6 space-y-4 text-center transition-all">
+        <div id="mobile-menu" class="hidden md:hidden max-w-4xl mx-auto mt-2 apple-nav-glass rounded-3xl p-6 space-y-4 text-center transition-all shadow-2xl">
             <a href="#about" class="mobile-nav-link block text-sm font-medium text-slate-800 dark:text-slate-200">About</a>
             <a href="#services" class="mobile-nav-link block text-sm font-medium text-slate-800 dark:text-slate-200">Services</a>
             <a href="#work" class="mobile-nav-link block text-sm font-medium text-slate-800 dark:text-slate-200">Work</a>
@@ -240,11 +258,11 @@
     <main class="relative z-10">
 
         <!-- 1. HERO SECTION -->
-        <section id="hero" class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-16 pt-28 sm:pt-32 pb-16 relative">
-            <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+        <section id="hero" class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-16 pt-32 sm:pt-36 pb-16 relative">
+            <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
                 
                 <!-- Left Column -->
-                <div class="lg:col-span-7 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
+                <div class="lg:col-span-7 space-y-6 sm:space-y-8 z-10 text-center lg:text-left mt-4 sm:mt-0">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-apple-lightSubtext dark:text-apple-darkSubtext text-xs font-mono">
                         <span class="w-2 h-2 rounded-full bg-apple-blue animate-pulse"></span>
                         Available for International Projects
@@ -275,13 +293,13 @@
 
                 <!-- Right Column - Avatar Card -->
                 <div class="lg:col-span-5 relative flex justify-center items-center">
-                    <div class="relative w-full max-w-xs sm:max-w-md aspect-[4/5] rounded-[32px] sm:rounded-[38px] overflow-hidden apple-nav-glass p-2.5 sm:p-3 group">
+                    <div class="relative w-full max-w-[280px] sm:max-w-md aspect-[4/5] rounded-[32px] sm:rounded-[38px] overflow-hidden apple-nav-glass p-2.5 sm:p-3 group">
                         <div class="w-full h-full rounded-[24px] sm:rounded-[28px] bg-black overflow-hidden relative flex flex-col items-center justify-center border border-black/10 dark:border-white/10">
                             
                             <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,113,227,0.35),transparent_65%)] pointer-events-none z-0"></div>
                             
                             <div class="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden z-10">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover scale-125 transition-transform duration-700 group-hover:scale-130">
+                                <video autoplay muted loop playsinline class="w-full h-full object-cover scale-110 transition-transform duration-700 group-hover:scale-115">
                                     <source src="videos/Abhigyan Ojha Avatar.mp4" type="video/mp4">
                                 </video>
                             </div>
@@ -413,13 +431,8 @@
                     <!-- Project 1 -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group cursor-pointer" onclick="openModal('realme')">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/5 dark:bg-black/60 p-2 sm:p-4 flex items-center justify-center">
-                                <img src="images/realme.png" alt="Realme Earbuds Commercial" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"/>
-                                <div class="absolute top-3 left-3">
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-mono bg-white/20 dark:bg-white/10 text-apple-cyan border border-black/10 dark:border-white/10 backdrop-blur-md">
-                                        Product Ad
-                                    </span>
-                                </div>
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-4">
+                                <img src="images/realme.png" alt="Realme Earbuds Commercial" class="w-full h-auto max-h-[450px] object-contain group-hover:scale-105 transition-transform duration-700 ease-out"/>
                             </div>
                             <div class="lg:col-span-5 p-6 sm:p-10 space-y-3 sm:space-y-4">
                                 <span class="text-xs font-mono text-apple-cyan uppercase">Product Advertisement</span>
@@ -437,13 +450,8 @@
                     <!-- Project 2 -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group cursor-pointer" onclick="openModal('jordan')">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/5 dark:bg-black/60 p-2 sm:p-4 flex items-center justify-center lg:order-2">
-                                <img src="images/nike.png" alt="Air Jordan Advertisement" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"/>
-                                <div class="absolute top-3 left-3">
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-mono bg-white/20 dark:bg-white/10 text-apple-purple border border-black/10 dark:border-white/10 backdrop-blur-md">
-                                        Graphic Design
-                                    </span>
-                                </div>
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-4 lg:order-2">
+                                <img src="images/nike.png" alt="Air Jordan Advertisement" class="w-full h-auto max-h-[450px] object-contain group-hover:scale-105 transition-transform duration-700 ease-out"/>
                             </div>
                             <div class="lg:col-span-5 p-6 sm:p-10 space-y-3 sm:space-y-4 lg:order-1">
                                 <span class="text-xs font-mono text-apple-purple uppercase">Brand Campaign</span>
@@ -458,16 +466,11 @@
                         </div>
                     </div>
 
-                    <!-- Project 3 -->
+                    <!-- Project 3 (Wildcraft Fixed Path) -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group cursor-pointer" onclick="openModal('wildcraft')">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/5 dark:bg-black/60 p-2 sm:p-4 flex items-center justify-center">
-                                <img src="images/Wildcraft.png" alt="Wildcraft Backpack Campaign" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"/>
-                                <div class="absolute top-3 left-3">
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-mono bg-white/20 dark:bg-white/10 text-apple-cyan border border-black/10 dark:border-white/10 backdrop-blur-md">
-                                        Graphic Design
-                                    </span>
-                                </div>
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-4">
+                                <img src="images/wildcraft.png" alt="Wildcraft Backpack Campaign" class="w-full h-auto max-h-[450px] object-contain group-hover:scale-105 transition-transform duration-700 ease-out" onerror="this.src='images/Wildcraft.png'"/>
                             </div>
                             <div class="lg:col-span-5 p-6 sm:p-10 space-y-3 sm:space-y-4">
                                 <span class="text-xs font-mono text-apple-cyan uppercase">Ad Campaign</span>
@@ -482,14 +485,14 @@
                         </div>
                     </div>
 
-                    <!-- Project 4 -->
+                    <!-- Project 4 (Spider-Man Video Fixed) -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/80 p-2 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl lg:order-2">
-                                <video id="video-spiderman" autoplay muted loop playsinline class="relative z-10 max-h-full max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl">
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-3 relative lg:order-2">
+                                <video id="video-spiderman" autoplay muted loop playsinline class="responsive-video-player rounded-xl sm:rounded-2xl shadow-2xl">
                                     <source src="videos/spide4rman.mp4" type="video/mp4">
                                 </video>
-                                <button onclick="toggleAudio('video-spiderman', this)" class="absolute bottom-3 right-3 z-30 p-2 rounded-full bg-black/60 border border-white/20 text-white hover:border-apple-blue transition-all backdrop-blur-md">
+                                <button onclick="toggleAudio('video-spiderman', this)" class="absolute bottom-4 right-4 z-30 p-2.5 rounded-full bg-black/70 border border-white/20 text-white hover:border-apple-blue transition-all backdrop-blur-md">
                                     <svg class="w-4 h-4 icon-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
                                     <svg class="w-4 h-4 icon-unmuted hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
                                 </button>
@@ -508,11 +511,11 @@
                     <!-- Project 5 -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/80 p-2 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl">
-                                <video id="video-lyrics" autoplay muted loop playsinline class="relative z-10 max-h-full max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl">
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-3 relative">
+                                <video id="video-lyrics" autoplay muted loop playsinline class="responsive-video-player rounded-xl sm:rounded-2xl shadow-2xl">
                                     <source src="videos/Piche tere.mp4" type="video/mp4">
                                 </video>
-                                <button onclick="toggleAudio('video-lyrics', this)" class="absolute bottom-3 right-3 z-30 p-2 rounded-full bg-black/60 border border-white/20 text-white hover:border-apple-purple transition-all backdrop-blur-md">
+                                <button onclick="toggleAudio('video-lyrics', this)" class="absolute bottom-4 right-4 z-30 p-2.5 rounded-full bg-black/70 border border-white/20 text-white hover:border-apple-purple transition-all backdrop-blur-md">
                                     <svg class="w-4 h-4 icon-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
                                     <svg class="w-4 h-4 icon-unmuted hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
                                 </button>
@@ -531,11 +534,11 @@
                     <!-- Project 6 -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/80 p-2 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl lg:order-2">
-                                <video id="video-visionpro" autoplay muted loop playsinline class="relative z-10 max-h-full max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl">
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-3 relative lg:order-2">
+                                <video id="video-visionpro" autoplay muted loop playsinline class="responsive-video-player rounded-xl sm:rounded-2xl shadow-2xl">
                                     <source src="videos/motion graphic.mp4" type="video/mp4">
                                 </video>
-                                <button onclick="toggleAudio('video-visionpro', this)" class="absolute bottom-3 right-3 z-30 p-2 rounded-full bg-black/60 border border-white/20 text-white hover:border-apple-cyan transition-all backdrop-blur-md">
+                                <button onclick="toggleAudio('video-visionpro', this)" class="absolute bottom-4 right-4 z-30 p-2.5 rounded-full bg-black/70 border border-white/20 text-white hover:border-apple-cyan transition-all backdrop-blur-md">
                                     <svg class="w-4 h-4 icon-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
                                     <svg class="w-4 h-4 icon-unmuted hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
                                 </button>
@@ -554,11 +557,11 @@
                     <!-- Project 7 -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/80 p-2 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl">
-                                <video id="video-digitalipsum" autoplay muted loop playsinline class="relative z-10 max-h-full max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl">
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-3 relative">
+                                <video id="video-digitalipsum" autoplay muted loop playsinline class="responsive-video-player rounded-xl sm:rounded-2xl shadow-2xl">
                                     <source src="videos/client1.mp4" type="video/mp4">
                                 </video>
-                                <button onclick="toggleAudio('video-digitalipsum', this)" class="absolute bottom-3 right-3 z-30 p-2 rounded-full bg-black/60 border border-white/20 text-white hover:border-apple-blue transition-all backdrop-blur-md">
+                                <button onclick="toggleAudio('video-digitalipsum', this)" class="absolute bottom-4 right-4 z-30 p-2.5 rounded-full bg-black/70 border border-white/20 text-white hover:border-apple-blue transition-all backdrop-blur-md">
                                     <svg class="w-4 h-4 icon-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
                                     <svg class="w-4 h-4 icon-unmuted hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
                                 </button>
@@ -577,12 +580,12 @@
                     <!-- Project 8 -->
                     <div class="apple-card rounded-2xl sm:rounded-[32px] overflow-hidden group">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-                            <div class="lg:col-span-7 aspect-video relative overflow-hidden bg-black/80 p-2 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl lg:order-2">
-                                <video id="video-healthcare" autoplay muted loop playsinline class="relative z-10 max-h-full max-w-full object-contain rounded-xl sm:rounded-2xl shadow-2xl">
+                            <div class="lg:col-span-7 responsive-media-container p-2 sm:p-3 relative lg:order-2">
+                                <video id="video-healthcare" autoplay muted loop playsinline class="responsive-video-player rounded-xl sm:rounded-2xl shadow-2xl">
                                     <source src="videos/client2.mov" type="video/quicktime">
                                     <source src="videos/client2.mov" type="video/mp4">
                                 </video>
-                                <button onclick="toggleAudio('video-healthcare', this)" class="absolute bottom-3 right-3 z-30 p-2 rounded-full bg-black/60 border border-white/20 text-white hover:border-apple-purple transition-all backdrop-blur-md">
+                                <button onclick="toggleAudio('video-healthcare', this)" class="absolute bottom-4 right-4 z-30 p-2.5 rounded-full bg-black/70 border border-white/20 text-white hover:border-apple-purple transition-all backdrop-blur-md">
                                     <svg class="w-4 h-4 icon-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
                                     <svg class="w-4 h-4 icon-unmuted hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
                                 </button>
@@ -846,7 +849,7 @@
     </footer>
 
     <!-- CASE STUDY MODAL -->
-    <div id="modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-all duration-300">
+    <div id="modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-all duration-300">
         <div class="apple-card rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 relative">
             <button onclick="closeModal()" class="absolute top-5 right-5 p-2 rounded-full bg-black/10 dark:bg-white/10 hover:opacity-80 text-slate-900 dark:text-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
