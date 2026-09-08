@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
+import { computePresence } from "./cameraPath.js";
 
 /*
   Lighting is built from lightformers rendered into a local cubemap rather
@@ -29,15 +30,20 @@ export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
     // Peaks mid-flight, at the moment the camera is inside the band.
     const swell = Math.sin(Math.min(Math.max(sequence, 0), 1) * Math.PI);
 
+    // Scaled by the same presence the material uses, so the form actually
+    // recedes through the work sections instead of staying lit by the key
+    // while only its reflections fade.
+    const presence = computePresence(sequenceRef?.current ?? {});
+
     keyRef.current.intensity = THREE.MathUtils.damp(
       keyRef.current.intensity,
-      0.5 + swell * 1.1,
+      (0.5 + swell * 1.1) * presence,
       4,
       dt,
     );
     ambientRef.current.intensity = THREE.MathUtils.damp(
       ambientRef.current.intensity,
-      0.12 + swell * 0.18,
+      (0.12 + swell * 0.18) * presence,
       4,
       dt,
     );

@@ -19,6 +19,9 @@
   },
   "motion-graphics-01": {
     "src": "/media/motion-graphics-01.mp4",
+    "bytes": 2801003,
+    "webm": "/media/motion-graphics-01.webm",
+    "webmBytes": 2299105,
     "poster": "/media/motion-graphics-01-poster.webp",
     "width": 1280,
     "height": 720,
@@ -26,6 +29,9 @@
   },
   "motion-graphics-02": {
     "src": "/media/motion-graphics-02.mp4",
+    "bytes": 1682364,
+    "webm": "/media/motion-graphics-02.webm",
+    "webmBytes": 1098418,
     "poster": "/media/motion-graphics-02-poster.webp",
     "width": 1280,
     "height": 720,
@@ -33,6 +39,9 @@
   },
   "product-animation-01": {
     "src": "/media/product-animation-01.mp4",
+    "bytes": 1278854,
+    "webm": "/media/product-animation-01.webm",
+    "webmBytes": 1043289,
     "poster": "/media/product-animation-01-poster.webp",
     "width": 720,
     "height": 1280,
@@ -40,6 +49,9 @@
   },
   "product-animation-02": {
     "src": "/media/product-animation-02.mp4",
+    "bytes": 658804,
+    "webm": "/media/product-animation-02.webm",
+    "webmBytes": 470758,
     "poster": "/media/product-animation-02-poster.webp",
     "width": 1280,
     "height": 720,
@@ -47,6 +59,9 @@
   },
   "product-animation-03": {
     "src": "/media/product-animation-03.mp4",
+    "bytes": 1997962,
+    "webm": "/media/product-animation-03.webm",
+    "webmBytes": 1249718,
     "poster": "/media/product-animation-03-poster.webp",
     "width": 720,
     "height": 1280,
@@ -54,6 +69,9 @@
   },
   "reel-short-01": {
     "src": "/media/reel-short-01.mp4",
+    "bytes": 746421,
+    "webm": "/media/reel-short-01.webm",
+    "webmBytes": 854970,
     "poster": "/media/reel-short-01-poster.webp",
     "width": 720,
     "height": 1280,
@@ -61,6 +79,9 @@
   },
   "reel-short-02": {
     "src": "/media/reel-short-02.mp4",
+    "bytes": 1449585,
+    "webm": "/media/reel-short-02.webm",
+    "webmBytes": 1514567,
     "poster": "/media/reel-short-02-poster.webp",
     "width": 720,
     "height": 1280,

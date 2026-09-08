@@ -1,0 +1,120 @@
+.root {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--space-9) var(--space-6);
+}
+
+.heading {
+  font-size: clamp(2.75rem, 0.5rem + 10vw, 11rem);
+  font-weight: 600;
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-7);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: clamp(1rem, 0.8rem + 0.9vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  padding-block: var(--space-3);
+  position: relative;
+  align-self: flex-start;
+}
+
+.cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-fg-muted);
+  transform-origin: left center;
+  transition:
+    background-color var(--duration-base) var(--ease-signature),
+    transform var(--duration-base) var(--ease-signature);
+}
+
+.cta:hover::after,
+.cta:focus-visible::after {
+  background: var(--color-accent);
+  transform: scaleX(1.04);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform var(--duration-base) var(--ease-signature);
+}
+
+.cta:hover .ctaArrow,
+.cta:focus-visible .ctaArrow {
+  transform: translateX(10px);
+}
+
+.channels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+  gap: var(--space-5) var(--space-4);
+  margin-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-5);
+}
+
+.channel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.channelLink {
+  font-size: var(--fs-body);
+  color: var(--color-fg-dim);
+  transition: color var(--duration-fast) var(--ease-signature);
+  width: fit-content;
+  position: relative;
+}
+
+.channelLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--duration-base) var(--ease-signature);
+}
+
+.channelLink:hover,
+.channelLink:focus-visible {
+  color: var(--color-fg);
+}
+
+.channelLink:hover::after,
+.channelLink:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}

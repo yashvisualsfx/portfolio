@@ -1,0 +1,125 @@
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+  transition: color var(--duration-fast) var(--ease-signature);
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+  color: var(--color-fg);
+}
+
+.triggerBars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 18px;
+}
+
+.triggerBar {
+  display: block;
+  height: 1px;
+  background: currentColor;
+  transition: transform var(--duration-base) var(--ease-signature);
+}
+
+.trigger:hover .triggerBar:last-child {
+  transform: scaleX(0.6);
+  transform-origin: left center;
+}
+
+/* ---------- Overlay ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--container-padding);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+  padding: var(--space-2);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--color-fg);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-block: clamp(0.5rem, 0.2rem + 1.4vw, 1.25rem);
+  font-size: clamp(2rem, 0.5rem + 6vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  transition:
+    color var(--duration-base) var(--ease-signature),
+    transform var(--duration-base) var(--ease-signature);
+  will-change: transform;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--color-fg);
+  transform: translateX(clamp(0.75rem, 2vw, 2rem));
+}
+
+.linkIndex {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  color: var(--color-fg-muted);
+  transition: color var(--duration-base) var(--ease-signature);
+}
+
+.link:hover .linkIndex,
+.link:focus-visible .linkIndex {
+  color: var(--color-accent);
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+}
+
+.footLink {
+  font-size: var(--fs-small);
+  color: var(--color-fg-muted);
+  transition: color var(--duration-fast) var(--ease-signature);
+}
+
+.footLink:hover,
+.footLink:focus-visible {
+  color: var(--color-fg);
+}

@@ -63,6 +63,52 @@ export const FORM_PATH = [
   { at: 1, twist: 2, spin: 3.1, scale: 0.82, envIntensity: 2.1 },
 ];
 
+/*
+  The experimental break orbits the form instead of following keyframes — a
+  circle is described exactly by an angle, and authoring one as waypoints
+  would only approximate it. Half a turn across the section, rising slightly,
+  so the silhouette changes continuously behind the overlay type.
+*/
+export function sampleOrbit(t, outPosition, outLookAt) {
+  const angle = -Math.PI * 0.35 + t * Math.PI;
+  const radius = 4.6;
+
+  outPosition.set(
+    Math.sin(angle) * radius,
+    0.6 + Math.sin(t * Math.PI) * 1.1,
+    Math.cos(angle) * radius,
+  );
+  outLookAt.set(0, 0, 0);
+}
+
+/*
+  The finale: the world coming to rest. A wide, slightly-above framing with
+  the form centred — settled rather than mid-move.
+*/
+export const CONTACT_VIEW = {
+  position: [0, 1.2, 6.4],
+  lookAt: [0, -0.1, 0],
+};
+
+/*
+  How present the form should be at this point in the page.
+
+  It is the subject during the hero and the experimental break, and a faint
+  texture through the work sections in between, where a bright object would
+  compete with the projects themselves. Both the material's reflections and
+  the direct lights read this, because dimming only one leaves the other
+  still modelling the rings.
+*/
+export function computePresence(sequence) {
+  const hero = 1 - Math.min(Math.max(sequence.hero ?? 0, 0), 1);
+  // `experimentalActive`, not the orbit progress: the orbit angle is held
+  // after that section leaves so the camera stays put, but the form should
+  // stop being featured the moment the section is off screen.
+  const orbit = Math.min(Math.max(sequence.experimentalActive ?? 0, 0), 1);
+  const finale = Math.min(Math.max(sequence.contact ?? 0, 0), 1);
+  return Math.max(hero, orbit, finale, 0.08);
+}
+
 /** Finds the pair of keys `t` falls between and returns eased local progress. */
 function segment(keys, t) {
   const clamped = Math.min(Math.max(t, 0), 1);

@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { easeSignature } from "../animations/easing.js";
-import { sampleForm } from "./cameraPath.js";
+import { computePresence, sampleForm } from "./cameraPath.js";
 
 /*
   The hero form.
@@ -140,12 +140,17 @@ export function HeroSculpture({
       builtTwist.current = form.twist;
     }
 
-    // Lighting rises with the approach and falls away after — the reflections
-    // are the form's only real modelling, so this reads as the scene lighting
-    // changing rather than a material trick.
-    if (material.envMapIntensity !== form.envIntensity) {
-      material.envMapIntensity = form.envIntensity;
-    }
+    // Dimming reflections is most of the effect — they are the form's main
+    // modelling — but not all of it; Lighting scales the direct lights from
+    // the same shared value.
+    const presence = computePresence(sequenceRef?.current ?? {});
+
+    material.envMapIntensity = THREE.MathUtils.damp(
+      material.envMapIntensity,
+      form.envIntensity * presence,
+      3,
+      dt,
+    );
 
     // Idle drift, the last of the intro rotation unwinding into it, and the
     // sequence's own spin — all summed into one heading so they read as one

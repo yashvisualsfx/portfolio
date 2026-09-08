@@ -1,14 +1,21 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Preloader } from "./components/layout/Preloader.jsx";
 import { Navigation } from "./components/layout/Navigation.jsx";
+import { Cursor } from "./components/layout/Cursor.jsx";
 import { Hero } from "./sections/Hero.jsx";
+import { Work } from "./sections/Work.jsx";
+import { Experimental } from "./sections/Experimental.jsx";
+import { Skills } from "./sections/Skills.jsx";
+import { About } from "./sections/About.jsx";
+import { Marquee } from "./sections/Marquee.jsx";
+import { Contact } from "./sections/Contact.jsx";
 import { useLenis } from "./animations/useLenis.js";
 import { useAnchorScroll } from "./animations/useAnchorScroll.js";
+import { useRefreshOnResize } from "./animations/useRefreshOnResize.js";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion.js";
 import { useIsTouchDevice } from "./hooks/useIsTouchDevice.js";
 import { getMedia } from "./data/media.js";
-import styles from "./App.module.css";
-import { activeCategories, allWork } from "./data/projects.js";
+import { allWork } from "./data/projects.js";
 
 // three + drei are the heaviest thing the site loads and nothing above the
 // fold needs them, so the whole 3D layer is a separate chunk: the preloader
@@ -21,16 +28,11 @@ const Scene = lazy(() => import("./three/Scene.jsx"));
   loading   — preloader holds the screen, page scroll is locked
   revealing — panels are parting, the hero is animating in behind them
   ready     — curtain is clear; navigation arrives and scrolling is handed back
-
-  Later phases read this same value to drive the opening camera push, which is
-  what keeps the loader, the hero and the 3D scene reading as one move.
 */
 const PHASE = { loading: "loading", revealing: "revealing", ready: "ready" };
 
-// Stills the first screens need before the curtain parts. Video is deliberately
-// excluded — it streams on demand once its scene is close. Empty while the
-// project media slots are unfilled, which leaves the loader waiting on fonts
-// alone; it fills itself as soon as real assets are wired up.
+// Stills the first screens need before the curtain parts. Video is
+// deliberately excluded — clips stream on demand once their scene is close.
 const PRELOAD_SOURCES = allWork
   .map((item) => getMedia(item.media))
   .filter(Boolean)
@@ -44,12 +46,15 @@ export default function App() {
 
   const lenisRef = useLenis({ enabled: !reducedMotion });
   useAnchorScroll(lenisRef);
+  useRefreshOnResize();
 
-  // The hero's scroll sequence, written by ScrollTrigger and sampled by the
-  // 3D scene every frame. A ref rather than state on purpose: this changes on
-  // every scroll event, and re-rendering the tree that often would cost far
-  // more than the animation it drives.
-  const sequenceRef = useRef({ hero: 0 });
+  /*
+    Scroll progress for every scene that drives the 3D camera, written by
+    ScrollTriggers and sampled by the render loop each frame. A ref rather
+    than state: these change on every scroll event, and re-rendering the tree
+    that often would cost far more than the animation it drives.
+  */
+  const sequenceRef = useRef({ hero: 0, experimental: 0, experimentalActive: 0, contact: 0 });
 
   useEffect(() => {
     document.documentElement.classList.toggle("reduced-motion", reducedMotion);
@@ -103,49 +108,16 @@ export default function App() {
 
         <main id="main">
           <Hero active={introStarted} sequenceRef={sequenceRef} />
-
-          {/* Placeholder anchors so the navigation and hero CTA resolve.
-              Phase 6 replaces each of these with its own scroll scene — the
-              layout each category needs is already declared in the data. */}
-          <section className="section container" id="work" aria-labelledby="work-heading">
-            <h2 className="text-h1" id="work-heading">
-              Selected
-              <br />
-              Work
-            </h2>
-            <ul style={{ marginTop: "var(--space-5)" }}>
-              {activeCategories.map((category) => (
-                <li key={category.id} id={category.id} className={styles.categoryRow}>
-                  <span className="text-micro">{category.index}</span>
-                  <span className="text-h3">{category.label}</span>
-                  <span className="text-small">
-                    {category.items.length} {category.items.length === 1 ? "piece" : "pieces"} ·{" "}
-                    {category.layout}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="section container" id="about" aria-labelledby="about-heading">
-            <h2 className="text-h1" id="about-heading">
-              About
-            </h2>
-            <p className="text-body" style={{ maxWidth: "50ch", marginTop: "var(--space-4)" }}>
-              Editorial layout and portrait parallax arrive in Phase 7.
-            </p>
-          </section>
-
-          <section className="section container" id="contact" aria-labelledby="contact-heading">
-            <h2 className="text-h1" id="contact-heading">
-              Contact
-            </h2>
-            <p className="text-body" style={{ maxWidth: "50ch", marginTop: "var(--space-4)" }}>
-              Final composition arrives in Phase 8.
-            </p>
-          </section>
+          <Work />
+          <Experimental sequenceRef={sequenceRef} />
+          <Skills />
+          <About />
+          <Marquee />
+          <Contact sequenceRef={sequenceRef} />
         </main>
       </div>
+
+      <Cursor />
     </div>
   );
 }

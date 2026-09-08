@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { EASE_SIGNATURE } from "../../animations/easing.js";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion.js";
 import { navLinks, site } from "../../data/site.js";
+import { Menu, MenuTrigger } from "./Menu.jsx";
 import styles from "./Navigation.module.css";
 
 /**
@@ -16,6 +17,8 @@ import styles from "./Navigation.module.css";
 export function Navigation({ visible = true }) {
   const reduced = usePrefersReducedMotion();
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const triggerRef = useRef(null);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (value) => {
@@ -44,9 +47,18 @@ export function Navigation({ visible = true }) {
                 </a>
               </li>
             ))}
+            <li>
+              <MenuTrigger
+                open={menuOpen}
+                onToggle={() => setMenuOpen((current) => !current)}
+                triggerRef={triggerRef}
+              />
+            </li>
           </ul>
         </nav>
       </div>
+
+      <Menu open={menuOpen} onClose={() => setMenuOpen(false)} triggerRef={triggerRef} />
     </motion.header>
   );
 }

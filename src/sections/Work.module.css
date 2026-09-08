@@ -1,0 +1,241 @@
+/* ---------- Shared category framing ---------- */
+.category {
+  position: relative;
+  padding-block: var(--space-9) var(--space-8);
+}
+
+.categoryHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+  gap: var(--space-6);
+  align-items: end;
+  margin-bottom: var(--space-7);
+}
+
+.categoryIndex {
+  display: block;
+  margin-bottom: var(--space-3);
+}
+
+.categoryHeading {
+  font-size: var(--fs-h1);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.categorySummary {
+  max-width: 42ch;
+  padding-bottom: var(--space-2);
+}
+
+/* ---------- cinema: one piece at a time, near-fullscreen ---------- */
+.scene {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+  margin-bottom: var(--space-9);
+}
+
+/* Landscape pieces take the full measure and let type sit beneath. */
+.sceneLandscape {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Vertical pieces are given a column and the type sits beside them —
+   letterboxing a 9:16 cut into a 16:9 frame wastes most of the screen. */
+.scenePortrait {
+  grid-template-columns: minmax(0, 42vh) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.sceneMedia {
+  width: 100%;
+}
+
+.sceneMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+}
+
+.scenePortrait .sceneMeta {
+  border-top: none;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 0;
+}
+
+.sceneTitle {
+  font-size: var(--fs-h2);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.sceneDetail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 40ch;
+}
+
+.sceneTags {
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* ---------- grid: stills read together ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  gap: var(--space-5);
+}
+
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.gridMedia {
+  transition: transform var(--duration-slow) var(--ease-signature);
+}
+
+.gridItem:hover .gridMedia,
+.gridItem:focus-within .gridMedia {
+  transform: scale(1.02);
+}
+
+.gridCaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* ---------- rail: vertical pieces moving horizontally through depth ---- */
+/*
+  One viewport tall. ScrollTrigger pins it and creates its own spacer for the
+  extra scroll distance, so there is deliberately no CSS `sticky` here — the
+  two mechanisms fight, and the pin has to win because it also owns the
+  horizontal travel.
+*/
+.rail {
+  position: relative;
+  height: 100svh;
+}
+
+/* Column layout rather than an absolutely-positioned heading: the heading
+   reserves its own space, so panels can never run under it at any viewport.
+   The whole section is pinned during travel, so in-flow still holds still. */
+.railViewport {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-6);
+  overflow: hidden;
+  /* Real perspective, so panels further along the track are genuinely
+     further away rather than just smaller. */
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+.railTrack {
+  display: flex;
+  /* Top-aligned: captions wrap to different heights, and centring would
+     leave the panels themselves at different vertical positions. */
+  align-items: flex-start;
+  gap: clamp(2rem, 6vw, 7rem);
+  padding-inline: var(--container-padding);
+  margin-inline: auto;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/*
+  Sized off viewport height because these are 9:16 pieces — width driven by
+  height is what keeps them from running off the top and bottom. Generous on
+  desktop so a short set still fills the frame; horizontal travel engages on
+  its own once the track outgrows the viewport.
+*/
+.railPanel {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(13rem, 32vh, 24rem);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.railHead .categoryHeading {
+  font-size: var(--fs-h2);
+}
+
+.railCaption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
+/* When the panels already fit, there is nothing to travel: the rail becomes
+   a centred row and the section keeps its normal scroll behaviour. */
+.railStatic .railTrack {
+  justify-content: center;
+  transform: none !important;
+}
+
+.railHead {
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .categoryHead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .categorySummary {
+    max-width: 100%;
+  }
+
+  .scenePortrait {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .scenePortrait .sceneMedia {
+    max-width: 22rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .category {
+    padding-block: var(--space-8) var(--space-7);
+  }
+
+  .scene {
+    margin-bottom: var(--space-8);
+  }
+
+  .railPanel {
+    width: clamp(11rem, 52vw, 16rem);
+  }
+
+  .railHead {
+    padding-bottom: var(--space-2);
+  }
+}

@@ -1,0 +1,44 @@
+/*
+  A visual pause between the work and the personal sections. The section is
+  tall; the overlay sticks while scroll orbits the 3D camera around the form
+  behind it, so the type holds still and the world moves.
+*/
+.root {
+  position: relative;
+  height: 260svh;
+}
+
+.viewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.overlay {
+  text-align: center;
+  /* Sits above the canvas layer without blocking it. */
+  pointer-events: none;
+}
+
+.statement {
+  font-size: clamp(3rem, 1rem + 11vw, 12rem);
+  font-weight: 600;
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.caption {
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 768px) {
+  .root {
+    height: 200svh;
+  }
+}

@@ -42,6 +42,8 @@ const VIDEO_CRF = 28;
 // Several sources are 50–60fps. Halving to 30 roughly halves the bitrate for
 // no perceptible loss in a panel-sized autoplay loop.
 const VIDEO_MAX_FPS = 30;
+// VP9's CRF scale runs higher than x264's for comparable quality.
+const WEBM_CRF = 42;
 
 /** Normalizes "Opening Film 02.mp4" -> "opening-film-02" */
 function slugify(filename) {
@@ -99,6 +101,7 @@ async function optimizeImage(source, slug) {
 
 async function optimizeVideo(source, slug) {
   const outPath = path.join(OUT_DIR, `${slug}.mp4`);
+  const webmPath = path.join(OUT_DIR, `${slug}.webm`);
   const posterPath = path.join(OUT_DIR, `${slug}-poster.webp`);
 
   // Cap the longest edge at VIDEO_MAX_EDGE, keep dimensions even for h264.
@@ -127,6 +130,32 @@ async function optimizeVideo(source, slug) {
     console.log(`video  · ${slug}.mp4 (up to date)`);
   }
 
+  // VP9 alongside H.264, for codec coverage rather than size: some browser
+  // builds (notably Chromium without proprietary codecs) cannot decode H.264
+  // at all, and would otherwise show a dead frame. MP4 is listed first in the
+  // markup because it is both universal and, on this material, the smaller of
+  // the two — so only browsers that cannot play it fall through to WebM.
+  if (await isStale(source, webmPath)) {
+    await run(FFMPEG, [
+      "-y",
+      "-i", source,
+      "-vf", scale,
+      "-r", String(VIDEO_MAX_FPS),
+      "-c:v", "libvpx-vp9",
+      "-crf", String(WEBM_CRF),
+      "-b:v", "0",
+      // cpu-used trades encode time for compression; 2 is slow enough to
+      // actually beat x264 here, and row-mt spreads it across cores.
+      "-cpu-used", "2",
+      "-row-mt", "1",
+      "-pix_fmt", "yuv420p",
+      "-c:a", "libopus",
+      "-b:a", "96k",
+      webmPath,
+    ]);
+    console.log(`webm   ✓ ${slug}.webm`);
+  }
+
   if (await isStale(source, posterPath)) {
     const framePath = path.join(OUT_DIR, `${slug}-frame.png`);
     // Grab a frame a little way in — frame 0 is often black on edited footage.
@@ -142,8 +171,19 @@ async function optimizeVideo(source, slug) {
     .webp({ quality: 30 })
     .toBuffer();
 
+  // Record both sizes so the player can offer the smaller file first. Which
+  // codec wins varies per clip — VP9 takes most of this material but loses on
+  // the grainier ones — so hard-coding an order would be wrong either way.
+  const [mp4Stat, webmStat] = await Promise.all([
+    stat(outPath).catch(() => null),
+    stat(webmPath).catch(() => null),
+  ]);
+
   return {
     src: `/media/${slug}.mp4`,
+    bytes: mp4Stat?.size ?? 0,
+    webm: `/media/${slug}.webm`,
+    webmBytes: webmStat?.size ?? 0,
     poster: `/media/${slug}-poster.webp`,
     width: poster.width,
     height: poster.height,

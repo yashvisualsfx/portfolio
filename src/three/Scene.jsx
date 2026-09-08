@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { HeroSculpture } from "./HeroSculpture.jsx";
 import { Lighting } from "./Lighting.jsx";
 import { easeSignature } from "../animations/easing.js";
-import { CAMERA_PATH, sampleCamera } from "./cameraPath.js";
+import { CAMERA_PATH, CONTACT_VIEW, sampleCamera, sampleOrbit } from "./cameraPath.js";
 import { usePointerRef } from "../hooks/usePointerRef.js";
 
 /*
@@ -55,9 +55,13 @@ function CameraRig({ intro, animate, pointerRef, sequenceRef, placement }) {
   const { camera, invalidate } = useThree();
   const introProgress = useRef(animate ? 0 : 1);
 
-  // Reused across frames so the path sampler never allocates.
+  // Reused across frames so the path samplers never allocate.
   const target = useRef({ position: new THREE.Vector3(), lookAt: new THREE.Vector3() });
   const smoothedLookAt = useRef(new THREE.Vector3());
+  const orbitPosition = useRef(new THREE.Vector3());
+  const orbitLookAt = useRef(new THREE.Vector3());
+  const contactPosition = useRef(new THREE.Vector3());
+  const contactLookAt = useRef(new THREE.Vector3());
 
   // Reduced motion never runs the frame loop, so the rest pose is set once
   // here — the composition survives, the movement doesn't.
@@ -87,7 +91,30 @@ function CameraRig({ intro, animate, pointerRef, sequenceRef, placement }) {
     const pointer = pointerRef?.current ?? { x: 0, y: 0 };
 
     const { position, lookAt } = target.current;
+    const orbit = sequenceRef?.current?.experimental ?? 0;
+    const contact = sequenceRef?.current?.contact ?? 0;
+
+    // Three scenes share one camera, resolved in the order the page meets
+    // them: the hero path is the default, the experimental break takes over
+    // where it is on screen, and the finale settles over everything.
     sampleCamera(sequence, position, lookAt);
+
+    if (orbit > 0) {
+      sampleOrbit(orbit, orbitPosition.current, orbitLookAt.current);
+      // Blend in over the first tenth of the section so the handoff from the
+      // hero's resting frame is a move, not a cut.
+      const blend = Math.min(orbit * 10, 1) * (1 - contact);
+      position.lerp(orbitPosition.current, blend);
+      lookAt.lerp(orbitLookAt.current, blend);
+    }
+
+    if (contact > 0) {
+      contactPosition.current.set(...CONTACT_VIEW.position);
+      contactLookAt.current.set(...CONTACT_VIEW.lookAt);
+      const blend = Math.min(contact * 2, 1);
+      position.lerp(contactPosition.current, blend);
+      lookAt.lerp(contactLookAt.current, blend);
+    }
 
     // The path is authored around the form, so shift it to wherever this
     // viewport placed the form, and scale the approach with the form's size —
