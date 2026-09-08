@@ -1,12 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Preloader } from "./components/layout/Preloader.jsx";
 import { Navigation } from "./components/layout/Navigation.jsx";
 import { Hero } from "./sections/Hero.jsx";
 import { useLenis } from "./animations/useLenis.js";
 import { useAnchorScroll } from "./animations/useAnchorScroll.js";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion.js";
+import { useIsTouchDevice } from "./hooks/useIsTouchDevice.js";
 import { getMedia } from "./data/media.js";
 import { projects } from "./data/projects.js";
+
+// three + drei are the heaviest thing the site loads and nothing above the
+// fold needs them, so the whole 3D layer is a separate chunk: the preloader
+// and hero paint while it streams in behind them.
+const Scene = lazy(() => import("./three/Scene.jsx"));
 
 /*
   Intro state machine.
@@ -30,6 +36,7 @@ const PRELOAD_SOURCES = projects
 
 export default function App() {
   const reducedMotion = usePrefersReducedMotion();
+  const isTouch = useIsTouchDevice();
   const [phase, setPhase] = useState(PHASE.loading);
 
   const lenisRef = useLenis({ enabled: !reducedMotion });
@@ -70,8 +77,12 @@ export default function App() {
         onComplete={handleComplete}
       />
 
-      {/* Reserved mount point for the persistent R3F canvas (Phase 4) */}
-      <div className="canvas-layer" aria-hidden="true" />
+      {/* One WebGL canvas for the whole site, behind every section. */}
+      <div className="canvas-layer" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Scene intro={introStarted} reduced={reducedMotion} isTouch={isTouch} />
+        </Suspense>
+      </div>
 
       <div className="content-layer">
         <Navigation visible={phase === PHASE.ready} />

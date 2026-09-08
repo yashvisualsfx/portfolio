@@ -12,10 +12,10 @@ export const DURATION = {
   slow: 1.2,
 };
 
-// Minimal cubic-bezier solver (mirrors the CSS timing-function algorithm)
-// so GSAP timelines can use the exact same curve as CSS/Framer Motion
-// without pulling in the paid CustomEase plugin.
-function cubicBezier(x1, y1, x2, y2) {
+// Minimal cubic-bezier solver (mirrors the CSS timing-function algorithm) so
+// GSAP timelines and the R3F frame loop can use the exact same curve as
+// CSS/Framer Motion, without pulling in the paid CustomEase plugin.
+export function cubicBezier(x1, y1, x2, y2) {
   const a = (a1, a2) => 1 - 3 * a2 + 3 * a1;
   const b = (a1, a2) => 3 * a2 - 6 * a1;
   const c = (a1) => 3 * a1;
@@ -42,6 +42,9 @@ function cubicBezier(x1, y1, x2, y2) {
 // Registers the signature curve with a GSAP instance under the name
 // "signature" so timelines elsewhere can write `ease: "signature"` instead
 // of repeating the bezier literal.
+/** The signature curve as a plain function, for use outside CSS/Motion. */
+export const easeSignature = cubicBezier(...EASE_SIGNATURE);
+
 export function registerGsapEasing(gsap) {
   gsap.registerEase("signature", cubicBezier(...EASE_SIGNATURE));
   gsap.registerEase("signatureOutExpo", cubicBezier(...EASE_OUT_EXPO));
