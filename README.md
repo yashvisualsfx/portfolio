@@ -43,7 +43,15 @@ Vite's hashed `/assets/*` are safe to cache forever (a change produces a new
 filename), while `/media/*` keeps its original names, so replacing an asset
 would otherwise serve a stale one. Media revalidates daily instead.
 
-Easiest route — import from GitHub:
+One-click, with the project name already filled in:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyashvisualsfx%2Fportfolio&project-name=harsh-kushwaha-portfolio&repository-name=harsh-kushwaha-portfolio)
+
+That link carries `project-name=harsh-kushwaha-portfolio`, so the URL comes out
+as `harsh-kushwaha-portfolio.vercel.app` without having to remember to change
+the prefilled name.
+
+Or import the existing repository manually:
 
 1. vercel.com → **Add New… → Project** → import this repository.
 2. Set **Project Name** to `harsh-kushwaha-portfolio`. This is what decides
