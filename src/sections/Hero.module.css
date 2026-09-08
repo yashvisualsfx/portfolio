@@ -1,0 +1,176 @@
+.root {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-block: var(--space-8) var(--space-6);
+  overflow: hidden;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.eyebrow {
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+/*
+  The wordmark. Sized to fill the measure edge-to-edge — it is the primary
+  visual element of the screen, not a label above one.
+*/
+.title {
+  font-size: clamp(4.5rem, 1rem + 20vw, 22rem);
+  font-weight: 600;
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+}
+
+.copy {
+  max-width: 34ch;
+  font-size: var(--fs-body-lg);
+  line-height: 1.45;
+  color: var(--color-fg-dim);
+  text-wrap: balance;
+}
+
+.copy strong {
+  color: var(--color-fg);
+  font-weight: 500;
+}
+
+/* CTA — a typographic link with a travelling rule, not a pill. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  padding-block: var(--space-2);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-fg-muted);
+  transform-origin: left center;
+  transition:
+    transform var(--duration-base) var(--ease-signature),
+    background-color var(--duration-base) var(--ease-signature);
+}
+
+.cta:hover::after,
+.cta:focus-visible::after {
+  background: var(--color-accent);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform var(--duration-base) var(--ease-signature);
+}
+
+.cta:hover .ctaArrow,
+.cta:focus-visible .ctaArrow {
+  transform: translateX(6px);
+}
+
+/*
+  Scroll indicator — a pulse travelling down a hairline, plus a quiet label.
+  Pinned to the right margin at mid-height: the bottom-right corner belongs to
+  the CTA and the left margin runs into the eyebrow, so this band is the only
+  one that stays clear. It sits above the 3D layer as a deliberate overlay.
+*/
+.scrollCue {
+  position: absolute;
+  right: var(--container-padding);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.scrollLabel {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  writing-mode: vertical-rl;
+}
+
+.scrollTrack {
+  width: 1px;
+  height: 64px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.scrollBar {
+  display: block;
+  width: 100%;
+  height: 45%;
+  background: var(--color-fg);
+}
+
+@media (max-width: 768px) {
+  .root {
+    justify-content: flex-end;
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .copy {
+    max-width: 100%;
+  }
+
+  /* Mid-height would sit over the stacked copy on narrow screens; the cue
+     drops into the corner the stacked meta block leaves free. */
+  .scrollCue {
+    top: auto;
+    transform: none;
+    bottom: var(--space-3);
+  }
+
+  .scrollLabel {
+    display: none;
+  }
+
+  .scrollTrack {
+    height: 40px;
+  }
+}

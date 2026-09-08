@@ -1,20 +1,62 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Preloader } from "./components/layout/Preloader.jsx";
+import { Navigation } from "./components/layout/Navigation.jsx";
+import { Hero } from "./sections/Hero.jsx";
 import { useLenis } from "./animations/useLenis.js";
+import { useAnchorScroll } from "./animations/useAnchorScroll.js";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion.js";
+import { getMedia } from "./data/media.js";
+import { projects } from "./data/projects.js";
 
-// Phase 1/2 foundation preview.
-// This stands in for the real composition (loader, nav, hero, persistent
-// R3F canvas, sections) built out in later phases — its job right now is to
-// prove the design tokens, typography scale, layout primitives, Lenis smooth
-// scroll and reduced-motion handling all work together before anything 3D
-// or scroll-driven is layered on top.
+/*
+  Intro state machine.
+
+  loading   — preloader holds the screen, page scroll is locked
+  revealing — panels are parting, the hero is animating in behind them
+  ready     — curtain is clear; navigation arrives and scrolling is handed back
+
+  Later phases read this same value to drive the opening camera push, which is
+  what keeps the loader, the hero and the 3D scene reading as one move.
+*/
+const PHASE = { loading: "loading", revealing: "revealing", ready: "ready" };
+
+// Stills the first screens need before the curtain parts. Video is deliberately
+// excluded — it streams on demand once its scene is close.
+const PRELOAD_SOURCES = projects
+  .map((project) => getMedia(project.media))
+  .filter(Boolean)
+  .slice(0, 3)
+  .map((media) => (media.type === "video" ? media.poster : media.src));
+
 export default function App() {
   const reducedMotion = usePrefersReducedMotion();
-  useLenis({ enabled: !reducedMotion });
+  const [phase, setPhase] = useState(PHASE.loading);
+
+  const lenisRef = useLenis({ enabled: !reducedMotion });
+  useAnchorScroll(lenisRef);
 
   useEffect(() => {
     document.documentElement.classList.toggle("reduced-motion", reducedMotion);
   }, [reducedMotion]);
+
+  // Hold the page still while the loader owns the screen. Lenis and the
+  // native scrollbar both need pinning — Lenis alone still lets a keyboard or
+  // trackpad scroll move the underlying document.
+  useEffect(() => {
+    const locked = phase === PHASE.loading;
+    document.body.style.overflow = locked ? "hidden" : "";
+    if (locked) lenisRef.current?.stop();
+    else lenisRef.current?.start();
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [phase, lenisRef]);
+
+  const handleReveal = useCallback(() => setPhase(PHASE.revealing), []);
+  const handleComplete = useCallback(() => setPhase(PHASE.ready), []);
+
+  const introStarted = phase !== PHASE.loading;
 
   return (
     <div id="app-shell">
@@ -22,55 +64,52 @@ export default function App() {
         Skip to content
       </a>
 
-      {/* Reserved mount point for the persistent R3F canvas (Phase 4+) */}
+      <Preloader
+        sources={PRELOAD_SOURCES}
+        onReveal={handleReveal}
+        onComplete={handleComplete}
+      />
+
+      {/* Reserved mount point for the persistent R3F canvas (Phase 4) */}
       <div className="canvas-layer" aria-hidden="true" />
 
       <div className="content-layer">
-        <header className="row container" style={{ justifyContent: "space-between", paddingBlock: "var(--space-4)" }}>
-          <span className="text-h3">HARSH</span>
-          <nav aria-label="Primary">
-            <ul className="row" style={{ gap: "var(--space-5)" }}>
-              <li className="text-small">Work</li>
-              <li className="text-small">About</li>
-              <li className="text-small">Contact</li>
-            </ul>
-          </nav>
-        </header>
+        <Navigation visible={phase === PHASE.ready} />
 
         <main id="main">
-          <section className="section section--full container">
-            <p className="text-micro eyebrow">Creative Designer</p>
-            <h1 className="text-display">HARSH</h1>
-            <p className="text-body-lg" style={{ maxWidth: "38ch", marginTop: "var(--space-5)" }}>
-              Building visual experiences through design, motion &amp; technology.
-            </p>
-          </section>
+          <Hero active={introStarted} />
 
-          <section className="section container">
-            <h2 className="text-h1">
+          {/* Placeholder anchors so the navigation and hero CTA resolve.
+              Phases 6–8 replace these with the real scenes. */}
+          <section className="section container" id="work" aria-labelledby="work-heading">
+            <h2 className="text-h1" id="work-heading">
               Selected
               <br />
               Work
             </h2>
             <p className="text-body" style={{ maxWidth: "50ch", marginTop: "var(--space-4)" }}>
-              Foundation preview — the scroll-driven project scenes ship in a
-              later phase. This section exists to check the type scale and
-              spacing rhythm at every breakpoint.
+              {projects.length} projects, arranged as fullscreen scroll scenes in Phase 6.
             </p>
           </section>
 
-          <section className="section container">
-            <h2 className="text-h1">About</h2>
+          <section className="section container" id="about" aria-labelledby="about-heading">
+            <h2 className="text-h1" id="about-heading">
+              About
+            </h2>
             <p className="text-body" style={{ maxWidth: "50ch", marginTop: "var(--space-4)" }}>
-              Multidisciplinary creative focused on crafting memorable visual
-              experiences across design, motion and digital interaction.
+              Editorial layout and portrait parallax arrive in Phase 7.
+            </p>
+          </section>
+
+          <section className="section container" id="contact" aria-labelledby="contact-heading">
+            <h2 className="text-h1" id="contact-heading">
+              Contact
+            </h2>
+            <p className="text-body" style={{ maxWidth: "50ch", marginTop: "var(--space-4)" }}>
+              Final composition arrives in Phase 8.
             </p>
           </section>
         </main>
-
-        <footer className="container" style={{ paddingBlock: "var(--space-6)" }}>
-          <p className="text-small">HARSH © 2026 — Designed &amp; developed with intention.</p>
-        </footer>
       </div>
     </div>
   );

@@ -1,0 +1,99 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  pointer-events: none;
+}
+
+/*
+  Two panels that part like a curtain. The content sits in a third layer
+  between them so the wordmark fades on its own timing rather than being
+  dragged off with a panel.
+*/
+.panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50.5%; /* slight overlap so no hairline shows at the seam */
+  background: var(--color-bg);
+  will-change: transform;
+}
+
+.panelTop {
+  top: 0;
+}
+
+.panelBottom {
+  bottom: 0;
+}
+
+.inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+}
+
+.wordmark {
+  font-size: clamp(2.5rem, 1.5rem + 6vw, 7rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+}
+
+.counter {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.counterValue {
+  font-size: var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-fg-dim);
+  min-width: 3ch;
+  text-align: right;
+}
+
+.counterArrow {
+  color: var(--color-fg-muted);
+  font-size: var(--fs-small);
+}
+
+.counterTarget {
+  font-size: var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-fg-muted);
+}
+
+/* Thin progress indicator — a hairline, not a chunky bar. */
+.track {
+  position: absolute;
+  left: var(--container-padding);
+  right: var(--container-padding);
+  bottom: var(--space-6);
+  height: 1px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.bar {
+  width: 100%;
+  height: 100%;
+  background: var(--color-fg);
+  transform-origin: left center;
+}
+
+@media (max-width: 768px) {
+  .track {
+    bottom: var(--space-5);
+  }
+}
