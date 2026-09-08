@@ -1,0 +1,89 @@
+@import "@fontsource/space-grotesk/300.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+
+:root {
+  --font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+
+  /* Fluid editorial scale — dramatic gap between display and body on purpose. */
+  --fs-display: clamp(3.5rem, 2rem + 12vw, 15rem);
+  --fs-h1: clamp(2.5rem, 1.4rem + 6vw, 7rem);
+  --fs-h2: clamp(1.75rem, 1.2rem + 3vw, 3.5rem);
+  --fs-h3: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  --fs-body-lg: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --fs-body: clamp(0.95rem, 0.9rem + 0.2vw, 1.0625rem);
+  --fs-small: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
+  --fs-micro: clamp(0.7rem, 0.68rem + 0.1vw, 0.75rem);
+}
+
+body {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+}
+
+.text-display {
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.text-h1 {
+  font-size: var(--fs-h1);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.text-h2 {
+  font-size: var(--fs-h2);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.text-h3 {
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.text-body-lg {
+  font-size: var(--fs-body-lg);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-fg-dim);
+}
+
+.text-body {
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-fg-dim);
+}
+
+.text-small {
+  font-size: var(--fs-small);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-fg-muted);
+}
+
+.text-micro {
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}

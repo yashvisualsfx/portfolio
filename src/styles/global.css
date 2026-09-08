@@ -1,0 +1,124 @@
+/* ---------- Selection & focus ---------- */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* ---------- Scrollbar (webkit) — kept subtle, never hidden entirely ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+/* ---------- Layout primitives ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.section {
+  position: relative;
+  width: 100%;
+  padding-block: var(--space-8);
+}
+
+.section--full {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: var(--space-4);
+  z-index: var(--z-loader);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: top var(--duration-fast) var(--ease-out-expo);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* ---------- App shell ---------- */
+#app-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* Persistent canvas mount — sits behind content, phases 4+ populate it */
+.canvas-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-canvas);
+  pointer-events: none;
+}
+
+.content-layer {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: var(--space-7);
+  }
+}
