@@ -51,19 +51,40 @@ export function useHeroSequence({ refs, sequenceRef, enabled }) {
         defaults: { ease: "none" },
       });
 
+      /*
+        Every tween declares its own start value and defers rendering.
+
+        A plain `.to()` would record whatever was on screen when the timeline
+        was built — and this timeline is built the moment the intro begins,
+        while Motion still has the supporting type at opacity 0 mid-fade. GSAP
+        would capture that 0 as the start of a scrubbed tween and hold it
+        there, so the eyebrow, copy and CTA never appeared at all.
+
+        `fromTo` states the intended start explicitly, and
+        `immediateRender: false` stops GSAP writing those values before the
+        first scroll — which leaves Motion owning the intro and GSAP taking
+        over only once the sequence actually moves.
+      */
+      const deferred = { immediateRender: false };
+
       // The wordmark parts down the middle — this is the gap the camera flies
       // through, so it leads and travels furthest.
       timeline
-        .to(titleLeft.current, { xPercent: -62, ease: "signature" }, 0)
-        .to(titleRight.current, { xPercent: 62, ease: "signature" }, 0)
+        .fromTo(titleLeft.current, { xPercent: 0 }, { xPercent: -62, ease: "signature", ...deferred }, 0)
+        .fromTo(titleRight.current, { xPercent: 0 }, { xPercent: 62, ease: "signature", ...deferred }, 0)
         // Supporting type moves apart from the centre before it fades, so the
         // whole composition reads as disassembling rather than dimming.
-        .to(eyebrow.current, { x: -120, autoAlpha: 0 }, 0)
-        .to(copy.current, { x: -80, y: 40, autoAlpha: 0 }, 0)
-        .to(cta.current, { x: 80, y: 40, autoAlpha: 0 }, 0)
-        .to(cue.current, { autoAlpha: 0 }, 0)
+        .fromTo(eyebrow.current, { x: 0, autoAlpha: 1 }, { x: -120, autoAlpha: 0, ...deferred }, 0)
+        .fromTo(copy.current, { x: 0, y: 0, autoAlpha: 1 }, { x: -80, y: 40, autoAlpha: 0, ...deferred }, 0)
+        .fromTo(cta.current, { x: 0, y: 0, autoAlpha: 1 }, { x: 80, y: 40, autoAlpha: 0, ...deferred }, 0)
+        .fromTo(cue.current, { autoAlpha: 1 }, { autoAlpha: 0, ...deferred }, 0)
         // The letters clear the frame before the camera reaches the form.
-        .to([titleLeft.current, titleRight.current], { autoAlpha: 0 }, 0.35);
+        .fromTo(
+          [titleLeft.current, titleRight.current],
+          { autoAlpha: 1 },
+          { autoAlpha: 0, ...deferred },
+          0.35,
+        );
     }, section);
 
     return () => context.revert();

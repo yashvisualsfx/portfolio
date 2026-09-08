@@ -1,6 +1,42 @@
+/*
+  About is the one section that steps out of the 3D world.
+
+  Everywhere else the persistent canvas shows through and the sculpture is
+  part of the composition; here it would sit behind a photograph and a block
+  of reading text, competing with both. So this section carries its own opaque
+  ground — a full-bleed surface that covers the canvas — which is also what
+  makes it read as a distinct chapter rather than more of the hero.
+*/
 .root {
   position: relative;
   padding-block: var(--space-9);
+}
+
+.root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Full-bleed past the container's own padding. */
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  background: var(--color-bg-elevated);
+  z-index: -1;
+}
+
+/* Hairlines top and bottom so the block reads as deliberately set apart
+   rather than as an accidental change of shade. */
+.root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Asymmetric on purpose — a centred two-column split would read as a CV. */

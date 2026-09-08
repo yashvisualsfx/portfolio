@@ -45,6 +45,11 @@ export function MediaFrame({
   const [visible, setVisible] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  // Whether the visitor has explicitly paused. Kept separate from `playing`
+  // so scrolling a paused clip out of view and back does not quietly restart
+  // it — an explicit pause outranks the visibility rule.
+  const [userPaused, setUserPaused] = useState(false);
 
   const isVideo = resolved?.type === "video";
 
@@ -84,14 +89,14 @@ export function MediaFrame({
     const video = videoRef.current;
     if (!video || !isVideo || reduced || !near) return;
 
-    if (visible) {
+    if (visible && !userPaused) {
       // A play() that loses a race with unmount or a source swap rejects;
       // there is nothing useful to do about it.
       video.play().catch(() => {});
-    } else {
+    } else if (!visible) {
       video.pause();
     }
-  }, [visible, near, isVideo, reduced]);
+  }, [visible, near, isVideo, reduced, userPaused]);
 
   // Pause everything while the tab is hidden — background playback burns
   // battery and decodes frames nobody is looking at.
@@ -105,6 +110,31 @@ export function MediaFrame({
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [isVideo]);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      setUserPaused(false);
+      video.play().catch(() => {});
+    } else {
+      setUserPaused(true);
+      video.pause();
+    }
+  };
+
+  const toggleSound = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const next = !muted;
+    setMuted(next);
+    video.muted = next;
+    // Unmuting a clip the visitor wants to hear implies wanting it to run.
+    if (!next && video.paused) {
+      setUserPaused(false);
+      video.play().catch(() => {});
+    }
+  };
 
   const aspect = aspectOverride ?? resolved?.aspectRatio ?? fallbackAspect;
 
@@ -159,6 +189,10 @@ export function MediaFrame({
           aria-label={alt || undefined}
           aria-hidden={alt ? undefined : true}
           onLoadedData={() => setLoaded(true)}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          // Reduced motion hands over the browser's own controls rather than
+          // autoplaying behind a custom bar.
           controls={reduced}
         >
           {/* A browser takes the first source it can decode, so the smaller
@@ -172,21 +206,44 @@ export function MediaFrame({
         </video>
       )}
 
-      {resolved && isVideo && sound && !reduced && (
-        <button
-          type="button"
-          className={styles.sound}
-          onClick={() => {
-            const video = videoRef.current;
-            if (!video) return;
-            const next = !muted;
-            setMuted(next);
-            video.muted = next;
-            if (!next) video.play().catch(() => {});
-          }}
-        >
-          {muted ? "Sound off" : "Sound on"}
-        </button>
+      {resolved && isVideo && !reduced && (
+        <div className={styles.controls}>
+          <button
+            type="button"
+            className={styles.control}
+            onClick={togglePlay}
+            aria-label={playing ? `Pause ${alt || "video"}` : `Play ${alt || "video"}`}
+            title={playing ? "Pause" : "Play"}
+          >
+            <svg viewBox="0 0 12 12" aria-hidden="true">
+              {playing ? (
+                <path d="M2 1h3v10H2zM7 1h3v10H7z" />
+              ) : (
+                <path d="M2.5 1l8 5-8 5z" />
+              )}
+            </svg>
+          </button>
+
+          {sound && (
+            <button
+              type="button"
+              className={styles.control}
+              onClick={toggleSound}
+              aria-pressed={!muted}
+              aria-label="Sound"
+              title={muted ? "Unmute" : "Mute"}
+            >
+              <svg viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M1 4.5h2L6 2v8L3 7.5H1z" />
+                {muted ? (
+                  <path d="M7.8 4.2l2.6 2.6-.7.7-2.6-2.6zm2.6 0l.7.7-2.6 2.6-.7-.7z" />
+                ) : (
+                  <path d="M7.6 3.6a3.4 3.4 0 010 4.8l-.7-.7a2.4 2.4 0 000-3.4zm1.6-1.4a5.4 5.4 0 010 7.6l-.7-.7a4.4 4.4 0 000-6.2z" />
+                )}
+              </svg>
+            </button>
+          )}
+        </div>
       )}
 
       {children}

@@ -52,20 +52,9 @@ export function About() {
           </motion.p>
 
           <motion.p className={`text-body ${styles.body}`} variants={fadeUp(reduced)}>
-            Most of what I do lives in the gap between an idea and someone
-            deciding to give it their attention. A product spot has a second to
-            make the object worth looking at. An explainer has to carry a whole
-            argument without losing anyone halfway. A reel has to survive the
-            first frame. Different problems, same discipline: knowing what to
-            put on screen, and — more often — what to leave off it.
-          </motion.p>
-
-          <motion.p className={`text-body ${styles.body}`} variants={fadeUp(reduced)}>
-            I work across the whole chain rather than one link of it, because
-            the pieces only work together. A thumbnail promises something the
-            edit has to keep. Motion that ignores the cut reads as decoration.
-            Handling both is how the promise and the payoff end up in the same
-            language.
+            A spot, an explainer and a reel are the same problem at different
+            lengths: hold attention, or lose it. I work the whole chain rather
+            than one link — the thumbnail makes a promise the edit has to keep.
           </motion.p>
 
           <motion.dl className={styles.facts} variants={fadeUp(reduced)}>

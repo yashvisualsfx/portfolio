@@ -4,6 +4,7 @@ import { EASE_SIGNATURE } from "../../animations/easing.js";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion.js";
 import { navLinks, site } from "../../data/site.js";
 import { Menu, MenuTrigger } from "./Menu.jsx";
+import { ThemeToggle } from "../ui/ThemeToggle.jsx";
 import styles from "./Navigation.module.css";
 
 /**
@@ -13,8 +14,10 @@ import styles from "./Navigation.module.css";
  *
  * @param {boolean} visible  held false until the hero intro has played, so
  *                           the navigation is the last thing to arrive
+ * @param {string}  theme    resolved theme, for the switch's state
+ * @param {Function} onToggleTheme
  */
-export function Navigation({ visible = true }) {
+export function Navigation({ visible = true, theme, onToggleTheme }) {
   const reduced = usePrefersReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,6 +50,9 @@ export function Navigation({ visible = true }) {
                 </a>
               </li>
             ))}
+            <li>
+              <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+            </li>
             <li>
               <MenuTrigger
                 open={menuOpen}

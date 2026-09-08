@@ -14,6 +14,7 @@ import { useAnchorScroll } from "./animations/useAnchorScroll.js";
 import { useRefreshOnResize } from "./animations/useRefreshOnResize.js";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion.js";
 import { useIsTouchDevice } from "./hooks/useIsTouchDevice.js";
+import { useTheme } from "./hooks/useTheme.js";
 import { getMedia } from "./data/media.js";
 import { allWork } from "./data/projects.js";
 
@@ -42,6 +43,7 @@ const PRELOAD_SOURCES = allWork
 export default function App() {
   const reducedMotion = usePrefersReducedMotion();
   const isTouch = useIsTouchDevice();
+  const { theme, toggle: toggleTheme } = useTheme();
   const [phase, setPhase] = useState(PHASE.loading);
 
   const lenisRef = useLenis({ enabled: !reducedMotion });
@@ -98,13 +100,18 @@ export default function App() {
             intro={introStarted}
             reduced={reducedMotion}
             isTouch={isTouch}
+            theme={theme}
             sequenceRef={sequenceRef}
           />
         </Suspense>
       </div>
 
       <div className="content-layer">
-        <Navigation visible={phase === PHASE.ready} />
+        <Navigation
+          visible={phase === PHASE.ready}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+        />
 
         <main id="main">
           <Hero active={introStarted} sequenceRef={sequenceRef} />

@@ -3,13 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="description" content="Harsh — Creative Director & Motion Designer. Building visual experiences through design, motion and technology." />
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>HARSH — Creative Designer</title>
   </head>
   <body>
+    <script>
+      // Applied before first paint so a visitor who prefers light never sees
+      // the dark palette flash first. Mirrors the resolution order in
+      // useTheme; React takes over from here.
+      (function () {
+        try {
+          var stored = localStorage.getItem("harsh-theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

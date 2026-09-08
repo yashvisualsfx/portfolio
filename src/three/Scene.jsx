@@ -158,7 +158,7 @@ function CameraRig({ intro, animate, pointerRef, sequenceRef, placement }) {
   camera rig, so the authored path stays anchored to the object wherever the
   layout puts it. R3F re-renders this on resize.
 */
-function Composition({ intro, animate, isTouch, pointerRef, sequenceRef }) {
+function Composition({ intro, animate, isTouch, theme, pointerRef, sequenceRef }) {
   const size = useThree((state) => state.size);
   const placement = composition(size);
 
@@ -176,6 +176,7 @@ function Composition({ intro, animate, isTouch, pointerRef, sequenceRef }) {
         intro={intro}
         animate={animate}
         placement={placement}
+        theme={theme}
         pointerRef={pointerRef}
         sequenceRef={sequenceRef}
       />
@@ -187,9 +188,10 @@ function Composition({ intro, animate, isTouch, pointerRef, sequenceRef }) {
  * @param {boolean} intro    true once the preloader begins revealing
  * @param {boolean} reduced  prefers-reduced-motion — render one frame, don't loop
  * @param {boolean} isTouch  halves the ring count and drops cursor parallax
+ * @param {string}  theme    re-lights the scene for the current palette
  * @param {object}  sequenceRef  hero scroll progress, written by ScrollTrigger
  */
-export default function Scene({ intro = false, reduced = false, isTouch = false, sequenceRef }) {
+export default function Scene({ intro = false, reduced = false, isTouch = false, theme = "dark", sequenceRef }) {
   const pointerRef = usePointerRef({ enabled: !isTouch && !reduced });
 
   // Capped rather than native: beyond ~1.75 the extra pixels cost real frames
@@ -220,11 +222,12 @@ export default function Scene({ intro = false, reduced = false, isTouch = false,
       />
 
       <Suspense fallback={null}>
-        <Lighting sequenceRef={sequenceRef} animate={animate} />
+        <Lighting sequenceRef={sequenceRef} animate={animate} theme={theme} />
         <Composition
           intro={intro}
           animate={animate}
           isTouch={isTouch}
+          theme={theme}
           pointerRef={pointerRef}
           sequenceRef={sequenceRef}
         />

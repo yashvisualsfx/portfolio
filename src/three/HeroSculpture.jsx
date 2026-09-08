@@ -62,6 +62,7 @@ export function HeroSculpture({
   intro = false,
   animate = true,
   placement = { x: 0, y: 0, scale: 1 },
+  theme = "dark",
   pointerRef,
   sequenceRef,
 }) {
@@ -86,13 +87,15 @@ export function HeroSculpture({
       new THREE.MeshStandardMaterial({
         // Warm near-black rather than a colour: everything you see on these
         // rings is reflected light, so the base tone only has to sit inside
-        // the palette without competing with the type.
-        color: new THREE.Color("#2a2622"),
+        // the palette without competing with the type. On light it goes
+        // darker and rougher — a mirror-bright form against a bright page
+        // disappears into it, where a dark matte one draws itself.
+        color: new THREE.Color(theme === "light" ? "#3a352e" : "#2a2622"),
         metalness: 1,
-        roughness: 0.14,
+        roughness: theme === "light" ? 0.3 : 0.14,
         envMapIntensity: 2.4,
       }),
-    [],
+    [theme],
   );
 
   useLayoutEffect(() => {

@@ -15,7 +15,8 @@ import { computePresence } from "./cameraPath.js";
   black, and one small accent that puts the site's single colour into the
   scene as a highlight rather than a wash.
 */
-export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
+export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true, theme = "dark" }) {
+  const light = theme === "light";
   const keyRef = useRef();
   const ambientRef = useRef();
 
@@ -53,14 +54,19 @@ export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
     <>
       {/* frames={1} — nothing in the environment moves, so it is rendered
           once and reused rather than every frame. */}
-      <Environment resolution={256} frames={1}>
-        <color attach="background" args={["#050505"]} />
+      {/* Keyed on theme so the cubemap is re-baked when the palette changes —
+          it is rendered once (frames={1}), so it would otherwise keep the
+          previous theme's reflections forever. */}
+      <Environment key={theme} resolution={256} frames={1}>
+        {/* The surroundings the metal reflects. On a light page a black void
+            would make the form read as a hole punched through the page. */}
+        <color attach="background" args={[light ? "#cfcabf" : "#050505"]} />
 
         {/* Key: broad warm white, upper right, angled across the form. */}
         <Lightformer
           form="rect"
-          intensity={6}
-          color="#fff4e6"
+          intensity={light ? 3.4 : 6}
+          color={light ? "#ffffff" : "#fff4e6"}
           position={[3.5, 4, 2]}
           rotation={[-Math.PI / 3.2, 0.6, 0]}
           scale={[9, 5, 1]}
@@ -69,8 +75,8 @@ export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
         {/* Fill: cool and dim, opposite side, to model the shadow edge. */}
         <Lightformer
           form="rect"
-          intensity={1.6}
-          color="#9fb4c8"
+          intensity={light ? 2.4 : 1.6}
+          color={light ? "#dfe6ec" : "#9fb4c8"}
           position={[-5, 0.5, -1.5]}
           rotation={[0, Math.PI / 2.4, 0]}
           scale={[7, 6, 1]}
@@ -80,7 +86,7 @@ export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
             underside of the rings, never as ambient colour. */}
         <Lightformer
           form="circle"
-          intensity={4.5}
+          intensity={light ? 2.6 : 4.5}
           color={accent}
           position={[-1.4, -2.6, -3]}
           rotation={[Math.PI / 2.6, 0, 0]}
@@ -91,7 +97,12 @@ export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
       {/* A touch of direct light so the geometry keeps some diffuse shape
           definition; metal takes almost all of its look from the map above. */}
       <ambientLight ref={ambientRef} intensity={0.12} />
-      <directionalLight ref={keyRef} position={[4, 5, 3]} intensity={0.5} color="#fff2e4" />
+      <directionalLight
+        ref={keyRef}
+        position={[4, 5, 3]}
+        intensity={0.5}
+        color={light ? "#ffffff" : "#fff2e4"}
+      />
     </>
   );
 }
