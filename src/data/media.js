@@ -20,7 +20,17 @@ export function getMedia(reference) {
     return null;
   }
 
-  return { ...entry, type: reference.type, aspectRatio: entry.width / entry.height };
+  const aspectRatio = entry.width / entry.height;
+
+  return {
+    ...entry,
+    type: reference.type,
+    aspectRatio,
+    // Layouts branch on this rather than on the category, because a category
+    // is not reliably one shape — product animation mixes 9:16 social cuts
+    // with a 16:9 spot, and each needs different framing.
+    orientation: aspectRatio < 1 ? "portrait" : "landscape",
+  };
 }
 
 /** Every asset the site can show, used to warm the preloader. */

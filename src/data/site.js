@@ -31,7 +31,9 @@ export const navLinks = [
 // stays at three items so it keeps its restraint. Kept in step with the
 // categories that have work — add entries as pending categories fill up.
 export const menuLinks = [
+  { label: "Product Animation", href: "#product-animation" },
   { label: "Motion Graphics", href: "#motion-graphics" },
+  { label: "Reels & Shorts", href: "#shorts" },
   { label: "Thumbnails", href: "#thumbnails" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },

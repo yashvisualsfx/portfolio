@@ -30,7 +30,7 @@ export const skills = [
     index: "04",
     title: "Short-Form / Reels",
     summary: "Vertical cuts with fast hooks and pacing native to the feed.",
-    preview: null,
+    preview: { type: "video", key: "reel-short-01" },
   },
   {
     index: "05",
@@ -42,7 +42,7 @@ export const skills = [
     index: "06",
     title: "Product Animation",
     summary: "Staged reveals and motion built to make a product the subject.",
-    preview: null,
+    preview: { type: "video", key: "product-animation-02" },
   },
   {
     index: "07",

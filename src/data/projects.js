@@ -1,22 +1,27 @@
 /*
   Harsh's work, grouped by discipline.
 
-  The categories don't want the same treatment — a 16:9 explainer and a 9:16
-  reel fight each other in one layout — so each carries a `layout` that tells
-  the section which component renders it, and an `aspect` so frames reserve
-  the right shape before any media exists:
+  Each category carries a `layout` telling the section which component renders
+  it:
 
-    cinema  — fullscreen scroll scenes, one piece at a time, 16:9
-    grid    — many stills read together, 16:9
-    rail    — vertical pieces moving horizontally through depth, 9:16
+    cinema  — fullscreen scroll scenes, one piece at a time
+    grid    — many stills read together
+    rail    — pieces moving horizontally through depth
 
-  Categories with no filled media are kept here as pending rather than
+  Aspect is NOT declared here. It comes from the media manifest per item,
+  because a category is not reliably one shape: product animation mixes 9:16
+  social cuts with a 16:9 spot, and a layout that assumed otherwise would
+  letterbox half of them. Components read `getMedia(item.media).aspectRatio`
+  (or the `orientation` helper) and compose per piece. `fallbackAspect` only
+  covers frames drawn before any media exists.
+
+  Categories with no filled media stay here as pending rather than being
   deleted; `activeCategories` filters them out so the site never renders an
-  empty section, and a category lights up on its own as soon as work lands in
-  it. Titles marked TBC are placeholders for Harsh to confirm.
+  empty section, and a category lights up on its own as soon as work lands.
 
-  To wire real work: drop files into images/ posters/ videos/, run
-  `npm run media`, then point a slot at the generated key.
+  Titles are taken from each piece's own on-screen text or its subject.
+  Client fields are TBC pending confirmation of what was client work and what
+  was made as a concept piece.
 */
 
 export const ASPECT = {
@@ -26,19 +31,63 @@ export const ASPECT = {
 
 export const workCategories = [
   {
-    id: "motion-graphics",
+    id: "product-animation",
     index: "01",
+    label: "Product Animation",
+    heading: ["Product", "Animation"],
+    summary:
+      "Motion built to sell a product — staged reveals, controlled lighting and camera moves that keep the object the subject.",
+    layout: "cinema",
+    fallbackAspect: ASPECT.landscape,
+    items: [
+      {
+        id: "pa-boat",
+        index: "01",
+        title: "boAt Headphones",
+        client: "Client TBC",
+        year: "2025",
+        description:
+          "Product spot cut against a hard red-and-white grid — the headphones hold centre while the graphics move around them.",
+        alt: "Frame from a product animation: black over-ear headphones centred on a split red and white background with graphic marks.",
+        media: { type: "video", key: "product-animation-02" },
+      },
+      {
+        id: "pa-organic-cream",
+        index: "02",
+        title: "Organic Cream",
+        client: "Client TBC",
+        year: "2025",
+        description:
+          "Vertical skincare reveal — podium staging, gold and green palette, the lid lifting to open the shot.",
+        alt: "Frame from a product animation: a green and gold organic cream jar on a podium framed by palm leaves.",
+        media: { type: "video", key: "product-animation-01" },
+      },
+      {
+        id: "pa-juice",
+        index: "03",
+        title: "Orange Juice",
+        client: "Client TBC",
+        year: "2025",
+        description:
+          "Beverage spot for vertical feeds — high-saturation colour and a slow turn that keeps the label readable throughout.",
+        alt: "Frame from a product animation: an orange juice bottle with a citrus-slice label against a bright green background.",
+        media: { type: "video", key: "product-animation-03" },
+      },
+    ],
+  },
+  {
+    id: "motion-graphics",
+    index: "02",
     label: "Motion Graphics",
     heading: ["Long-Form", "Motion"],
     summary:
       "Animated explainers that carry a whole idea — character work, kinetic typography and transitions cut to hold attention across the full runtime.",
     layout: "cinema",
-    aspect: ASPECT.landscape,
+    fallbackAspect: ASPECT.landscape,
     items: [
       {
         id: "mg-storing",
         index: "01",
-        // Titles taken from the pieces' own on-screen text.
         title: "Storing 1s & 0s",
         client: "Channel TBC",
         year: "2025",
@@ -61,14 +110,48 @@ export const workCategories = [
     ],
   },
   {
+    id: "shorts",
+    index: "03",
+    label: "Reels & Shorts",
+    heading: ["Reels", "& Shorts"],
+    summary:
+      "Vertical-first edits cut for the feed — fast hooks, kinetic titling and pacing that earns the next second.",
+    layout: "rail",
+    fallbackAspect: ASPECT.portrait,
+    items: [
+      {
+        id: "reel-brands",
+        index: "01",
+        title: "Most Brands Don't",
+        client: "Client TBC",
+        year: "2025",
+        description:
+          "Editorial monochrome explainer on why brands lose sales — type-led, with graphic marks carrying the rhythm.",
+        alt: "Frame from a vertical reel: bold headline 'Most Brands Don't' over a light grey editorial layout with a barcode motif.",
+        media: { type: "video", key: "reel-short-01" },
+      },
+      {
+        id: "reel-profile",
+        index: "02",
+        title: "Akshaye Khanna",
+        client: "Client TBC",
+        year: "2025",
+        description:
+          "Film-profile reel built as a moving editorial spread — cut-out portrait, hard bands and typeset biography.",
+        alt: "Frame from a vertical reel: black and white portrait of an actor over a monochrome editorial layout with a typeset biography.",
+        media: { type: "video", key: "reel-short-02" },
+      },
+    ],
+  },
+  {
     id: "thumbnails",
-    index: "02",
+    index: "04",
     label: "Thumbnails",
     heading: ["Thumb", "Nails"],
     summary:
       "The first frame anyone sees — composition, contrast and type built to win the click at any size.",
     layout: "grid",
-    aspect: ASPECT.landscape,
+    fallbackAspect: ASPECT.landscape,
     items: [
       {
         id: "thumb-shopify",
@@ -103,38 +186,16 @@ export const workCategories = [
     ],
   },
 
-  // ---- Pending: structure is ready, waiting on Harsh's files ----
+  // ---- Pending: structure is ready, waiting on files ----
   {
     id: "documentary",
-    index: "03",
+    index: "05",
     label: "Documentary",
     heading: ["Documentary", "Films"],
     summary:
       "Long-form storytelling — pacing, structure and colour built around the subject rather than the edit.",
     layout: "cinema",
-    aspect: ASPECT.landscape,
-    items: [],
-  },
-  {
-    id: "product-animation",
-    index: "04",
-    label: "Product Animation",
-    heading: ["Product", "Animation"],
-    summary:
-      "Motion built to sell a product — staged reveals, controlled lighting and transitions with weight.",
-    layout: "cinema",
-    aspect: ASPECT.landscape,
-    items: [],
-  },
-  {
-    id: "shorts",
-    index: "05",
-    label: "Reels & Shorts",
-    heading: ["Reels", "& Shorts"],
-    summary:
-      "Vertical-first edits cut for the feed — fast hooks, kinetic titling and platform-native pacing.",
-    layout: "rail",
-    aspect: ASPECT.portrait,
+    fallbackAspect: ASPECT.landscape,
     items: [],
   },
 ];

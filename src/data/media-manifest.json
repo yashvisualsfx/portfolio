@@ -30,5 +30,40 @@
     "width": 1280,
     "height": 720,
     "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQBACdASoUAAsAPxFwsFAsJiSisAgBgCIJagCdMoACLjFo6Sgb+PLTAADz8bs6TaHxKJIWlAZEQ4o45XCKgtieSuMjoZ2jzr7dz2d1BzPZe+uD25sDO4+bNeg0E7fzjuAemYbhIeYNYISBgS4YAA=="
+  },
+  "product-animation-01": {
+    "src": "/media/product-animation-01.mp4",
+    "poster": "/media/product-animation-01-poster.webp",
+    "width": 720,
+    "height": 1280,
+    "lqip": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAABwBgCdASoUACQAPxFssVAsJaSisBqqqYAiCWwAsR8OSWAZBGfwVmpW03jVtyM6rh1pNIW7aoUEOW96TfgA/LELTqk4VjYpslpku1jLhVgp1MY8JaImBizSw7y9edzEJW9soL59oAxd94Y33kDqlCIa9oLLm+f3eygKwAJ1cJOw3T5sO7rRkZakvR/iwBHmM3fdPxiKVH74NLEXQul5a7jYSkoqw99bkshB1cTxt6ooHsd8IllLSFvPfb1Tveu40XPdWvjPHQACqOhQIAA="
+  },
+  "product-animation-02": {
+    "src": "/media/product-animation-02.mp4",
+    "poster": "/media/product-animation-02-poster.webp",
+    "width": 1280,
+    "height": 720,
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACwAwCdASoUAAsAPxFysFAsJqSisAgBgCIJbACw7CHntOj79iopAAD+3rLzLGjfWr6CKLbOdpfI2H6hJDkPqCG5tregd5ZL2Q/7Ufa5fYKGtlifXC0VyPn63nu/e0niAAA="
+  },
+  "product-animation-03": {
+    "src": "/media/product-animation-03.mp4",
+    "poster": "/media/product-animation-03-poster.webp",
+    "width": 720,
+    "height": 1280,
+    "lqip": "data:image/webp;base64,UklGRuAAAABXRUJQVlA4INQAAAAwBgCdASoUACQAPxF4rVEsJ6Qiqq35gCIJbAC7M5apNdgAOKsuhv0R+UnNP086RSSEI31r1/gcWJ8AAP4R5nf3tnTiE0GPNbmmLttVYeqj4Ei1Sxw+oq7NrZpzNRu6aqgCthBgW/0Yflad6A7LRZKsIT+q2JNZ/0+Hvd5iLnU4s7W+sNg5zWYvhLLMcJCsEN47l3gh9CfaW3jEUIkA5QtoM0pJf5to69rWyka3D8y/0ob8xazlrzORr6YHQyf+WCay9edEQwSEPYOFcZckddJhhAAAAA=="
+  },
+  "reel-short-01": {
+    "src": "/media/reel-short-01.mp4",
+    "poster": "/media/reel-short-01-poster.webp",
+    "width": 720,
+    "height": 1280,
+    "lqip": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAACQBQCdASoUACQAPxFytFKsJiUiqrgMAYAiCWkAAGBLCQX7GghQvd+9qMeZzlyb4xek+vncAAD+5xSneE0KgzrHzWet3/IRHMECOz1gJokBT9HuzI8JraBXHtC+y9akMiUCprvU1xzxji3ZDQ/3iPVHebakNAaUG0oFCFYt2VtTayNp54vynPtoSYebg7CxiPf8YL3MjLzJ7cYzr/bUt189OuFMoO+WoOAAAA=="
+  },
+  "reel-short-02": {
+    "src": "/media/reel-short-02.mp4",
+    "poster": "/media/reel-short-02-poster.webp",
+    "width": 720,
+    "height": 1280,
+    "lqip": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAAAQBQCdASoUACQAPxF2tVAsJ6WiqqwBgCIJaQAAPW4cjJET7RwtJp7iGjHsEdCBWfhgAP7eXpSZg9f2MD4VcgocR6TzVLYGYXk7AMZqW4X1YWyaq1pFDZJTExWBI+X1AIOnLW+FGHv21Vu5S/pNyzNTKTePXBs1rEn2ltWXFW72nvzei9uA/n0RFx8AAA=="
   }
 }
