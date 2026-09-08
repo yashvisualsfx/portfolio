@@ -1,9 +1,15 @@
 /*
   Single source of truth for identity, navigation and contact.
 
-  Every contact value below is a PLACEHOLDER awaiting Harsh's real details —
-  nothing here is carried over from any previous site. Replace the marked
-  fields before this goes live.
+  Social URLs are stored clean — no share tokens, no utm parameters. The links
+  as shared from the apps carried both (Instagram's `stkn` is a personal share
+  token from a QR code; LinkedIn's utm block just records that it came from
+  the iOS share sheet). Neither belongs on a public page: they add nothing for
+  a visitor, and the token is tied to one share rather than the profile.
+
+  Channels still without real details are marked `pending` rather than given a
+  dead "#" link — the contact section renders only what resolves, so nothing
+  ships pointing nowhere.
 */
 
 export const site = {
@@ -13,11 +19,11 @@ export const site = {
   intro:
     "I'm Harsh. I make things people actually finish watching — motion graphics, product animation, long-form edits, and the thumbnails that earn the click in the first place.",
 
-  // TODO(harsh): replace placeholders with real details
-  location: "Location — TBC",
+  location: "Gurgaon, India",
+  // TODO(harsh): experience line, and an email address for the primary CTA
   experience: "Experience — TBC",
   availability: "Available for select projects — 2026",
-  email: "hello@example.com",
+  email: null,
   year: "2026",
 };
 
@@ -39,13 +45,36 @@ export const menuLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
-// TODO(harsh): replace every href/handle with Harsh's real accounts.
-export const socials = [
-  { label: "Email", href: `mailto:${site.email}`, handle: site.email },
-  { label: "Instagram", href: "#", handle: "@handle" },
-  { label: "Behance", href: "#", handle: "Behance" },
-  { label: "LinkedIn", href: "#", handle: "LinkedIn" },
+const allChannels = [
+  site.email
+    ? { label: "Email", href: `mailto:${site.email}`, handle: site.email }
+    : { label: "Email", pending: true },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/har5h.fx",
+    handle: "@har5h.fx",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/harsh-kushwaha-124273365",
+    handle: "Harsh Kushwaha",
+  },
+  // TODO(harsh): Behance profile URL
+  { label: "Behance", pending: true },
 ];
+
+/** Only the channels that actually resolve — what the site renders. */
+export const socials = allChannels.filter((channel) => channel.href);
+
+/** What is still missing, so it is visible in the data rather than only here. */
+export const pendingChannels = allChannels.filter((channel) => channel.pending);
+
+/**
+ * Where the primary "Start a project" CTA points. Email when there is one,
+ * otherwise the first channel that does resolve — a CTA that goes nowhere is
+ * worse than one that goes somewhere unexpected.
+ */
+export const primaryContact = socials[0] ?? null;
 
 // TODO(harsh): confirm the toolset this portfolio should claim.
 export const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Figma"];

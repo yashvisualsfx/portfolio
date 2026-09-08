@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { RevealText } from "../components/ui/RevealText.jsx";
 import { fadeUp, stagger, inView } from "../animations/variants.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
-import { site, socials } from "../data/site.js";
+import { primaryContact, site, socials } from "../data/site.js";
 import styles from "./Contact.module.css";
 
 /*
@@ -66,9 +66,13 @@ export function Contact({ sequenceRef }) {
         whileInView="visible"
         viewport={inView}
       >
+        {/* Points at email when there is one, otherwise the first channel
+            that resolves — see primaryContact. */}
         <motion.a
           className={styles.cta}
-          href={`mailto:${site.email}`}
+          href={primaryContact?.href}
+          target={primaryContact?.href?.startsWith("http") ? "_blank" : undefined}
+          rel={primaryContact?.href?.startsWith("http") ? "noreferrer" : undefined}
           variants={fadeUp(reduced)}
           data-cursor="open"
         >
