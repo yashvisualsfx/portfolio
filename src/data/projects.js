@@ -213,6 +213,6 @@ export const allWork = activeCategories.flatMap((category) =>
 // Assets reserved for specific scenes rather than the work sections.
 export const sceneMedia = {
   experimental: null, // drives the experimental 3D break
-  portrait: null, // About section portrait
+  portrait: { type: "image", key: "harsh-portrait" },
   portraitMotion: null, // its motion counterpart, if there is one
 };

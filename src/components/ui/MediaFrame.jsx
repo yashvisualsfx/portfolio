@@ -18,6 +18,12 @@ import styles from "./MediaFrame.module.css";
  * @param {string}  alt       required for stills; video posters use it too
  * @param {boolean} priority  skip lazy loading for something above the fold
  * @param {boolean} sound     offer a sound toggle (pieces cut to audio)
+ * @param {number}  aspect    impose a frame shape instead of using the
+ *                            asset's own — the art direction sometimes wants
+ *                            a crop (a portrait column from a wider source),
+ *                            and object-fit handles the rest
+ * @param {string}  focus     object-position, to keep the subject in frame
+ *                            when that crop is off-centre
  */
 export function MediaFrame({
   media,
@@ -25,6 +31,8 @@ export function MediaFrame({
   className = "",
   priority = false,
   sound = false,
+  aspect: aspectOverride,
+  focus,
   fallbackAspect = 16 / 9,
   children,
 }) {
@@ -98,7 +106,7 @@ export function MediaFrame({
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [isVideo]);
 
-  const aspect = resolved?.aspectRatio ?? fallbackAspect;
+  const aspect = aspectOverride ?? resolved?.aspectRatio ?? fallbackAspect;
 
   const sources = [];
   if (resolved && isVideo) {
@@ -129,6 +137,7 @@ export function MediaFrame({
           height={resolved.height}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
+          style={focus ? { objectPosition: focus } : undefined}
           onLoad={() => setLoaded(true)}
         />
       )}

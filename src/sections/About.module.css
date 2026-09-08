@@ -69,6 +69,35 @@
   will-change: transform;
 }
 
+/*
+  A bright daylight photograph sits badly against a near-black page — it reads
+  as pasted in rather than part of the composition. Held slightly desaturated
+  and cooled so it belongs to the palette, and returned to full colour on
+  approach, which doubles as the section's one micro-interaction.
+*/
+.portraitInner img {
+  filter: saturate(0.62) contrast(1.06) brightness(0.86);
+  transition: filter var(--duration-slow) var(--ease-signature);
+}
+
+.portrait:hover .portraitInner img,
+.portrait:focus-within .portraitInner img {
+  filter: saturate(1) contrast(1) brightness(1);
+}
+
+/* No hover to reveal it on touch, so it is shown closer to full colour. */
+@media (hover: none) {
+  .portraitInner img {
+    filter: saturate(0.85) contrast(1.02) brightness(0.95);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portraitInner img {
+    transition: none;
+  }
+}
+
 .portraitCaption {
   display: flex;
   justify-content: space-between;

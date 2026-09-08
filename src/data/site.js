@@ -11,7 +11,7 @@ export const site = {
   role: "Creative Designer",
   tagline: "Building visual experiences through design, motion & technology.",
   intro:
-    "I'm Harsh, a multidisciplinary creative focused on crafting memorable visual experiences across design, motion and digital interaction.",
+    "I'm Harsh. I make things people actually finish watching — motion graphics, product animation, long-form edits, and the thumbnail that has to earn the click before any of it gets seen.",
 
   // TODO(harsh): replace placeholders with real details
   location: "Location — TBC",

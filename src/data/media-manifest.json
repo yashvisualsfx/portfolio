@@ -11,6 +11,12 @@
     "height": 450,
     "lqip": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAAAwBACdASoUAAsAPxFysFAsJqSisAgBgCIJbACdACHpKburlAsTH1ujgAAA/uaYECPS37BMn84cTbQTW+oQ8Q7UMWaqRsKDhOYGDXF1Fob5QlABAAdGANyGraczd0/2txnKjI73G+6//p3twtbys+PFJodbDywcuPXNEhUZAAA="
   },
+  "harsh-portrait": {
+    "src": "/media/harsh-portrait.webp",
+    "width": 1800,
+    "height": 1560,
+    "lqip": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAADwBACdASoUABEAPxF6r1MsJ6OiqA1RgCIJQBfrHPk/wClF06e9uYoG3N6z5gROlcAA/j0bV2rYt0K0tVb483xsTlLfdGzKBu2icQp66hp6Zr84eQZO5wUrz9Gfy7F77i83cwfvHjAcyPIJr70yHVisb45E7gdxueUza9e6sPrJ2n0Az2No47x4/mU3kABhAAA="
+  },
   "i-am-not-a-chor": {
     "src": "/media/i-am-not-a-chor.webp",
     "width": 800,
