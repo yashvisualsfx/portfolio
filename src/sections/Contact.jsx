@@ -6,6 +6,7 @@ import { RevealText } from "../components/ui/RevealText.jsx";
 import { fadeUp, stagger, inView } from "../animations/variants.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import { primaryContact, site, socials } from "../data/site.js";
+import { CHANNEL_ICONS } from "../components/ui/icons.jsx";
 import styles from "./Contact.module.css";
 
 /*
@@ -76,6 +77,10 @@ export function Contact({ sequenceRef }) {
           variants={fadeUp(reduced)}
           data-cursor="open"
         >
+          {(() => {
+            const CtaIcon = CHANNEL_ICONS[primaryContact?.icon];
+            return CtaIcon ? <CtaIcon className={styles.ctaIcon} /> : null;
+          })()}
           Start a project
           <span className={styles.ctaArrow} aria-hidden="true">
             →
@@ -83,20 +88,24 @@ export function Contact({ sequenceRef }) {
         </motion.a>
 
         <motion.div className={styles.channels} variants={fadeUp(reduced)}>
-          {socials.map((social) => (
-            <div className={styles.channel} key={social.label}>
-              <span className="text-micro">{social.label}</span>
-              <a
-                className={styles.channelLink}
-                href={social.href}
-                target={social.href.startsWith("http") ? "_blank" : undefined}
-                rel={social.href.startsWith("http") ? "noreferrer" : undefined}
-                data-cursor="open"
-              >
-                {social.handle}
-              </a>
-            </div>
-          ))}
+          {socials.map((social) => {
+            const Icon = CHANNEL_ICONS[social.icon];
+            return (
+              <div className={styles.channel} key={social.label}>
+                <span className="text-micro">{social.label}</span>
+                <a
+                  className={styles.channelLink}
+                  href={social.href}
+                  target={social.href.startsWith("http") ? "_blank" : undefined}
+                  rel={social.href.startsWith("http") ? "noreferrer" : undefined}
+                  data-cursor="open"
+                >
+                  {Icon && <Icon className={styles.icon} />}
+                  {social.handle}
+                </a>
+              </div>
+            );
+          })}
         </motion.div>
 
         <motion.footer className={styles.footer} variants={fadeUp(reduced)}>

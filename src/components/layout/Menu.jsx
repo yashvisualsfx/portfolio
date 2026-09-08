@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { EASE_SIGNATURE } from "../../animations/easing.js";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion.js";
 import { menuLinks, socials } from "../../data/site.js";
+import { CHANNEL_ICONS } from "../ui/icons.jsx";
 import styles from "./Menu.module.css";
 
 /*
@@ -112,18 +113,22 @@ export function Menu({ open, onClose, triggerRef }) {
             </ul>
 
             <div className={styles.foot}>
-              {socials.map((social) => (
-                <a
-                  className={styles.footLink}
-                  href={social.href}
-                  key={social.label}
-                  target={social.href.startsWith("http") ? "_blank" : undefined}
-                  rel={social.href.startsWith("http") ? "noreferrer" : undefined}
-                  data-cursor="open"
-                >
-                  {social.label}
-                </a>
-              ))}
+              {socials.map((social) => {
+                const Icon = CHANNEL_ICONS[social.icon];
+                return (
+                  <a
+                    className={styles.footLink}
+                    href={social.href}
+                    key={social.label}
+                    target={social.href.startsWith("http") ? "_blank" : undefined}
+                    rel={social.href.startsWith("http") ? "noreferrer" : undefined}
+                    data-cursor="open"
+                  >
+                    {Icon && <Icon className={styles.footIcon} />}
+                    {social.label}
+                  </a>
+                );
+              })}
             </div>
           </nav>
         </motion.div>

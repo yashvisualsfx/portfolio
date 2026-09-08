@@ -55,6 +55,20 @@
   transition: transform var(--duration-base) var(--ease-signature);
 }
 
+/* Brand glyph sized to the type it sits beside rather than to a fixed px
+   value, so it holds its relationship as the fluid scale moves. */
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.ctaIcon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
 .cta:hover .ctaArrow,
 .cta:focus-visible .ctaArrow {
   transform: translateX(10px);
@@ -76,6 +90,9 @@
 }
 
 .channelLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--fs-body);
   color: var(--color-fg-dim);
   transition: color var(--duration-fast) var(--ease-signature);

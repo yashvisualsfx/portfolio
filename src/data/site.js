@@ -45,7 +45,26 @@ export const menuLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
+/*
+  WhatsApp is the direct line, so it leads and becomes the primary CTA while
+  there is no email address.
+
+  The number is never shown as text — the handle reads "Message on WhatsApp".
+  It does still appear inside the href, because a click-to-chat link cannot
+  work without it; that is inherent to wa.me rather than something this file
+  chooses. The pre-filled text means an enquiry arrives with context already
+  attached instead of a cold "hi".
+*/
+const WHATSAPP_NUMBER = "917755061249";
+const WHATSAPP_MESSAGE = "Hi, I saw your portfolio, and I'd like to connect with you.";
+
 const allChannels = [
+  {
+    label: "WhatsApp",
+    href: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`,
+    handle: "Message on WhatsApp",
+    icon: "whatsapp",
+  },
   site.email
     ? { label: "Email", href: `mailto:${site.email}`, handle: site.email }
     : { label: "Email", pending: true },
