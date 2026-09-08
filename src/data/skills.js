@@ -1,48 +1,53 @@
-// Capabilities list. Each entry gets a piece of real work as its hover
-// preview, so the section proves the claim instead of asserting it — the
-// slots are null until Harsh's assets are added (see projects.js).
+/*
+  Capabilities, written to match the work the site actually shows rather than
+  a generic agency list — each one maps onto a category in projects.js.
+
+  `preview` is the piece of real work that appears on hover, so the section
+  proves the claim instead of asserting it. Slots are null until Harsh's
+  assets are added.
+*/
 
 export const skills = [
   {
     index: "01",
-    title: "Creative Direction",
-    summary: "Concept, art direction and the visual logic that holds a campaign together.",
+    title: "Documentary Editing",
+    summary: "Structure, pacing and narrative flow for long-form storytelling.",
     preview: null,
   },
   {
     index: "02",
-    title: "Motion Design",
-    summary: "Kinetic typography, 2D/3D animation and transitions with real weight.",
+    title: "Product Animation",
+    summary: "Staged reveals and motion built to make a product the subject.",
     preview: null,
   },
   {
     index: "03",
-    title: "Video Editing",
-    summary: "Cinematic pacing, colour grading and sound design engineered for retention.",
+    title: "Long-Form Editing",
+    summary: "Full-length YouTube edits engineered to hold attention to the end.",
     preview: null,
   },
   {
     index: "04",
-    title: "Graphic Design",
-    summary: "Key visuals, product advertising and poster work built to hold attention.",
+    title: "Short-Form / Reels",
+    summary: "Vertical cuts with fast hooks and pacing native to the feed.",
     preview: null,
   },
   {
     index: "05",
-    title: "Brand Identity",
-    summary: "Systems, campaign visuals and social assets that stay recognisable at any size.",
+    title: "Thumbnail Design",
+    summary: "Composition, contrast and type that win the click at any size.",
     preview: null,
   },
   {
     index: "06",
-    title: "UI / UX",
-    summary: "Interface storytelling and product explainers that make complex things obvious.",
+    title: "Motion Graphics",
+    summary: "Kinetic typography, titling and transitions with real weight.",
     preview: null,
   },
   {
     index: "07",
-    title: "3D Experiences",
-    summary: "Real-time scenes, depth and interaction built for the browser.",
+    title: "Colour & Finish",
+    summary: "Grading, sound design and the final pass that makes it feel made.",
     preview: null,
   },
 ];

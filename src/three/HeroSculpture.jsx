@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { easeSignature } from "../animations/easing.js";
+import { sampleForm } from "./cameraPath.js";
 
 /*
   The hero form.
@@ -52,8 +53,9 @@ function composeRings(mesh, count, twist) {
  * @param {number}  count      rings — the mobile tier halves this
  * @param {boolean} intro      run the settle-into-place animation
  * @param {boolean} animate    false under reduced motion: pose it and stop
+ * @param {object}  placement  where this viewport puts the form
  * @param {object}  pointerRef normalized cursor, sampled per frame
- * @param {object}  scrollRef  scroll position, sampled per frame
+ * @param {object}  sequenceRef hero scroll progress, sampled per frame
  */
 export function HeroSculpture({
   count = 64,
@@ -61,11 +63,16 @@ export function HeroSculpture({
   animate = true,
   placement = { x: 0, y: 0, scale: 1 },
   pointerRef,
-  scrollRef,
+  sequenceRef,
 }) {
   const meshRef = useRef();
   const groupRef = useRef();
   const introProgress = useRef(animate ? 0 : 1);
+
+  // The twist actually written into the instance matrices, so the frame loop
+  // can tell when the sculpted form has changed enough to be worth rebuilding.
+  const builtTwist = useRef(TWIST_TURNS);
+  const formState = useRef({ twist: TWIST_TURNS, spin: 0, scale: 1, envIntensity: 2.4 });
 
   const geometry = useMemo(
     // Thin tube, low radial resolution — at this scale the cross-section
@@ -120,28 +127,46 @@ export function HeroSculpture({
     }
     const settle = easeSignature(introProgress.current);
 
-    const scroll = scrollRef?.current?.viewports ?? 0;
+    const sequence = sequenceRef?.current?.hero ?? 0;
     const pointer = pointerRef?.current ?? { x: 0, y: 0 };
+    const form = sampleForm(sequence, formState.current);
 
-    // Idle: a slow constant drift, plus the last of the intro rotation
-    // unwinding into it so the two read as one continuous move.
+    // The band genuinely re-sculpts as the camera closes on it — the rings
+    // tighten, open out as it passes through, then relax. Rebuilding 64
+    // instance matrices is cheap, but only worth doing when the twist has
+    // actually moved, so a still page costs nothing.
+    if (meshRef.current && Math.abs(form.twist - builtTwist.current) > 0.004) {
+      composeRings(meshRef.current, count, form.twist);
+      builtTwist.current = form.twist;
+    }
+
+    // Lighting rises with the approach and falls away after — the reflections
+    // are the form's only real modelling, so this reads as the scene lighting
+    // changing rather than a material trick.
+    if (material.envMapIntensity !== form.envIntensity) {
+      material.envMapIntensity = form.envIntensity;
+    }
+
+    // Idle drift, the last of the intro rotation unwinding into it, and the
+    // sequence's own spin — all summed into one heading so they read as one
+    // continuous move rather than three competing ones.
     const idle = animate ? state.clock.elapsedTime * 0.06 : 0;
     const introSpin = (1 - settle) * Math.PI * 0.55;
 
-    // Scroll response stays modest here — Phase 5 owns the full camera and
-    // object choreography; this is only enough that the form feels attached
-    // to the page rather than floating over it.
-    const targetY = idle + introSpin + scroll * 0.35 + pointer.x * 0.16;
-    const targetX = -0.22 + pointer.y * 0.1 + scroll * 0.12;
+    // Cursor influence fades out as the sequence takes over.
+    const parallax = 1 - Math.min(sequence * 2, 1);
+
+    const targetY = idle + introSpin + form.spin + pointer.x * 0.16 * parallax;
+    const targetX = -0.22 + pointer.y * 0.1 * parallax + sequence * 0.35;
 
     group.rotation.y = THREE.MathUtils.damp(group.rotation.y, targetY, 4, dt);
     group.rotation.x = THREE.MathUtils.damp(group.rotation.x, targetX, 4, dt);
 
-    // Rises into frame as it settles, then drifts with the page.
-    const targetPosY = THREE.MathUtils.lerp(-1.1, 0, settle) - scroll * 0.45;
+    // Rises into frame as it settles.
+    const targetPosY = THREE.MathUtils.lerp(-1.1, 0, settle);
     group.position.y = THREE.MathUtils.damp(group.position.y, targetPosY, 5, dt);
 
-    group.scale.setScalar(THREE.MathUtils.lerp(0.82, 1, settle));
+    group.scale.setScalar(THREE.MathUtils.lerp(0.82, 1, settle) * form.scale);
   });
 
   // Outer group holds the layout — where this sits for the current viewport.

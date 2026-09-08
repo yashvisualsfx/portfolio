@@ -1,4 +1,7 @@
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
+import * as THREE from "three";
 
 /*
   Lighting is built from lightformers rendered into a local cubemap rather
@@ -11,7 +14,35 @@ import { Environment, Lightformer } from "@react-three/drei";
   black, and one small accent that puts the site's single colour into the
   scene as a highlight rather than a wash.
 */
-export function Lighting({ accent = "#ff5a36" }) {
+export function Lighting({ accent = "#ff5a36", sequenceRef, animate = true }) {
+  const keyRef = useRef();
+  const ambientRef = useRef();
+
+  // The baked cubemap can't change (frames={1}), so the scene's mood shifts
+  // through the direct lights instead: the key cools and lifts as the camera
+  // travels into the form, then falls back once it's through.
+  useFrame((state, delta) => {
+    if (!animate || !keyRef.current) return;
+    const dt = Math.min(delta, 1 / 30);
+    const sequence = sequenceRef?.current?.hero ?? 0;
+
+    // Peaks mid-flight, at the moment the camera is inside the band.
+    const swell = Math.sin(Math.min(Math.max(sequence, 0), 1) * Math.PI);
+
+    keyRef.current.intensity = THREE.MathUtils.damp(
+      keyRef.current.intensity,
+      0.5 + swell * 1.1,
+      4,
+      dt,
+    );
+    ambientRef.current.intensity = THREE.MathUtils.damp(
+      ambientRef.current.intensity,
+      0.12 + swell * 0.18,
+      4,
+      dt,
+    );
+  });
+
   return (
     <>
       {/* frames={1} — nothing in the environment moves, so it is rendered
@@ -53,8 +84,8 @@ export function Lighting({ accent = "#ff5a36" }) {
 
       {/* A touch of direct light so the geometry keeps some diffuse shape
           definition; metal takes almost all of its look from the map above. */}
-      <ambientLight intensity={0.12} />
-      <directionalLight position={[4, 5, 3]} intensity={0.5} color="#fff2e4" />
+      <ambientLight ref={ambientRef} intensity={0.12} />
+      <directionalLight ref={keyRef} position={[4, 5, 3]} intensity={0.5} color="#fff2e4" />
     </>
   );
 }

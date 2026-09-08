@@ -27,6 +27,18 @@ export const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
+// The fullscreen menu (Phase 8) reaches each discipline directly; the top bar
+// stays at three items so it keeps its restraint.
+export const menuLinks = [
+  { label: "Documentary", href: "#documentary" },
+  { label: "Product Animation", href: "#product-animation" },
+  { label: "Long Form", href: "#youtube" },
+  { label: "Thumbnails", href: "#thumbnails" },
+  { label: "Reels & Shorts", href: "#shorts" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
 // TODO(harsh): replace every href/handle with Harsh's real accounts.
 export const socials = [
   { label: "Email", href: `mailto:${site.email}`, handle: site.email },

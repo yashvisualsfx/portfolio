@@ -5,8 +5,8 @@ import * as THREE from "three";
 import { HeroSculpture } from "./HeroSculpture.jsx";
 import { Lighting } from "./Lighting.jsx";
 import { easeSignature } from "../animations/easing.js";
+import { CAMERA_PATH, sampleCamera } from "./cameraPath.js";
 import { usePointerRef } from "../hooks/usePointerRef.js";
-import { useScrollRef } from "../hooks/useScrollRef.js";
 
 /*
   The site's single WebGL canvas.
@@ -39,64 +39,131 @@ function composition(size) {
     : { x: 1.5, y: 0.4, scale: 0.68 };
 }
 
-/** The opening dolly, plus a little cursor parallax on the camera itself. */
-function CameraRig({ intro, animate, pointerRef, scrollRef }) {
+/*
+  Camera control, in two stages that hand off to each other.
+
+  Stage one is the opening dolly, on its own clock, running while the
+  preloader's panels part. Stage two is the scroll sequence: once the pinned
+  hero starts moving, the camera follows the authored path in cameraPath.js,
+  travelling in through the sculpture and out the far side.
+
+  The two are blended rather than switched — the intro's remaining distance is
+  simply added to the path's first key, so there is no visible seam if a
+  visitor starts scrolling before the opening finishes.
+*/
+function CameraRig({ intro, animate, pointerRef, sequenceRef, placement }) {
   const { camera, invalidate } = useThree();
-  const progress = useRef(animate ? 0 : 1);
+  const introProgress = useRef(animate ? 0 : 1);
+
+  // Reused across frames so the path sampler never allocates.
+  const target = useRef({ position: new THREE.Vector3(), lookAt: new THREE.Vector3() });
+  const smoothedLookAt = useRef(new THREE.Vector3());
 
   // Reduced motion never runs the frame loop, so the rest pose is set once
   // here — the composition survives, the movement doesn't.
   useEffect(() => {
     if (animate) return;
-    camera.position.set(0, 0, CAMERA_REST_Z);
-    camera.lookAt(0, 0, 0);
+    const rest = CAMERA_PATH[0];
+    camera.position.set(
+      placement.x + rest.position[0],
+      placement.y + rest.position[1],
+      rest.position[2],
+    );
+    camera.lookAt(placement.x + rest.lookAt[0], placement.y + rest.lookAt[1], rest.lookAt[2]);
     invalidate();
-  }, [animate, camera, invalidate]);
+  }, [animate, camera, invalidate, placement]);
 
   useFrame((state, delta) => {
     // A backgrounded tab resumes with a huge delta, which would snap every
     // damped value instead of easing it.
     const dt = Math.min(delta, 1 / 30);
 
-    if (intro && progress.current < 1) {
-      progress.current = Math.min(1, progress.current + dt / 2.6);
+    if (intro && introProgress.current < 1) {
+      introProgress.current = Math.min(1, introProgress.current + dt / 2.6);
     }
-    const settle = easeSignature(progress.current);
+    const settle = easeSignature(introProgress.current);
 
-    const scroll = scrollRef?.current?.viewports ?? 0;
+    const sequence = sequenceRef?.current?.hero ?? 0;
     const pointer = pointerRef?.current ?? { x: 0, y: 0 };
 
-    // The opening push: the camera starts back and travels in while the
-    // preloader's panels part, so reveal and dolly read as one move.
-    const targetZ = THREE.MathUtils.lerp(CAMERA_START_Z, CAMERA_REST_Z, settle) - scroll * 0.6;
+    const { position, lookAt } = target.current;
+    sampleCamera(sequence, position, lookAt);
 
-    // Parallax is deliberately small and on the camera rather than the form —
-    // it shifts the viewpoint, which reads as depth, instead of waving the
-    // object around.
-    camera.position.x = THREE.MathUtils.damp(camera.position.x, pointer.x * 0.3, 3, dt);
-    camera.position.y = THREE.MathUtils.damp(camera.position.y, -pointer.y * 0.22, 3, dt);
-    camera.position.z = THREE.MathUtils.damp(camera.position.z, targetZ, 3, dt);
+    // The path is authored around the form, so shift it to wherever this
+    // viewport placed the form, and scale the approach with the form's size —
+    // a smaller object on a phone needs a proportionally tighter path.
+    const reach = placement.scale / 0.68;
+    position.set(
+      placement.x + position.x * reach,
+      placement.y + position.y * reach,
+      position.z * reach,
+    );
+    lookAt.set(placement.x + lookAt.x * reach, placement.y + lookAt.y * reach, lookAt.z * reach);
 
-    camera.lookAt(0, 0, 0);
+    // The opening push adds its remaining distance on top of the path, so the
+    // two stages blend instead of fighting for the camera.
+    position.z += (1 - settle) * (CAMERA_START_Z - CAMERA_REST_Z);
+
+    // Parallax is deliberately small, on the camera rather than the form, and
+    // fades out as the sequence takes over — a cursor nudging the camera
+    // mid-flight would read as a wobble.
+    const parallax = 1 - Math.min(sequence * 2, 1);
+    position.x += pointer.x * 0.3 * parallax;
+    position.y += -pointer.y * 0.22 * parallax;
+
+    // Damping is what keeps a scrubbed camera from jittering with the
+    // scrollbar; the path supplies the shape, this supplies the weight.
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, position.x, 6, dt);
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, position.y, 6, dt);
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, position.z, 6, dt);
+
+    smoothedLookAt.current.x = THREE.MathUtils.damp(smoothedLookAt.current.x, lookAt.x, 6, dt);
+    smoothedLookAt.current.y = THREE.MathUtils.damp(smoothedLookAt.current.y, lookAt.y, 6, dt);
+    smoothedLookAt.current.z = THREE.MathUtils.damp(smoothedLookAt.current.z, lookAt.z, 6, dt);
+    camera.lookAt(smoothedLookAt.current);
   });
 
   return null;
 }
 
-/** Places the form for the current viewport; R3F re-renders this on resize. */
-function Composition(props) {
+/*
+  Places the form for the current viewport and hands the same placement to the
+  camera rig, so the authored path stays anchored to the object wherever the
+  layout puts it. R3F re-renders this on resize.
+*/
+function Composition({ intro, animate, isTouch, pointerRef, sequenceRef }) {
   const size = useThree((state) => state.size);
-  return <HeroSculpture placement={composition(size)} {...props} />;
+  const placement = composition(size);
+
+  return (
+    <>
+      <CameraRig
+        intro={intro}
+        animate={animate}
+        pointerRef={pointerRef}
+        sequenceRef={sequenceRef}
+        placement={placement}
+      />
+      <HeroSculpture
+        count={isTouch ? 32 : 64}
+        intro={intro}
+        animate={animate}
+        placement={placement}
+        pointerRef={pointerRef}
+        sequenceRef={sequenceRef}
+      />
+    </>
+  );
 }
 
 /**
  * @param {boolean} intro    true once the preloader begins revealing
  * @param {boolean} reduced  prefers-reduced-motion — render one frame, don't loop
  * @param {boolean} isTouch  halves the ring count and drops cursor parallax
+ * @param {object}  sequenceRef  hero scroll progress, written by ScrollTrigger
  */
-export default function Scene({ intro = false, reduced = false, isTouch = false }) {
+export default function Scene({ intro = false, reduced = false, isTouch = false, sequenceRef }) {
   const pointerRef = usePointerRef({ enabled: !isTouch && !reduced });
-  const scrollRef = useScrollRef();
 
   // Capped rather than native: beyond ~1.75 the extra pixels cost real frames
   // and buy nothing visible on a form drawn in specular highlights.
@@ -126,19 +193,13 @@ export default function Scene({ intro = false, reduced = false, isTouch = false 
       />
 
       <Suspense fallback={null}>
-        <Lighting />
-        <CameraRig
-          intro={intro}
-          animate={animate}
-          pointerRef={pointerRef}
-          scrollRef={scrollRef}
-        />
+        <Lighting sequenceRef={sequenceRef} animate={animate} />
         <Composition
-          count={isTouch ? 32 : 64}
           intro={intro}
           animate={animate}
+          isTouch={isTouch}
           pointerRef={pointerRef}
-          scrollRef={scrollRef}
+          sequenceRef={sequenceRef}
         />
       </Suspense>
     </Canvas>

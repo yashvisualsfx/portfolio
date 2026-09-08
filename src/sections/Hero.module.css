@@ -36,6 +36,18 @@
   margin: 0;
 }
 
+/* The two halves sit on one line with no gap, so at rest the split is
+   invisible — scroll then drives them apart to open a gap for the camera. */
+.titleRow {
+  display: flex;
+  align-items: baseline;
+}
+
+.titlePart {
+  display: block;
+  will-change: transform;
+}
+
 .meta {
   display: flex;
   align-items: flex-end;

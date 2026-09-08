@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Preloader } from "./components/layout/Preloader.jsx";
 import { Navigation } from "./components/layout/Navigation.jsx";
 import { Hero } from "./sections/Hero.jsx";
@@ -7,7 +7,8 @@ import { useAnchorScroll } from "./animations/useAnchorScroll.js";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion.js";
 import { useIsTouchDevice } from "./hooks/useIsTouchDevice.js";
 import { getMedia } from "./data/media.js";
-import { projects } from "./data/projects.js";
+import styles from "./App.module.css";
+import { allWork, workCategories } from "./data/projects.js";
 
 // three + drei are the heaviest thing the site loads and nothing above the
 // fold needs them, so the whole 3D layer is a separate chunk: the preloader
@@ -30,8 +31,8 @@ const PHASE = { loading: "loading", revealing: "revealing", ready: "ready" };
 // excluded — it streams on demand once its scene is close. Empty while the
 // project media slots are unfilled, which leaves the loader waiting on fonts
 // alone; it fills itself as soon as real assets are wired up.
-const PRELOAD_SOURCES = projects
-  .map((project) => getMedia(project.media))
+const PRELOAD_SOURCES = allWork
+  .map((item) => getMedia(item.media))
   .filter(Boolean)
   .slice(0, 3)
   .map((media) => (media.type === "video" ? media.poster : media.src));
@@ -43,6 +44,12 @@ export default function App() {
 
   const lenisRef = useLenis({ enabled: !reducedMotion });
   useAnchorScroll(lenisRef);
+
+  // The hero's scroll sequence, written by ScrollTrigger and sampled by the
+  // 3D scene every frame. A ref rather than state on purpose: this changes on
+  // every scroll event, and re-rendering the tree that often would cost far
+  // more than the animation it drives.
+  const sequenceRef = useRef({ hero: 0 });
 
   useEffect(() => {
     document.documentElement.classList.toggle("reduced-motion", reducedMotion);
@@ -82,7 +89,12 @@ export default function App() {
       {/* One WebGL canvas for the whole site, behind every section. */}
       <div className="canvas-layer" aria-hidden="true">
         <Suspense fallback={null}>
-          <Scene intro={introStarted} reduced={reducedMotion} isTouch={isTouch} />
+          <Scene
+            intro={introStarted}
+            reduced={reducedMotion}
+            isTouch={isTouch}
+            sequenceRef={sequenceRef}
+          />
         </Suspense>
       </div>
 
@@ -90,19 +102,29 @@ export default function App() {
         <Navigation visible={phase === PHASE.ready} />
 
         <main id="main">
-          <Hero active={introStarted} />
+          <Hero active={introStarted} sequenceRef={sequenceRef} />
 
           {/* Placeholder anchors so the navigation and hero CTA resolve.
-              Phases 6–8 replace these with the real scenes. */}
+              Phase 6 replaces each of these with its own scroll scene — the
+              layout each category needs is already declared in the data. */}
           <section className="section container" id="work" aria-labelledby="work-heading">
             <h2 className="text-h1" id="work-heading">
               Selected
               <br />
               Work
             </h2>
-            <p className="text-body" style={{ maxWidth: "50ch", marginTop: "var(--space-4)" }}>
-              {projects.length} projects, arranged as fullscreen scroll scenes in Phase 6.
-            </p>
+            <ul style={{ marginTop: "var(--space-5)" }}>
+              {workCategories.map((category) => (
+                <li key={category.id} id={category.id} className={styles.categoryRow}>
+                  <span className="text-micro">{category.index}</span>
+                  <span className="text-h3">{category.label}</span>
+                  <span className="text-small">
+                    {category.items.length} {category.items.length === 1 ? "piece" : "pieces"} ·{" "}
+                    {category.layout}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </section>
 
           <section className="section container" id="about" aria-labelledby="about-heading">
