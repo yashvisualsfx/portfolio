@@ -28,13 +28,11 @@ export const navLinks = [
 ];
 
 // The fullscreen menu (Phase 8) reaches each discipline directly; the top bar
-// stays at three items so it keeps its restraint.
+// stays at three items so it keeps its restraint. Kept in step with the
+// categories that have work — add entries as pending categories fill up.
 export const menuLinks = [
-  { label: "Documentary", href: "#documentary" },
-  { label: "Product Animation", href: "#product-animation" },
-  { label: "Long Form", href: "#youtube" },
+  { label: "Motion Graphics", href: "#motion-graphics" },
   { label: "Thumbnails", href: "#thumbnails" },
-  { label: "Reels & Shorts", href: "#shorts" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];

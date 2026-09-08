@@ -10,21 +10,21 @@
 export const skills = [
   {
     index: "01",
-    title: "Documentary Editing",
-    summary: "Structure, pacing and narrative flow for long-form storytelling.",
-    preview: null,
+    title: "Motion Graphics",
+    summary: "Animated explainers, kinetic typography and title packages with real weight.",
+    preview: { type: "video", key: "motion-graphics-01" },
   },
   {
     index: "02",
-    title: "Product Animation",
-    summary: "Staged reveals and motion built to make a product the subject.",
-    preview: null,
+    title: "Thumbnail Design",
+    summary: "Composition, contrast and type that win the click at any size.",
+    preview: { type: "image", key: "24-hours-shopify" },
   },
   {
     index: "03",
     title: "Long-Form Editing",
-    summary: "Full-length YouTube edits engineered to hold attention to the end.",
-    preview: null,
+    summary: "Full-length edits engineered to hold attention to the end.",
+    preview: { type: "video", key: "motion-graphics-02" },
   },
   {
     index: "04",
@@ -34,14 +34,14 @@ export const skills = [
   },
   {
     index: "05",
-    title: "Thumbnail Design",
-    summary: "Composition, contrast and type that win the click at any size.",
+    title: "Documentary Editing",
+    summary: "Structure, pacing and narrative flow for long-form storytelling.",
     preview: null,
   },
   {
     index: "06",
-    title: "Motion Graphics",
-    summary: "Kinetic typography, titling and transitions with real weight.",
+    title: "Product Animation",
+    summary: "Staged reveals and motion built to make a product the subject.",
     preview: null,
   },
   {

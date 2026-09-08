@@ -8,7 +8,7 @@ import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion.js";
 import { useIsTouchDevice } from "./hooks/useIsTouchDevice.js";
 import { getMedia } from "./data/media.js";
 import styles from "./App.module.css";
-import { allWork, workCategories } from "./data/projects.js";
+import { activeCategories, allWork } from "./data/projects.js";
 
 // three + drei are the heaviest thing the site loads and nothing above the
 // fold needs them, so the whole 3D layer is a separate chunk: the preloader
@@ -114,7 +114,7 @@ export default function App() {
               Work
             </h2>
             <ul style={{ marginTop: "var(--space-5)" }}>
-              {workCategories.map((category) => (
+              {activeCategories.map((category) => (
                 <li key={category.id} id={category.id} className={styles.categoryRow}>
                   <span className="text-micro">{category.index}</span>
                   <span className="text-h3">{category.label}</span>
