@@ -20,8 +20,10 @@ export const site = {
     "I'm Harsh. I make things people actually finish watching — motion graphics, product animation, long-form edits, and the thumbnails that earn the click in the first place.",
 
   location: "Gurgaon, India",
-  // TODO(harsh): experience line
-  experience: "Experience — TBC",
+  // No experience line yet. Null rather than a placeholder string: the About
+  // section filters out facts without values, so the row simply does not
+  // appear instead of displaying "TBC" to a visitor.
+  experience: null,
   availability: "Available for select projects — 2026",
   email: "arshkushwaha89@gmail.com",
   year: "2026",
@@ -95,7 +97,13 @@ export const pendingChannels = allChannels.filter((channel) => channel.pending);
  */
 export const primaryContact = socials[0] ?? null;
 
-// TODO(harsh): confirm the toolset this portfolio should claim.
-export const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Figma"];
+/*
+  Limited to the tools the work on this site actually evidences — After
+  Effects for the animated explainers and title packages, Premiere for the
+  long-form edits, Photoshop and Illustrator for the thumbnails. Figma was
+  dropped: nothing here is interface work, so claiming it would be asserting
+  a skill the portfolio does not show.
+*/
+export const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator"];
 
 export const marqueeWords = ["DESIGN", "MOTION", "3D", "DIGITAL", "EXPERIENCE"];

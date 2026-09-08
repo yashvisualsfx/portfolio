@@ -69,13 +69,13 @@ and ships with the build, so nothing needs uploading separately.
 
 ## Still to fill in
 
-`src/data/site.js` carries a `TODO(harsh)` on the experience line, and Behance
-has no URL yet — channels without one are marked `pending` and simply aren't
-rendered, so nothing ships pointing nowhere. Add the URL and it appears on its
-own.
+Only Behance. It has no URL yet, so it is marked `pending` in
+`src/data/site.js` and simply is not rendered — nothing ships pointing
+nowhere. Add the URL and it appears on its own.
 
-In `src/data/projects.js`, every piece still says `Client TBC` / `Channel TBC`,
-and the Documentary category is empty and pending.
+The same rule covers the About facts: `experience` is `null`, so that row is
+filtered out rather than showing a placeholder. Give it a value and it
+returns.
 
 ## Structure
 

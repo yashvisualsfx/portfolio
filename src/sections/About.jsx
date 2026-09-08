@@ -24,11 +24,13 @@ export function About() {
   });
   const parallaxY = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [40, -40]);
 
+  // Filtered, so a detail Harsh has not supplied leaves no empty row behind —
+  // the same rule the contact channels follow.
   const facts = [
     { label: "Based in", value: site.location },
     { label: "Experience", value: site.experience },
     { label: "Availability", value: site.availability },
-  ];
+  ].filter((fact) => fact.value);
 
   return (
     <section className={`container ${styles.root}`} id="about" aria-labelledby="about-heading">
