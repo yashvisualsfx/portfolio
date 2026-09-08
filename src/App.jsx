@@ -27,7 +27,9 @@ const Scene = lazy(() => import("./three/Scene.jsx"));
 const PHASE = { loading: "loading", revealing: "revealing", ready: "ready" };
 
 // Stills the first screens need before the curtain parts. Video is deliberately
-// excluded — it streams on demand once its scene is close.
+// excluded — it streams on demand once its scene is close. Empty while the
+// project media slots are unfilled, which leaves the loader waiting on fonts
+// alone; it fills itself as soon as real assets are wired up.
 const PRELOAD_SOURCES = projects
   .map((project) => getMedia(project.media))
   .filter(Boolean)

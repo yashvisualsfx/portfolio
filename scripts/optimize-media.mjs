@@ -1,12 +1,17 @@
 /*
   Media pipeline.
 
-  Source assets (the originals in images/, posters/, videos/) are far too
-  heavy to ship — 260MB total, videos running at 10–14 Mbps. This derives
-  web-ready versions into public/media/ and writes a manifest carrying
-  intrinsic dimensions plus a tiny blur placeholder for each still, so
-  components can reserve aspect-ratio space (no layout shift) and blur up
-  during the cinematic image reveals.
+  Drop Harsh's originals into images/, posters/ and videos/ (any of the three
+  may be absent), then run `npm run media`. Design-tool and camera exports are
+  far too heavy to ship as-is, so this derives web-ready versions into
+  public/media/ — WebP stills capped at 1800px, H.264 capped at 1280px and
+  30fps — and writes a manifest carrying intrinsic dimensions plus a tiny blur
+  placeholder for each asset, so components can reserve aspect-ratio space (no
+  layout shift) and blur up during the cinematic image reveals.
+
+  Each output is named after its source file, slugified: "Opening Film.mp4"
+  becomes the manifest key "opening-film". Point a project's `media` slot in
+  src/data/projects.js at that key to wire it into the site.
 
   Run with: npm run media
   Outputs are committed, so the site builds without re-running this.
@@ -38,7 +43,7 @@ const VIDEO_CRF = 28;
 // no perceptible loss in a panel-sized autoplay loop.
 const VIDEO_MAX_FPS = 30;
 
-/** Normalizes "Mustang Cobra poster.png" -> "mustang-cobra-poster" */
+/** Normalizes "Opening Film 02.mp4" -> "opening-film-02" */
 function slugify(filename) {
   return path
     .basename(filename, path.extname(filename))
@@ -146,21 +151,32 @@ async function optimizeVideo(source, slug) {
   };
 }
 
+/** Source folders are optional — an absent one just contributes nothing. */
+async function listSource(dir) {
+  try {
+    return (await readdir(path.join(ROOT, dir))).sort();
+  } catch {
+    return [];
+  }
+}
+
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
   const manifest = {};
 
   for (const dir of IMAGE_SOURCES) {
-    for (const file of (await readdir(path.join(ROOT, dir))).sort()) {
+    for (const file of await listSource(dir)) {
       if (!/\.(png|jpe?g|webp)$/i.test(file)) continue;
       const slug = slugify(file);
-      if (manifest[slug]) continue; // e.g. Wildcraft.png / wildcraft.png
+      // Two sources that slugify identically (a name differing only by case,
+      // say) would overwrite each other — first one wins.
+      if (manifest[slug]) continue;
       manifest[slug] = await optimizeImage(path.join(ROOT, dir, file), slug);
     }
   }
 
   for (const dir of VIDEO_SOURCES) {
-    for (const file of (await readdir(path.join(ROOT, dir))).sort()) {
+    for (const file of await listSource(dir)) {
       if (!/\.(mp4|mov|webm)$/i.test(file)) continue;
       const slug = slugify(file);
       manifest[slug] = await optimizeVideo(path.join(ROOT, dir, file), slug);
@@ -168,7 +184,12 @@ async function main() {
   }
 
   await writeFile(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`\nmanifest → ${path.relative(ROOT, MANIFEST_PATH)} (${Object.keys(manifest).length} assets)`);
+
+  const count = Object.keys(manifest).length;
+  console.log(`\nmanifest → ${path.relative(ROOT, MANIFEST_PATH)} (${count} assets)`);
+  if (count === 0) {
+    console.log("no sources found — add files to images/, posters/ or videos/ and re-run");
+  }
 }
 
 main().catch((error) => {

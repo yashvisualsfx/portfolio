@@ -1,6 +1,10 @@
-// Single source of truth for identity, navigation and contact.
-// Contact details are the ones already published on the previous version of
-// this site, carried across rather than invented.
+/*
+  Single source of truth for identity, navigation and contact.
+
+  Every contact value below is a PLACEHOLDER awaiting Harsh's real details —
+  nothing here is carried over from any previous site. Replace the marked
+  fields before this goes live.
+*/
 
 export const site = {
   name: "HARSH",
@@ -8,10 +12,12 @@ export const site = {
   tagline: "Building visual experiences through design, motion & technology.",
   intro:
     "I'm Harsh, a multidisciplinary creative focused on crafting memorable visual experiences across design, motion and digital interaction.",
-  location: "Haryana, India",
-  experience: "Animation & VFX — Amity University",
+
+  // TODO(harsh): replace placeholders with real details
+  location: "Location — TBC",
+  experience: "Experience — TBC",
   availability: "Available for select projects — 2026",
-  email: "abhigyangfx@gmail.com",
+  email: "hello@example.com",
   year: "2026",
 };
 
@@ -21,13 +27,15 @@ export const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
+// TODO(harsh): replace every href/handle with Harsh's real accounts.
 export const socials = [
   { label: "Email", href: `mailto:${site.email}`, handle: site.email },
-  { label: "Instagram", href: "https://instagram.com/yashvisuals.fx", handle: "@yashvisuals.fx" },
-  { label: "Behance", href: "https://behance.net/", handle: "Behance" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/abhigyanojha1507", handle: "LinkedIn" },
+  { label: "Instagram", href: "#", handle: "@handle" },
+  { label: "Behance", href: "#", handle: "Behance" },
+  { label: "LinkedIn", href: "#", handle: "LinkedIn" },
 ];
 
+// TODO(harsh): confirm the toolset this portfolio should claim.
 export const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Figma"];
 
 export const marqueeWords = ["DESIGN", "MOTION", "3D", "DIGITAL", "EXPERIENCE"];
