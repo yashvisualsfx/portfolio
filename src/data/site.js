@@ -20,10 +20,10 @@ export const site = {
     "I'm Harsh. I make things people actually finish watching — motion graphics, product animation, long-form edits, and the thumbnails that earn the click in the first place.",
 
   location: "Gurgaon, India",
-  // TODO(harsh): experience line, and an email address for the primary CTA
+  // TODO(harsh): experience line
   experience: "Experience — TBC",
   availability: "Available for select projects — 2026",
-  email: null,
+  email: "arshkushwaha89@gmail.com",
   year: "2026",
 };
 
