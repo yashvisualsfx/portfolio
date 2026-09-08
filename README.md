@@ -46,10 +46,14 @@ would otherwise serve a stale one. Media revalidates daily instead.
 Easiest route — import from GitHub:
 
 1. vercel.com → **Add New… → Project** → import this repository.
-2. Pick the branch (`claude/harsh-3d-portfolio-site-sm0fyj`, or merge to
-   `main` first). Everything else is detected from `vercel.json`; no build
+2. Set **Project Name** to `harsh-kushwaha-portfolio`. This is what decides
+   the URL — the deployment lands on `harsh-kushwaha-portfolio.vercel.app`.
+   Vercel prefills it from the repository name (`portfolio`), so it does need
+   changing here; afterwards it is Settings → General → Project Name.
+3. Pick the branch (`claude/harsh-3d-portfolio-site-sm0fyj`, or merge to
+   `main` first). Everything else is detected from `vercel.json` — no build
    settings or environment variables to fill in.
-3. **Deploy.** Roughly a minute.
+4. **Deploy.** Roughly a minute.
 
 Or from a terminal with the repo checked out:
 

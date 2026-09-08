@@ -75,7 +75,6 @@ function CinemaScene({ item, category, priority }) {
           <p className="text-body">{item.description}</p>
         </div>
         <div className={styles.sceneTags}>
-          <span className="text-micro">{item.client}</span>
           <span className="text-micro">{item.year}</span>
         </div>
       </motion.div>

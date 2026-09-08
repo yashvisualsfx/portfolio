@@ -136,7 +136,7 @@ export function WorkRail({ category }) {
               <div className={styles.railCaption}>
                 <span className="text-micro">{item.index}</span>
                 <h3 className="text-h3">{item.title}</h3>
-                <p className="text-small">{item.client}</p>
+                <p className="text-small">{item.year}</p>
               </div>
             </article>
           ))}

@@ -15,13 +15,13 @@
   (or the `orientation` helper) and compose per piece. `fallbackAspect` only
   covers frames drawn before any media exists.
 
-  Categories with no filled media stay here as pending rather than being
-  deleted; `activeCategories` filters them out so the site never renders an
-  empty section, and a category lights up on its own as soon as work lands.
+  `activeCategories` still filters to categories that have work, so adding a
+  new one with an empty `items` array is safe — it simply will not render
+  until something lands in it.
 
-  Titles are taken from each piece's own on-screen text or its subject.
-  Client fields are TBC pending confirmation of what was client work and what
-  was made as a concept piece.
+  Titles are taken from each piece's own on-screen text or its subject. There
+  is deliberately no client field: the work speaks for itself, and naming
+  clients would mean asserting commissions rather than describing pieces.
 */
 
 export const ASPECT = {
@@ -44,7 +44,6 @@ export const workCategories = [
         id: "pa-boat",
         index: "01",
         title: "boAt Headphones",
-        client: "Client TBC",
         year: "2025",
         description:
           "Product spot cut against a hard red-and-white grid — the headphones hold centre while the graphics move around them.",
@@ -55,7 +54,6 @@ export const workCategories = [
         id: "pa-organic-cream",
         index: "02",
         title: "Organic Cream",
-        client: "Client TBC",
         year: "2025",
         description:
           "Vertical skincare reveal — podium staging, gold and green palette, the lid lifting to open the shot.",
@@ -66,7 +64,6 @@ export const workCategories = [
         id: "pa-juice",
         index: "03",
         title: "Orange Juice",
-        client: "Client TBC",
         year: "2025",
         description:
           "Beverage spot for vertical feeds — high-saturation colour and a slow turn that keeps the label readable throughout.",
@@ -89,7 +86,6 @@ export const workCategories = [
         id: "mg-storing",
         index: "01",
         title: "Storing 1s & 0s",
-        client: "Channel TBC",
         year: "2025",
         description:
           "Character-led explainer tracing how data gets stored, built as one continuous animated sequence.",
@@ -100,7 +96,6 @@ export const workCategories = [
         id: "mg-tenth-habit",
         index: "02",
         title: "10th Habit",
-        client: "Channel TBC",
         year: "2025",
         description:
           "Title and graphics package over live footage, timed to the edit rather than dropped on top of it.",
@@ -123,7 +118,6 @@ export const workCategories = [
         id: "reel-brands",
         index: "01",
         title: "Most Brands Don't",
-        client: "Client TBC",
         year: "2025",
         description:
           "Editorial monochrome explainer on why brands lose sales — type-led, with graphic marks carrying the rhythm.",
@@ -134,7 +128,6 @@ export const workCategories = [
         id: "reel-profile",
         index: "02",
         title: "Akshaye Khanna",
-        client: "Client TBC",
         year: "2025",
         description:
           "Film-profile reel built as a moving editorial spread — cut-out portrait, hard bands and typeset biography.",
@@ -157,7 +150,6 @@ export const workCategories = [
         id: "thumb-shopify",
         index: "01",
         title: "24 Hours",
-        client: "Channel TBC",
         year: "2025",
         description: "E-commerce results thumbnail — the number carries the frame, everything else supports it.",
         alt: "Thumbnail: a laptop showing a rising revenue graph reading $7,250, headline '#24 Hours', presenter pointing at the screen.",
@@ -167,7 +159,6 @@ export const workCategories = [
         id: "thumb-canva",
         index: "02",
         title: "10x Faster Reels",
-        client: "Channel TBC",
         year: "2025",
         description: "Tutorial thumbnail — a single before-and-after gesture doing the explaining.",
         alt: "Thumbnail: headline 'Create Reels 10x Times Faster' with a Canva app icon held in an open hand above a rising chart.",
@@ -177,27 +168,13 @@ export const workCategories = [
         id: "thumb-interview",
         index: "03",
         title: "I Am Not A Chor",
-        client: "Channel TBC",
         year: "2025",
         description: "Long-form interview thumbnail — quote as headline, subject and context staged behind it.",
         alt: "Thumbnail: headline 'I Am Not A Chor — Exclusive' over a portrait of an interview subject, with an aircraft in the background.",
         media: { type: "image", key: "i-am-not-a-chor" },
       },
     ],
-  },
-
-  // ---- Pending: structure is ready, waiting on files ----
-  {
-    id: "documentary",
-    index: "05",
-    label: "Documentary",
-    heading: ["Documentary", "Films"],
-    summary:
-      "Long-form storytelling — pacing, structure and colour built around the subject rather than the edit.",
-    layout: "cinema",
-    fallbackAspect: ASPECT.landscape,
-    items: [],
-  },
+  }
 ];
 
 /** Only the categories that actually have work — what the site renders. */
