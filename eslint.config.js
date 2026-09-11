@@ -33,4 +33,19 @@ export default [
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
+  {
+    // The 3D layer is imperative by nature: a render loop exists precisely to
+    // mutate three.js objects (camera, materials, transforms) in place, and
+    // it reads clocks and pointer state that are not pure. The React
+    // immutability and purity rules describe the declarative tree, not this.
+    files: ['src/three/**/*.{js,jsx}'],
+    rules: {
+      // R3F's intrinsic elements (<mesh>, <directionalLight>, …) are not DOM
+      // tags, so the DOM property allowlist does not apply to them.
+      'react/no-unknown-property': 'off',
+      'react-hooks/immutability': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/refs': 'off',
+    },
+  },
 ];

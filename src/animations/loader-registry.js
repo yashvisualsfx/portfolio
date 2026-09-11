@@ -25,6 +25,18 @@ export function completeTask(name) {
   notify();
 }
 
+/** Failsafe: nothing may keep a visitor on the preloader indefinitely. */
+export function completeAll() {
+  let changed = false;
+  tasks.forEach((task) => {
+    if (!task.done) {
+      task.done = true;
+      changed = true;
+    }
+  });
+  if (changed) notify();
+}
+
 /** 0 → 1. An empty registry reads as complete, never as stuck at zero. */
 export function getProgress() {
   if (tasks.size === 0) return 1;

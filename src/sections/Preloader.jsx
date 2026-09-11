@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useSpring
 import { Text } from '../components/typography';
 import { useApp } from '../hooks/useApp';
 import { useLoadProgress } from '../hooks/useLoadProgress';
+import { completeAll } from '../animations/loader-registry';
 import { PHASE } from '../context/app-context';
 import { DUR, EASE } from '../animations/easings';
 import './preloader.css';
@@ -32,6 +33,10 @@ export function Preloader() {
 
   useEffect(() => {
     mountedAt.current = performance.now();
+    // A failed chunk, a blocked font or a refused WebGL context must never
+    // leave someone staring at a counter.
+    const failsafe = setTimeout(completeAll, 9000);
+    return () => clearTimeout(failsafe);
   }, []);
 
   useEffect(() => {
