@@ -26,10 +26,3 @@ export function setSceneProgress(id, progress) {
 export function getSceneProgress(id) {
   return scroll.scenes[id] ?? 0;
 }
-
-export function resetScrollState() {
-  scroll.progress = 0;
-  scroll.y = 0;
-  scroll.velocity = 0;
-  scroll.scenes = Object.create(null);
-}

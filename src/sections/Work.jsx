@@ -20,8 +20,11 @@ export function Work({ onOpenProject }) {
       <Container>
         <header className="work__head">
           <h2 className="t-display work__title">
-            <MaskLine as="span">Selected</MaskLine>
-            <MaskLine as="span" delay={0.08}>
+            {/* One accessible name; the two visual lines are decorative
+                halves of it, or the heading reads as "SelectedWork". */}
+            <span className="sr-only">Selected Work</span>
+            <MaskLine as="span" aria-hidden="true">Selected</MaskLine>
+            <MaskLine as="span" delay={0.08} aria-hidden="true">
               Work
             </MaskLine>
           </h2>

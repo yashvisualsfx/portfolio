@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import { Lighting } from './Lighting';
 import { Monolith } from './scenes/Monolith';
@@ -18,7 +19,15 @@ import { damp } from '../animations/easings';
  * for the whole session at their own depth in the corridor — they are never
  * created or destroyed on scroll, only travelled past.
  */
-export function SceneRoot({ tier, isMobile, reduced, started, ctaPressure = 0, onReady }) {
+export function SceneRoot({
+  tier,
+  isMobile,
+  reduced,
+  started,
+  ctaPressure = 0,
+  onReady,
+  onPerformanceChange,
+}) {
   const { gl } = useThree();
   const readyRef = useRef(false);
 
@@ -50,6 +59,15 @@ export function SceneRoot({ tier, isMobile, reduced, started, ctaPressure = 0, o
 
   return (
     <>
+      {/* Measured frame time is the only honest signal about a device.
+          Cores and user-agent guesses set the starting point; this corrects
+          it, dropping resolution before the experience starts to stutter. */}
+      <PerformanceMonitor
+        onDecline={() => onPerformanceChange?.('decline')}
+        onIncline={() => onPerformanceChange?.('incline')}
+        flipflops={3}
+        onFallback={() => onPerformanceChange?.('fallback')}
+      />
       <CameraRig started={started} reduced={reduced} intensity={isMobile ? 0.4 : 1} />
       <Lighting resolution={isMobile ? 128 : 256} reduced={reduced} />
       <Monolith count={slabCount} reduced={reduced} accentIndex={Math.floor(slabCount / 2)} />

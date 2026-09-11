@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Text } from '../typography';
 import { useApp } from '../../hooks/useApp';
 import { DUR, EASE, STAGGER } from '../../animations/easings';
+import { maskRise, staggerParent } from '../../animations/variants';
 import { MENU_LINKS, SITE, SOCIALS } from '../../data/site';
 import './navigation.css';
 
@@ -78,15 +79,11 @@ export function Menu({ triggerRef }) {
             className="menu__list"
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: reducedMotion ? 0 : STAGGER.base,
-                  delayChildren: reducedMotion ? 0 : 0.22,
-                },
-              },
-            }}
+            variants={staggerParent({
+              stagger: STAGGER.base,
+              delay: 0.22,
+              reduced: reducedMotion,
+            })}
           >
             {MENU_LINKS.map((link) => (
               <li className="menu__item" key={link.id}>
@@ -97,14 +94,7 @@ export function Menu({ triggerRef }) {
                   <span className="mask">
                     <motion.span
                       className="menu__label t-display"
-                      variants={{
-                        hidden: reducedMotion ? { opacity: 0 } : { y: '105%' },
-                        visible: {
-                          y: '0%',
-                          opacity: 1,
-                          transition: { duration: DUR.slow, ease: EASE.signature },
-                        },
-                      }}
+                      variants={maskRise({ duration: DUR.slow, reduced: reducedMotion })}
                     >
                       {link.label}
                     </motion.span>

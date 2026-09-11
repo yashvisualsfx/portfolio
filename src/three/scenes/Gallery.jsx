@@ -4,7 +4,7 @@ import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { clamp, damp } from '../../animations/easings';
 import { getSceneProgress } from '../../animations/scroll-state';
-import { SCENE_Z } from '../camera-path';
+import { SCENE_Z, sectionPresence } from '../camera-path';
 import { pointer } from '../pointer-state';
 
 /**
@@ -42,13 +42,14 @@ export function Gallery({ projects, isMobile = false }) {
     [projects, textures, isMobile],
   );
 
-  useFrame(({ camera }, delta) => {
+  useFrame((_, delta) => {
     const dt = Math.min(delta, 0.1);
 
-    // The panels exist at a fixed depth for the whole session, so they would
-    // otherwise be visible as specks from anywhere else in the corridor.
+    // The panels exist at a fixed depth for the whole session, so without a
+    // gate they would be visible as specks from anywhere else in the corridor.
+    const presence = sectionPresence('gallery', { lead: 0.03, tail: 0.02 });
     if (group.current) {
-      group.current.visible = Math.abs(camera.position.z - SCENE_Z.gallery) < 26;
+      group.current.visible = presence > 0.01;
       if (!group.current.visible) return;
     }
 
@@ -76,7 +77,7 @@ export function Gallery({ projects, isMobile = false }) {
 
       // The far panels dim rather than disappear: depth, not a switch.
       const material = mesh.material;
-      material.opacity = damp(material.opacity, 0.25 + near * 0.75, 0.002, dt);
+      material.opacity = damp(material.opacity, (0.25 + near * 0.75) * presence, 0.002, dt);
       material.color.setScalar(damp(material.color.r, 0.4 + near * 0.6, 0.002, dt));
     }
 

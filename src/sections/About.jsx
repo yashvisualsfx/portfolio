@@ -48,8 +48,9 @@ export function About() {
       <Container className="layer-front">
         <header className="about__head">
           <h2 className="t-display">
-            <MaskLine as="span">About</MaskLine>
-            <MaskLine as="span" delay={0.08}>
+            <span className="sr-only">About Harsh</span>
+            <MaskLine as="span" aria-hidden="true">About</MaskLine>
+            <MaskLine as="span" delay={0.08} aria-hidden="true">
               Harsh
             </MaskLine>
           </h2>

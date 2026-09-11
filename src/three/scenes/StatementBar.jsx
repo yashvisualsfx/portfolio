@@ -1,11 +1,11 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
-import { clamp, damp, mapRange } from '../../animations/easings';
+import { clamp, damp } from '../../animations/easings';
 import { getSceneProgress } from '../../animations/scroll-state';
 import { pointer } from '../pointer-state';
 import { createSlabMaterial, createAccentMaterial } from './slabs';
-import { SCENE_Z } from '../camera-path';
+import { SCENE_Z, sectionPresence } from '../camera-path';
 
 /**
  * 09 — THE STATEMENT
@@ -36,16 +36,10 @@ export function StatementBar({ reduced = false }) {
   }, []);
   const accent = useMemo(() => createAccentMaterial({ fadeable: true }), []);
 
-  useFrame(({ clock, camera }, delta) => {
+  useFrame(({ clock }, delta) => {
     if (!group.current) return;
 
-    const distance = camera.position.z - SCENE_Z.statement;
-    // Present only in the band where it reads as an object: it fades out
-    // well before the camera would otherwise fly into a white wall, and
-    // fades in rather than appearing as a speck down the corridor.
-    const presence =
-      clamp(mapRange(distance, 3.5, 7, 0, 1)) * clamp(mapRange(distance, 17, 11.5, 0, 1));
-
+    const presence = sectionPresence('statement', { lead: 0.02, tail: 0.015 });
     group.current.visible = presence > 0.01;
     if (!group.current.visible) return;
 

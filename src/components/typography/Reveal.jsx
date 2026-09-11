@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
-import { fadeUp, inViewProps, IN_VIEW_EARLY } from '../../animations/variants';
+import { fadeUp } from '../../animations/variants';
 import { useApp } from '../../hooks/useApp';
+import { useRevealed } from '../../hooks/useRevealed';
 
 /**
  * Generic entrance for supporting copy and interface furniture: short
@@ -9,14 +10,17 @@ import { useApp } from '../../hooks/useApp';
 export function Reveal({
   as: Tag = 'div',
   trigger = 'inView',
+  active = false,
   delay = 0,
   duration,
   distance,
+  amount = 0.15,
   className = '',
   children,
   ...rest
 }) {
   const { reducedMotion } = useApp();
+  const [ref, revealed] = useRevealed({ amount, enabled: trigger === 'inView' });
   const variants = fadeUp({ delay, duration, distance, reduced: reducedMotion });
   const Component = motion[Tag] ?? motion.div;
 
@@ -25,10 +29,18 @@ export function Reveal({
       ? {}
       : trigger === 'mount'
         ? { initial: 'hidden', animate: 'visible' }
-        : inViewProps(reducedMotion, IN_VIEW_EARLY);
+        : trigger === 'controlled'
+          ? { initial: 'hidden', animate: active ? 'visible' : 'hidden' }
+          : { initial: 'hidden', animate: revealed ? 'visible' : 'hidden' };
 
   return (
-    <Component className={className} variants={variants} {...orchestration} {...rest}>
+    <Component
+      ref={trigger === 'inView' ? ref : undefined}
+      className={className}
+      variants={variants}
+      {...orchestration}
+      {...rest}
+    >
       {children}
     </Component>
   );

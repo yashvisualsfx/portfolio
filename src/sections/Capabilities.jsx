@@ -72,8 +72,9 @@ export function Capabilities() {
       <Container className="layer-front">
         <header className="caps__head">
           <h2 className="t-display">
-            <MaskLine as="span">What</MaskLine>
-            <MaskLine as="span" delay={0.08}>
+            <span className="sr-only">What I Do</span>
+            <MaskLine as="span" aria-hidden="true">What</MaskLine>
+            <MaskLine as="span" delay={0.08} aria-hidden="true">
               I Do
             </MaskLine>
           </h2>

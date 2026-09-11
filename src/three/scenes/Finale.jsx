@@ -1,11 +1,11 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
-import { clamp, damp, mapRange } from '../../animations/easings';
+import { clamp, damp } from '../../animations/easings';
 import { getSceneProgress } from '../../animations/scroll-state';
 import { pointer } from '../pointer-state';
 import { buildSlabs, createSlabMaterial, createAccentMaterial } from './slabs';
-import { SCENE_Z } from '../camera-path';
+import { SCENE_Z, sectionPresence } from '../camera-path';
 
 /**
  * 10 — THE SETTLE
@@ -28,12 +28,10 @@ export function Finale({ count = 9, reduced = false, pressure = 0 }) {
   const accentMaterial = useMemo(() => createAccentMaterial({ fadeable: true }), []);
   const smoothed = useRef(0);
 
-  useFrame(({ clock, camera }, delta) => {
+  useFrame(({ clock }, delta) => {
     if (!group.current) return;
 
-    const distance = camera.position.z - SCENE_Z.finale;
-    const presence =
-      clamp(mapRange(distance, 4, 9, 0, 1)) * clamp(mapRange(distance, 21, 15, 0, 1));
+    const presence = sectionPresence('finale', { lead: 0.03, tail: 0.01 });
     group.current.visible = presence > 0.01;
     if (!group.current.visible) return;
 

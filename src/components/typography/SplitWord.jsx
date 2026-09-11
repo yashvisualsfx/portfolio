@@ -15,8 +15,10 @@ import './split-word.css';
  * the entrance (Y, owned by Motion) and `.split__inner` carries the scroll
  * choreography (X, owned by GSAP). One transform each — they never fight.
  *
- * The phrase is exposed to assistive tech as a single label; the characters
- * are decorative.
+ * The phrase is exposed to assistive tech as ordinary text and the
+ * characters are hidden from it. Not `aria-label` on the wrapper: a generic
+ * span cannot be named that way, so a heading built only from split type
+ * would have no accessible name at all.
  */
 export function SplitWord({
   word,
@@ -32,7 +34,8 @@ export function SplitWord({
   let index = -1;
 
   return (
-    <span className={`split${className ? ` ${className}` : ''}`} aria-label={word} {...rest}>
+    <span className={`split${className ? ` ${className}` : ''}`} {...rest}>
+      <span className="sr-only">{word}</span>
       {words.map((part, partIndex) => (
         <span className="split__word" key={`${part}-${partIndex}`} aria-hidden="true">
           {[...part].map((character, characterIndex) => {

@@ -26,16 +26,20 @@ export function useScrollScenes(deps = []) {
     const measure = () => {
       const limit = document.documentElement.scrollHeight - window.innerHeight;
       if (limit <= 0) return;
-      setSectionRanges(
-        elements.map((element) => {
-          const top = element.offsetTop;
-          return {
-            id: element.dataset.scene,
-            start: clamp(top / limit),
-            end: clamp((top + element.offsetHeight) / limit),
-          };
-        }),
-      );
+      const ranges = elements.map((element) => {
+        // getBoundingClientRect + scrollY, not offsetTop: offsetTop is
+        // measured against the nearest positioned ancestor, and sections sit
+        // inside positioned wrappers.
+        const rect = element.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        return {
+          id: element.dataset.scene,
+          start: clamp(top / limit),
+          end: clamp((top + rect.height) / limit),
+        };
+      });
+      setSectionRanges(ranges);
+      if (import.meta.env.DEV) window.__ranges = ranges;
     };
 
     const triggers = elements.map((element) =>

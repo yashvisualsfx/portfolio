@@ -35,7 +35,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden; /* Horizontal overflow is a bug, never a layout tool. */
+  /* NO overflow on <body>. `overflow-x: hidden` here computes overflow-y to
+     `auto`, which turns the body into a scroll container that never scrolls
+     — and silently disables `position: sticky` for everything inside it.
+     Horizontal bleed is clipped by `overflow-x: clip` on <html> instead,
+     which clips without creating a scroll container. */
 }
 
 /* Locked while the preloader runs and while the fullscreen menu is open. */

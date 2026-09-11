@@ -1,9 +1,9 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { clamp, damp, mapRange } from '../../animations/easings';
+import { clamp, damp } from '../../animations/easings';
 import { getSceneProgress } from '../../animations/scroll-state';
-import { SCENE_Z } from '../camera-path';
+import { SCENE_Z, sectionPresence } from '../camera-path';
 
 /**
  * 07 — THE PAUSE
@@ -38,15 +38,12 @@ export function OrbitForm({ detail = 1, reduced = false }) {
     return geo;
   }, [detail]);
 
-  useFrame(({ clock, camera }, delta) => {
+  useFrame(({ clock }, delta) => {
     if (!group.current) return;
 
-    // Presence, not a switch: the form fades up as the camera approaches and
-    // fades away once it has been passed, so it never competes with the
-    // sections on either side of the interlude.
-    const distance = camera.position.z - SCENE_Z.orbit;
-    const presence =
-      clamp(mapRange(distance, 0, 3.5, 0, 1)) * clamp(mapRange(distance, 17, 11, 0, 1));
+    // Presence, not a switch: the form fades up as the interlude begins and
+    // away as it ends, so it never competes with the sections on either side.
+    const presence = sectionPresence('orbit', { lead: 0.025, tail: 0.025 });
 
     group.current.visible = presence > 0.01;
     if (!group.current.visible) return;

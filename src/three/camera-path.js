@@ -124,9 +124,32 @@ export function setSectionRanges(next) {
     .sort((a, b) => a.start - b.start);
 }
 
-export function getSectionRanges() {
-  return ranges;
+/**
+ * How present a scene should be, from the journey's own progress rather than
+ * from the camera's distance to it.
+ *
+ * Distance was the obvious measure and the wrong one: the camera's actual
+ * position also varies with the viewport's shape (see CameraRig), so a
+ * distance threshold tuned on a desktop leaves objects hanging around for
+ * two extra sections on a phone. The section ranges do not move.
+ *
+ * Returns 0 → 1, ramping in over `lead` and out over `tail`, both measured
+ * in global scroll progress.
+ */
+export function sectionPresence(id, { lead = 0.02, tail = 0.02 } = {}) {
+  const range = ranges.find((item) => item.id === id);
+  if (!range) return 0;
+
+  const p = scrollProgress();
+  if (p < range.start - lead || p > range.end + tail) return 0;
+  if (p < range.start) return clamp((p - (range.start - lead)) / lead);
+  if (p > range.end) return clamp(((range.end + tail) - p) / tail);
+  return 1;
 }
+
+/** Set by resolvePose each frame so presence can be read without the state. */
+let lastProgress = 0;
+const scrollProgress = () => lastProgress;
 
 /** Ease the interpolation so a section's edges are never a velocity step. */
 const smooth = (t) => t * t * (3 - 2 * t);
@@ -143,6 +166,7 @@ const lerpTriple = (a, b, t, out) => {
  */
 export function resolvePose(scrollState, out) {
   if (ranges.length === 0) {
+    lastProgress = clamp(scrollState.progress);
     const hero = SECTION_POSES.hero.from;
     out.position[0] = hero.position[0];
     out.position[1] = hero.position[1];
@@ -155,6 +179,7 @@ export function resolvePose(scrollState, out) {
   }
 
   const p = clamp(scrollState.progress);
+  lastProgress = p;
 
   let active = ranges[0];
   for (let i = 0; i < ranges.length; i += 1) {

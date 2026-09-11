@@ -55,9 +55,11 @@ function Experience() {
 
       {hasWebGL() && (
         <Suspense fallback={null}>
-          <Stage ctaPressure={ctaPressure} />
+          <Stage ctaPressure={ctaPressure} paused={Boolean(openProject)} />
         </Suspense>
       )}
+
+      <div className="grade" aria-hidden="true" />
 
       <Navigation onOpenMenu={toggleMenu} triggerRef={menuTriggerRef} />
       <Menu triggerRef={menuTriggerRef} />

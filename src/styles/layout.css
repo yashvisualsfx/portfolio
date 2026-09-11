@@ -114,6 +114,32 @@
   pointer-events: none;
 }
 
+/* The grade: one vignette and a little grain, sitting directly on top of the
+   canvas and underneath the interface. It is the cheapest possible version
+   of a film finish — no post-processing pass, no extra render target — and
+   it does the one thing a vignette is for: holding the eye in the middle of
+   the frame where the 3D work is. */
+.grade {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    125% 95% at 50% 45%,
+    transparent 30%,
+    rgba(5, 5, 6, 0.28) 72%,
+    rgba(5, 5, 6, 0.62) 100%
+  );
+}
+
+.grade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 /* All DOM content scrolls around the stage.
    `.content` deliberately creates NO stacking context (no z-index, no
    opacity, no transform) so its children can sit on either side of the
