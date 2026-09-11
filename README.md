@@ -186,25 +186,44 @@ pass in either motion mode, and a working fallback when WebGL is unavailable.
 
 ## Deployment
 
-A push to `main` builds the site and publishes it to GitHub Pages
-(`.github/workflows/deploy.yml`). Pages must be set to the **GitHub Actions**
-source; the workflow turns that on itself the first time it runs.
+Deployed on **Vercel**. The repo carries everything Vercel needs, so importing
+it requires no configuration:
 
-The base path is never hard-coded. `actions/configure-pages` reports whether
-the site is a project page (`/<repo>/`) or sits at a domain root, and the
-build reads it from `BASE_PATH` — so adding a custom domain later needs no
-code change. To reproduce a project-page build locally:
+- `vercel.json` — framework, build and install commands, output directory,
+  cache headers and security headers
+- `.vercelignore` — keeps `media-source/` (259 MB of masters) out of uploads
+- `engines.node` — pins the runtime to Node 22, matching local
+
+**To connect it:** vercel.com → Add New → Project → import
+`yashvisualsfx/portfolio` → Deploy. Set the production branch under Settings →
+Git. Every push to that branch then deploys, and every other branch gets a
+preview URL.
+
+### Caching
+
+Only content-hashed files are cached immutably, because only they can be:
+
+| Path | Policy | Why |
+| --- | --- | --- |
+| `/assets/*` | `max-age=31536000, immutable` | Hashed filenames — the content behind a given URL can never change |
+| `/fonts/*`, `/media/*` | `max-age=86400, stale-while-revalidate=604800` | Stable filenames. A day of freshness, then served stale while revalidating, so replacing an image shows up quickly without costing repeat visitors a round trip |
+
+### Base path
+
+The build is base-portable: `BASE_PATH` sets Vite's base, and everything that
+resolves a URL at runtime goes through `data/asset.js`, which prefixes
+`import.meta.env.BASE_URL`. On Vercel the base is `/` and this costs nothing,
+but it means the same build also works from a subpath. Use `asset()` for any
+new media path — Vite rebases what it can see (imports, CSS `url()`,
+attributes in index.html), but a path that exists only as a string in a data
+file is invisible to it, and those are most of this site's media.
+
+To reproduce a subpath build locally:
 
 ```bash
 BASE_PATH=/portfolio/ npm run build
 BASE_PATH=/portfolio/ npm run preview
 ```
-
-Everything that resolves a URL at runtime goes through `data/asset.js`, which
-prefixes `import.meta.env.BASE_URL`. Vite rebases what it can see — imports,
-CSS `url()`, attributes in index.html — but a path that exists only as a
-string in a data file is invisible to it, and those are most of this site's
-media. Use `asset()` for any new media path.
 
 ## `legacy/`
 

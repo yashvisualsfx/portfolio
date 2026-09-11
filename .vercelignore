@@ -1,0 +1,10 @@
+# Masters, not shipped assets: public/media holds everything the site serves
+# (see scripts/optimize-media.mjs). Keeping 259MB of source footage out of the
+# upload is the difference between a fast deploy and a slow one.
+media-source
+
+# The previous site, kept for reference only.
+legacy
+
+node_modules
+dist

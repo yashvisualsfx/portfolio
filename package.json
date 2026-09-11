@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "description": "Cinematic 3D portfolio for HARSH \u2014 Creative Designer.",
   "scripts": {
     "dev": "vite",
