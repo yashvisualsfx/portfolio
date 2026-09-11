@@ -4,7 +4,12 @@ import { fileURLToPath, URL } from 'node:url';
 
 // Media in /public is served as-is. Large source media (videos) is intentionally
 // kept out of the bundle graph so it can be streamed and lazily requested.
+// `BASE_PATH` lets the same build serve from a domain root or from a
+// subpath (a GitHub Pages project site lives at /<repo>/). Everything that
+// resolves a URL at runtime goes through `import.meta.env.BASE_URL`, which
+// Vite sets from this value.
 export default defineConfig({
+  base: process.env.BASE_PATH || '/',
   plugins: [react()],
   resolve: {
     alias: {

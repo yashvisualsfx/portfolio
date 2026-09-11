@@ -7,6 +7,11 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 export default [
   { ignores: ['dist', 'legacy', 'node_modules'] },
   {
+    // Build tooling and the media pipeline run in Node, not the browser.
+    files: ['vite.config.js', 'eslint.config.js', 'scripts/**/*.mjs'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2022,

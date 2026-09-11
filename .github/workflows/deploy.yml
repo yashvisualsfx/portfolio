@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+# Deploys the built site. `main` is the source of truth; workflow_dispatch
+# lets any branch be published manually from the Actions tab.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and never cancel one that is already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Plain `npm ci`, deliberately. The media pipeline's tools are declared
+      # optional so an install never fails on a platform without a prebuilt
+      # binary for them — but `--omit=optional` would also drop Rollup's and
+      # Lightning CSS's own platform binaries, which are declared the same
+      # way, and the build cannot run without those.
+      - run: npm ci
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          # Turns Pages on with the Actions source if it is not already.
+          enablement: true
+
+      - name: Build
+        env:
+          # A project site lives at /<repo>/ and a custom domain at /.
+          # configure-pages reports which one this is, so the base is never
+          # hard-coded — and never wrong after a domain is added.
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

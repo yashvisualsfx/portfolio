@@ -10,11 +10,15 @@
  *   texture the 1024px variant, used by the WebGL gallery
  */
 
+import { asset } from './asset';
+
 const still = (src, alt) => ({
-  src: `${src}.webp`,
-  small: `${src}@sm.webp`,
+  src: asset(`${src}.webp`),
+  small: asset(`${src}@sm.webp`),
   alt,
 });
+
+const reel = (src, poster) => ({ src: asset(src), poster: asset(poster) });
 
 export const PROJECTS = [
   {
@@ -46,7 +50,7 @@ export const PROJECTS = [
     description:
       'A luxury product explainer built on restraint — ultra-clean type choreography, fluid screen transitions and a pacing curve that lets each feature land before the next arrives.',
     cover: still('/media/posters/lv-watch', 'Luxury product motion design frame'),
-    reel: { src: '/media/videos/motion-graphics.mp4', poster: '/media/videos/motion-graphics-poster.webp' },
+    reel: reel('/media/videos/motion-graphics.mp4', '/media/videos/motion-graphics-poster.webp'),
     tone: '#23282b',
     depth: 1,
   },
@@ -63,7 +67,7 @@ export const PROJECTS = [
     description:
       'A kinetic typography piece for a music release: custom CRT distortion, dimensional type rotation and beat-locked edits that make the lyric feel physically present in the frame.',
     cover: still('/media/images/nike', 'Kinetic typography frame'),
-    reel: { src: '/media/videos/kinetic-type.mp4', poster: '/media/videos/kinetic-type-poster.webp' },
+    reel: reel('/media/videos/kinetic-type.mp4', '/media/videos/kinetic-type-poster.webp'),
     tone: '#302028',
     depth: 2,
   },
@@ -96,7 +100,7 @@ export const PROJECTS = [
     description:
       'A short-form cinematic edit engineered around impact: transitions placed on the beat, a grade built from two light sources, and sound design that carries the cut rather than decorating it.',
     cover: still('/media/posters/mustang-cobra', 'Automotive cinematic still'),
-    reel: { src: '/media/videos/cinematic-edit.mp4', poster: '/media/videos/cinematic-edit-poster.webp' },
+    reel: reel('/media/videos/cinematic-edit.mp4', '/media/videos/cinematic-edit-poster.webp'),
     tone: '#1f2630',
     depth: 4,
   },
@@ -113,7 +117,7 @@ export const PROJECTS = [
     description:
       'A running experiment in real-time image making: refraction, displacement, and the point where a rendered surface stops reading as a render and starts reading as material.',
     cover: still('/media/images/wildcraft', 'Experimental refraction study'),
-    reel: { src: '/media/videos/eye.mp4', poster: '/media/videos/eye-poster.webp' },
+    reel: reel('/media/videos/eye.mp4', '/media/videos/eye-poster.webp'),
     tone: '#1c2321',
     depth: 5,
   },

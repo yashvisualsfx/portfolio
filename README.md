@@ -184,6 +184,28 @@ end: lint clean, production build clean, no console errors, no horizontal
 overflow at 390 / 768 / 1440, nothing stranded invisible after a full scroll
 pass in either motion mode, and a working fallback when WebGL is unavailable.
 
+## Deployment
+
+A push to `main` builds the site and publishes it to GitHub Pages
+(`.github/workflows/deploy.yml`). Pages must be set to the **GitHub Actions**
+source; the workflow turns that on itself the first time it runs.
+
+The base path is never hard-coded. `actions/configure-pages` reports whether
+the site is a project page (`/<repo>/`) or sits at a domain root, and the
+build reads it from `BASE_PATH` — so adding a custom domain later needs no
+code change. To reproduce a project-page build locally:
+
+```bash
+BASE_PATH=/portfolio/ npm run build
+BASE_PATH=/portfolio/ npm run preview
+```
+
+Everything that resolves a URL at runtime goes through `data/asset.js`, which
+prefixes `import.meta.env.BASE_URL`. Vite rebases what it can see — imports,
+CSS `url()`, attributes in index.html — but a path that exists only as a
+string in a data file is invisible to it, and those are most of this site's
+media. Use `asset()` for any new media path.
+
 ## `legacy/`
 
 The previous single-file Tailwind portfolio is preserved at
