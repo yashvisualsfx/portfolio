@@ -1,0 +1,104 @@
+/* Desktop-only pointer. Never rendered on a touch device, and never shown
+   before the pointer has actually moved — otherwise it sits in the corner
+   of the screen on load. */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-signature);
+  will-change: transform;
+}
+
+.cursor[data-ready='true'] {
+  opacity: 1;
+}
+
+.cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -1.25rem 0 0 -1.25rem;
+  border: var(--rule) solid var(--c-ink);
+  border-radius: 50%;
+  transition:
+    width var(--dur-mid) var(--ease-signature),
+    height var(--dur-mid) var(--ease-signature),
+    margin var(--dur-mid) var(--ease-signature),
+    background-color var(--dur-fast) var(--ease-signature),
+    border-color var(--dur-fast) var(--ease-signature);
+}
+
+.cursor__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--c-ink);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity var(--dur-fast) var(--ease-signature),
+    transform var(--dur-fast) var(--ease-signature);
+}
+
+/* The dot is the precise one: it tracks fast so the pointer never feels
+   laggy, while the ring trails it. */
+.cursor__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--c-ink);
+  transition: opacity var(--dur-fast) var(--ease-signature);
+}
+
+/* States ---------------------------------------------------------------- */
+
+.cursor[data-state='view'] .cursor__ring,
+.cursor[data-state='drag'] .cursor__ring {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
+  background: var(--c-ink);
+  border-color: var(--c-ink);
+}
+
+.cursor[data-state='view'] .cursor__label,
+.cursor[data-state='drag'] .cursor__label {
+  opacity: 1;
+  transform: scale(1);
+  color: var(--c-void);
+  mix-blend-mode: normal;
+}
+
+.cursor[data-state='view'] .cursor__dot,
+.cursor[data-state='drag'] .cursor__dot {
+  opacity: 0;
+}
+
+.cursor[data-state='open'] .cursor__ring {
+  width: 3.75rem;
+  height: 3.75rem;
+  margin: -1.875rem 0 0 -1.875rem;
+}
+
+.cursor[data-state='open'] .cursor__label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cursor[data-state='open'] .cursor__dot {
+  opacity: 0;
+}

@@ -1,0 +1,125 @@
+/* 10 — CONTACT FINALE. Dramatic, and almost entirely type. */
+
+.contact {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  align-content: center;
+  padding-block: var(--sp-3xl) var(--sp-xl);
+}
+
+.contact__lines {
+  display: grid;
+  margin-bottom: var(--sp-2xl);
+}
+
+.contact__line {
+  font-family: var(--font-display);
+  /* 'Unforgettable.' is fourteen characters: the scale is set by the
+     longest line plus its indent, not by the shortest. */
+  font-size: clamp(1.9rem, 9vw, 8rem);
+  font-weight: 600;
+  font-variation-settings: 'wdth' var(--wdth-display), 'wght' 600;
+  line-height: 0.88;
+  letter-spacing: var(--tr-mega);
+  text-transform: uppercase;
+}
+
+/* The statement steps in from the left, line by line. Indexed by data
+   attribute rather than by nth-child: the screen-reader copy of the full
+   sentence is a sibling, and positional selectors would count it. */
+.contact__line[data-line='1'] {
+  padding-left: 4%;
+}
+.contact__line[data-line='2'] {
+  padding-left: 8%;
+}
+.contact__line[data-line='3'] {
+  padding-left: 12%;
+  color: var(--c-accent);
+}
+
+.contact__cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-sm);
+  padding-block: var(--sp-sm);
+  border-top: var(--rule) solid var(--c-line);
+  border-bottom: var(--rule) solid var(--c-line);
+  width: 100%;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  font-variation-settings: 'wdth' var(--wdth-display), 'wght' 600;
+  letter-spacing: var(--tr-heading);
+  text-transform: uppercase;
+  color: var(--c-ink);
+  transition:
+    color var(--dur-fast) var(--ease-signature),
+    border-color var(--dur-fast) var(--ease-signature);
+}
+
+.contact__cta-label,
+.contact__cta-arrow {
+  display: block;
+  transition: transform var(--dur-mid) var(--ease-signature);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact__cta:hover,
+  .contact__cta:focus-visible {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+
+  .contact__cta:hover .contact__cta-label,
+  .contact__cta:focus-visible .contact__cta-label {
+    transform: translateX(var(--sp-sm));
+  }
+
+  .contact__cta:hover .contact__cta-arrow,
+  .contact__cta:focus-visible .contact__cta-arrow {
+    transform: translateX(calc(var(--sp-sm) * -1));
+  }
+}
+
+.contact__channels {
+  display: grid;
+  gap: var(--sp-sm);
+  margin-top: var(--sp-xl);
+}
+
+.contact__channel {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  padding-bottom: var(--sp-2xs);
+  border-bottom: var(--rule) solid var(--c-line-soft);
+  transition: border-color var(--dur-fast) var(--ease-signature);
+}
+
+.contact__channel:hover {
+  border-color: var(--c-accent);
+}
+
+@media (min-width: 768px) {
+  .contact__channels {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-md);
+  }
+}
+
+/* --------------------------------------------------------------- FOOTER */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-sm) var(--sp-md);
+  padding-block: var(--sp-md);
+  padding-bottom: calc(var(--sp-md) + env(safe-area-inset-bottom, 0px));
+  border-top: var(--rule) solid var(--c-line-soft);
+}

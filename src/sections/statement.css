@@ -1,0 +1,75 @@
+/* 09 — MARQUEE & STATEMENT
+   The same two-sticky-layer pattern as the interlude: the words straddle the
+   slab so the letters pass physically behind and in front of it. */
+
+.statement {
+  position: relative;
+}
+
+.statement__marquee {
+  padding-block: var(--sp-2xl) var(--sp-lg);
+}
+
+.statement__stage {
+  position: relative;
+  height: 200dvh;
+}
+
+.statement__layer {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  pointer-events: none;
+}
+
+/* The three lines are positioned against the same centre line in both
+   layers, so the word behind the canvas lands exactly between the two in
+   front of it. Stacking them in flow would not work: each layer only holds
+   part of the statement, so neither knows the other's height. */
+.statement__layer .container {
+  position: absolute;
+  inset: 0;
+}
+
+.statement__layer--behind {
+  z-index: -1;
+}
+
+.statement__layer--front {
+  z-index: 1;
+  margin-top: -100dvh;
+}
+
+.statement__line {
+  font-family: var(--font-display);
+  /* Sized so the longest word fits the measure at every width. */
+  font-size: clamp(2.5rem, 14vw, 13rem);
+  font-weight: 600;
+  font-variation-settings: 'wdth' var(--wdth-display), 'wght' 600;
+  line-height: 0.86;
+  letter-spacing: var(--tr-mega);
+  text-transform: uppercase;
+}
+
+.statement__line {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 50%;
+}
+
+.statement__line--1 {
+  text-align: left;
+  transform: translateY(-155%);
+}
+
+/* The middle word is the one the slab passes in front of. */
+.statement__line--2 {
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.statement__line--3 {
+  text-align: right;
+  transform: translateY(55%);
+}

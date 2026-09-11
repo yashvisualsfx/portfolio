@@ -1,7 +1,7 @@
 import { Suspense, lazy, useCallback, useRef, useState } from 'react';
 import { AppProvider } from './context/AppProvider';
 import { SkipLink } from './components/layout';
-import { Navigation, Menu, ProjectDetail } from './components/ui';
+import { Navigation, Menu, ProjectDetail, Cursor } from './components/ui';
 import { Preloader } from './sections/Preloader';
 import { Hero } from './sections/Hero';
 import { Transform } from './sections/Transform';
@@ -10,6 +10,8 @@ import { Gallery } from './sections/Gallery';
 import { Capabilities } from './sections/Capabilities';
 import { Break } from './sections/Break';
 import { About } from './sections/About';
+import { Statement } from './sections/Statement';
+import { Contact, Footer } from './sections/Contact';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useScrollScenes } from './hooks/useScrollScenes';
 import { useApp } from './hooks/useApp';
@@ -34,6 +36,7 @@ function Experience() {
   const menuTriggerRef = useRef(null);
   const { toggleMenu, reducedMotion } = useApp();
   const [openProject, setOpenProject] = useState(null);
+  const [ctaPressure, setCtaPressure] = useState(0);
 
   const showProject = useCallback((id) => setOpenProject(id), []);
   const closeProject = useCallback(() => setOpenProject(null), []);
@@ -47,11 +50,12 @@ function Experience() {
   return (
     <>
       <SkipLink />
+      <Cursor />
       <Preloader />
 
       {hasWebGL() && (
         <Suspense fallback={null}>
-          <Stage />
+          <Stage ctaPressure={ctaPressure} />
         </Suspense>
       )}
 
@@ -66,7 +70,11 @@ function Experience() {
         <Capabilities />
         <Break />
         <About />
+        <Statement />
+        <Contact onCtaPressure={setCtaPressure} />
       </main>
+
+      <Footer />
 
       <ProjectDetail
         projectId={openProject}

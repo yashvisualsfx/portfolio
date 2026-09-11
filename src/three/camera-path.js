@@ -51,21 +51,25 @@ const ENTRY = {
   // The pause: swung out to one side of the form.
   orbit: pose([5.4, 0.6, SCENE_Z.orbit + 5.2], [0, 0, SCENE_Z.orbit], 40),
 
-  statement: pose([0, 0, SCENE_Z.statement + 7], [0, 0, SCENE_Z.statement], 42),
+  statement: pose([0, 0, SCENE_Z.statement + 11], [0, 0, SCENE_Z.statement], 42),
 
-  finale: pose([0, 0.3, SCENE_Z.finale + 8], [0, 0, SCENE_Z.finale], 38),
+  finale: pose([0, 0.3, SCENE_Z.finale + 12], [0, 0, SCENE_Z.finale], 38),
 };
 
 /**
  * Sections that do not simply hand the camera to the next one.
- *   gallery  holds position — the panels do the travelling, not the camera
- *   orbit    sweeps around the form rather than passing it
- *   finale   settles into the closing composition
+ *   statement holds back from the slab the words straddle
+ *   gallery   holds position — the panels do the travelling, not the camera
+ *   orbit     sweeps around the form rather than passing it
+ *   finale    settles into the closing composition
  */
 const EXIT = {
+  // Held back from the slab: close enough that the words straddle it,
+  // far enough that it stays an object rather than a white wall.
+  statement: pose([0, 0, SCENE_Z.statement + 8], [0, 0, SCENE_Z.statement], 42),
   gallery: pose([0, 0, SCENE_Z.gallery + 6.6], [0, 0, SCENE_Z.gallery - 1], 40),
   orbit: pose([-5.4, -0.6, SCENE_Z.orbit + 5.2], [0, 0, SCENE_Z.orbit], 40),
-  finale: pose([0, 0, SCENE_Z.finale + 6], [0, 0, SCENE_Z.finale], 34),
+  finale: pose([0, 0, SCENE_Z.finale + 9.5], [0, 0, SCENE_Z.finale], 34),
 };
 
 /** The order the corridor is travelled in. */

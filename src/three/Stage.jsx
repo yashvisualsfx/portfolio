@@ -18,7 +18,7 @@ import { SECTION_POSES } from './camera-path';
  * layers, so it never intercepts a click and type can pass in front of or
  * behind the 3D world.
  */
-export default function Stage() {
+export default function Stage({ ctaPressure = 0 }) {
   const { device, reducedMotion, phase } = useApp();
 
   useEffect(() => bindPointer(), []);
@@ -49,6 +49,7 @@ export default function Stage() {
           isMobile={device.isMobile}
           reduced={reducedMotion}
           started={phase !== PHASE.loading}
+          ctaPressure={ctaPressure}
           onReady={() => completeTask('webgl')}
         />
       </Canvas>

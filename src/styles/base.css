@@ -16,6 +16,10 @@ html {
      covers negative z-index content, which would hide every element in
      .layer-behind underneath the WebGL stage. */
   background: var(--c-bg);
+  /* `clip` rather than `hidden`: it prevents scrollable overflow without
+     turning the viewport into a scroll container, which is what keeps a
+     deliberately bleeding headline from producing a scrollbar. */
+  overflow-x: clip;
 }
 
 body {
@@ -143,9 +147,12 @@ select {
   border: 0;
 }
 
-/* Custom cursor replaces the native one on fine-pointer devices only. */
-html[data-cursor='custom'],
-html[data-cursor='custom'] * {
+/* Custom cursor replaces the native one on fine-pointer devices only.
+   Deliberately NOT `data-cursor`: that attribute marks hover states on
+   individual elements, and putting it on <html> would make every element
+   inherit a state when the cursor walks up the tree looking for one. */
+html[data-pointer='custom'],
+html[data-pointer='custom'] * {
   cursor: none;
 }
 
