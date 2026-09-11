@@ -1,0 +1,60 @@
+/* 05 — the gallery is 3D; the DOM contributes only the reading of it. */
+
+.gallery {
+  position: relative;
+}
+
+.gallery__sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding-block: calc(var(--nav-h) + var(--sp-sm)) var(--sp-lg);
+  padding-bottom: calc(var(--sp-lg) + env(safe-area-inset-bottom, 0px));
+}
+
+.gallery__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  align-items: baseline;
+}
+
+.gallery__active {
+  align-self: end;
+  display: grid;
+  gap: var(--sp-2xs);
+  /* The panels occupy the centre of the frame; the reading sits under them. */
+  max-width: 34ch;
+}
+
+.gallery__rail {
+  display: grid;
+  gap: var(--sp-xs);
+  padding-top: var(--sp-sm);
+  border-top: var(--rule) solid var(--c-line-soft);
+}
+
+.gallery__ticks {
+  display: flex;
+  gap: var(--sp-2xs);
+}
+
+.gallery__tick {
+  flex: 1;
+  height: 2px;
+  background: var(--c-line);
+  transition: background-color var(--dur-fast) var(--ease-signature);
+}
+
+.gallery__tick[data-active='true'] {
+  background: var(--c-accent);
+}
+
+.gallery__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+}

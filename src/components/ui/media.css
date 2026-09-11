@@ -1,0 +1,41 @@
+.media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--c-bg-raise);
+}
+
+.media__img,
+.media__reel {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The still is what paints; the reel fades over it once it can play. */
+.media__reel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-mid) var(--ease-signature);
+}
+
+.media[data-playing='true'] .media__reel {
+  opacity: 1;
+}
+
+/* Scroll-driven scale lives on an inner frame so hover transforms on the
+   outer element never fight it. */
+.media__frame {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.media__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 5, 6, 0.5), transparent 55%);
+  pointer-events: none;
+}

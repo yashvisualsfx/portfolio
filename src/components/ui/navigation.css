@@ -11,6 +11,7 @@
 }
 
 .nav__inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,6 +21,22 @@
 
 .nav__inner > * {
   pointer-events: auto;
+}
+
+/* Once content is passing underneath, the bar earns a soft scrim so the
+   navigation never has to compete with an image for legibility. */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(5, 5, 6, 0.85), transparent);
+  opacity: 0;
+  transition: opacity var(--dur-mid) var(--ease-signature);
+  pointer-events: none;
+}
+
+.nav[data-scrolled='true']::before {
+  opacity: 1;
 }
 
 /* A hairline that draws itself in once the hero is behind you. */

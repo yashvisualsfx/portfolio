@@ -1,0 +1,119 @@
+.detail {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--c-void);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.detail__bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  height: var(--nav-h);
+  background: var(--c-bg-scrim);
+  backdrop-filter: blur(12px);
+  border-bottom: var(--rule) solid var(--c-line-soft);
+}
+
+.detail__close {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2xs);
+  color: var(--c-ink);
+}
+
+.detail__close-mark {
+  position: relative;
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: none;
+}
+
+.detail__close-mark::before,
+.detail__close-mark::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: var(--rule);
+  background: currentColor;
+  transition: transform var(--dur-fast) var(--ease-signature);
+}
+
+.detail__close-mark::before {
+  transform: rotate(45deg);
+}
+.detail__close-mark::after {
+  transform: rotate(-45deg);
+}
+
+.detail__close:hover .detail__close-mark::before {
+  transform: rotate(135deg);
+}
+.detail__close:hover .detail__close-mark::after {
+  transform: rotate(45deg);
+}
+
+.detail__hero {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  margin-top: var(--sp-lg);
+}
+
+.detail__hero .media {
+  width: 100%;
+  height: 100%;
+}
+
+.detail__title {
+  margin-top: var(--sp-lg);
+}
+
+.detail__body {
+  display: grid;
+  gap: var(--sp-lg);
+  padding-block: var(--sp-xl);
+}
+
+.detail__facts {
+  display: grid;
+  gap: var(--sp-xs);
+  align-content: start;
+}
+
+.detail__fact {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  padding-bottom: var(--sp-2xs);
+  border-bottom: var(--rule) solid var(--c-line-soft);
+}
+
+.detail__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  padding-block: var(--sp-lg);
+  padding-bottom: calc(var(--sp-lg) + env(safe-area-inset-bottom, 0px));
+  border-top: var(--rule) solid var(--c-line-soft);
+}
+
+@media (min-width: 768px) {
+  .detail__hero {
+    aspect-ratio: 16 / 9;
+  }
+
+  .detail__body {
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--sp-2xl);
+  }
+}

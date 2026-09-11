@@ -1,10 +1,12 @@
-import { Suspense, lazy, useRef } from 'react';
+import { Suspense, lazy, useCallback, useRef, useState } from 'react';
 import { AppProvider } from './context/AppProvider';
 import { SkipLink } from './components/layout';
-import { Navigation, Menu } from './components/ui';
+import { Navigation, Menu, ProjectDetail } from './components/ui';
 import { Preloader } from './sections/Preloader';
 import { Hero } from './sections/Hero';
 import { Transform } from './sections/Transform';
+import { Work } from './sections/Work';
+import { Gallery } from './sections/Gallery';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useScrollScenes } from './hooks/useScrollScenes';
 import { useApp } from './hooks/useApp';
@@ -28,6 +30,10 @@ const Stage = lazy(() => import('./three/Stage'));
 function Experience() {
   const menuTriggerRef = useRef(null);
   const { toggleMenu, reducedMotion } = useApp();
+  const [openProject, setOpenProject] = useState(null);
+
+  const showProject = useCallback((id) => setOpenProject(id), []);
+  const closeProject = useCallback(() => setOpenProject(null), []);
 
   // Lenis owns the scroll position and GSAP's ticker owns the clock; the
   // scenes are bound to the real measured sections. Both live at the root so
@@ -52,7 +58,15 @@ function Experience() {
       <main id="main" className="content">
         <Hero />
         <Transform />
+        <Work onOpenProject={showProject} />
+        <Gallery />
       </main>
+
+      <ProjectDetail
+        projectId={openProject}
+        onClose={closeProject}
+        onNavigate={showProject}
+      />
     </>
   );
 }

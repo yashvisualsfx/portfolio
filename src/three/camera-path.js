@@ -32,62 +32,82 @@ export const WORK_STEP = -8;
 const pose = (position, target, fov = 38) => ({ position, target, fov });
 
 /**
- * Each section owns the camera from its own entry pose to its exit pose.
- * A section's exit pose is the next section's entry pose — that shared
- * value is what makes the whole path read as a single move.
+ * Poses that a section explicitly claims as its starting point. Sections
+ * that are simply travelled through (capabilities, about) claim none: they
+ * inherit wherever the previous section left the camera.
  */
-export const SECTION_POSES = {
-  // The hero: a slow push toward the monolith while the type resolves.
-  hero: {
-    from: pose([0, 0, 9], [0, 0, 0], 38),
-    to: pose([0, 0.2, 5.6], [0, 0, 0], 38),
-  },
+const ENTRY = {
+  hero: pose([0, 0, 9], [0, 0, 0], 38),
 
-  // The signature move: straight through the stack as it opens.
-  transform: {
-    from: pose([0, 0.2, 5.6], [0, 0, 0], 38),
-    to: pose([0.9, -0.15, -6.5], [0.2, 0, SCENE_Z.work + 2], 52),
-  },
+  // The signature move begins: pushed in close to the stack.
+  transform: pose([0, 0.2, 5.6], [0, 0, 0], 38),
 
-  // The work corridor: the camera drifts down the line of project panels.
-  work: {
-    from: pose([0.9, -0.15, -6.5], [0.2, 0, SCENE_Z.work], 44),
-    to: pose([0, 0, SCENE_Z.work + WORK_STEP * 5 + 6], [0, 0, SCENE_Z.gallery + 8], 40),
-  },
+  // Through it, and out the far side into the corridor.
+  work: pose([0.9, -0.15, -6.5], [0.2, 0, SCENE_Z.work], 44),
 
-  // The gallery: the camera holds still in Z and the panels pass it.
-  gallery: {
-    from: pose([0, 0, SCENE_Z.gallery + 9], [0, 0, SCENE_Z.gallery], 40),
-    to: pose([0, 0, SCENE_Z.gallery + 5], [0, 0, SCENE_Z.gallery - 2], 40),
-  },
+  // Held in front of the panel wall.
+  gallery: pose([0, 0, SCENE_Z.gallery + 8.5], [0, 0, SCENE_Z.gallery], 40),
 
-  capabilities: {
-    from: pose([0, 0, SCENE_Z.capabilities + 9], [0, 0, SCENE_Z.capabilities], 40),
-    to: pose([0, 0.4, SCENE_Z.capabilities + 4], [0, 0, SCENE_Z.orbit + 4], 40),
-  },
+  // The pause: swung out to one side of the form.
+  orbit: pose([5.4, 0.6, SCENE_Z.orbit + 5.2], [0, 0, SCENE_Z.orbit], 40),
 
-  // The pause: the camera orbits the form rather than passing it.
-  orbit: {
-    from: pose([5.2, 0.6, SCENE_Z.orbit + 5.5], [0, 0, SCENE_Z.orbit], 40),
-    to: pose([-5.2, -0.6, SCENE_Z.orbit + 5.5], [0, 0, SCENE_Z.orbit], 40),
-  },
+  statement: pose([0, 0, SCENE_Z.statement + 7], [0, 0, SCENE_Z.statement], 42),
 
-  about: {
-    from: pose([-2.2, 0, SCENE_Z.about + 9], [0, 0, SCENE_Z.about], 40),
-    to: pose([1.4, 0.2, SCENE_Z.about + 5], [0, 0, SCENE_Z.statement], 40),
-  },
-
-  statement: {
-    from: pose([0, 0, SCENE_Z.statement + 7], [0, 0, SCENE_Z.statement], 42),
-    to: pose([0, 0, SCENE_Z.statement - 1], [0, 0, SCENE_Z.finale], 42),
-  },
-
-  // The settle: the form comes to rest in its final composition.
-  finale: {
-    from: pose([0, 0.3, SCENE_Z.finale + 8], [0, 0, SCENE_Z.finale], 38),
-    to: pose([0, 0, SCENE_Z.finale + 6.2], [0, 0, SCENE_Z.finale], 34),
-  },
+  finale: pose([0, 0.3, SCENE_Z.finale + 8], [0, 0, SCENE_Z.finale], 38),
 };
+
+/**
+ * Sections that do not simply hand the camera to the next one.
+ *   gallery  holds position — the panels do the travelling, not the camera
+ *   orbit    sweeps around the form rather than passing it
+ *   finale   settles into the closing composition
+ */
+const EXIT = {
+  gallery: pose([0, 0, SCENE_Z.gallery + 6.6], [0, 0, SCENE_Z.gallery - 1], 40),
+  orbit: pose([-5.4, -0.6, SCENE_Z.orbit + 5.2], [0, 0, SCENE_Z.orbit], 40),
+  finale: pose([0, 0, SCENE_Z.finale + 6], [0, 0, SCENE_Z.finale], 34),
+};
+
+/** The order the corridor is travelled in. */
+export const JOURNEY = [
+  'hero',
+  'transform',
+  'work',
+  'gallery',
+  'capabilities',
+  'orbit',
+  'about',
+  'statement',
+  'finale',
+];
+
+/**
+ * The chain: a section starts exactly where the previous one ended, and ends
+ * at its own declared exit or at the next section's declared entry. Both
+ * ends are therefore shared values, so no seam can open up between sections
+ * — continuity is a property of the structure, not of remembering to keep
+ * two numbers in sync.
+ */
+export const SECTION_POSES = (() => {
+  const poses = {};
+  let previous = null;
+
+  JOURNEY.forEach((id, index) => {
+    const from = previous ?? ENTRY[id];
+    let to = EXIT[id];
+
+    if (!to) {
+      for (let i = index + 1; i < JOURNEY.length && !to; i += 1) {
+        to = ENTRY[JOURNEY[i]];
+      }
+    }
+
+    poses[id] = { from, to: to ?? from };
+    previous = poses[id].to;
+  });
+
+  return poses;
+})();
 
 export const CAMERA_POSES = { intro: SECTION_POSES.hero.from };
 

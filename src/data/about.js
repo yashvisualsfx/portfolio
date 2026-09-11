@@ -7,7 +7,7 @@ export const ABOUT = {
     'I work between design and motion — building campaigns, identities and real-time experiences that hold attention past the first second. Most of my work starts as a still frame and ends as something that moves.',
     'The approach stays the same regardless of medium: find the one idea worth building the whole piece around, then remove everything that competes with it.',
   ],
-  portrait: { src: '/media/images/portrait.jpg', alt: 'Portrait of Harsh' },
+  portrait: { src: '/media/images/portrait.webp', small: '/media/images/portrait@sm.webp', alt: 'Portrait of Harsh' },
   facts: [
     { label: 'Based in', value: 'Gurugram, India' },
     { label: 'Experience', value: '5+ years' },

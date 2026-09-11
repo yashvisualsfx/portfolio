@@ -1,10 +1,20 @@
 /**
- * Selected work. Each project owns one full-height scroll scene, so the
- * record carries both editorial copy and the staging hints the 3D layer
- * reads (`tone` tints the scene's key light; `depth` seeds its Z offset).
+ * Selected work. Each record owns one full-height scroll scene, so it
+ * carries the editorial copy, the media and the staging hints the 3D layer
+ * reads: `tone` tints the scene's key light, `depth` is its step along the
+ * corridor.
  *
- * Media paths point at /public/media and are requested lazily.
+ * Media contract (see scripts/optimize-media.mjs):
+ *   cover   a still, always present — nothing ever waits on video to paint
+ *   reel    an optional muted loop, requested only on hover / in view
+ *   texture the 1024px variant, used by the WebGL gallery
  */
+
+const still = (src, alt) => ({
+  src: `${src}.webp`,
+  small: `${src}@sm.webp`,
+  alt,
+});
 
 export const PROJECTS = [
   {
@@ -18,9 +28,9 @@ export const PROJECTS = [
     tools: ['Photoshop', 'Illustrator'],
     summary: 'A sound-reactive product key visual built around bass, silence and speed.',
     description:
-      'A high-energy product campaign that treats the earbud as a sculptural object: hard studio light, a reactive waveform system and typography tuned to the pace of the sound it describes.',
-    cover: { type: 'image', src: '/media/images/realme.png', alt: 'Realme earbuds product campaign key visual' },
-    tone: '#2A2F3A',
+      'A high-energy product campaign that treats the earbud as a sculptural object: hard studio light, a reactive waveform system, and typography tuned to the pace of the sound it describes.',
+    cover: still('/media/images/realme', 'Realme earbuds campaign key visual'),
+    tone: '#2a2f3a',
     depth: 0,
   },
   {
@@ -35,8 +45,9 @@ export const PROJECTS = [
     summary: 'Product motion design: typography keyframed to the breath of the hardware.',
     description:
       'A luxury product explainer built on restraint — ultra-clean type choreography, fluid screen transitions and a pacing curve that lets each feature land before the next arrives.',
-    cover: { type: 'video', src: '/media/videos/motion-graphics.mp4', poster: '/media/images/realme.png', alt: 'Motion design explainer sequence' },
-    tone: '#23282B',
+    cover: still('/media/posters/lv-watch', 'Luxury product motion design frame'),
+    reel: { src: '/media/videos/motion-graphics.mp4', poster: '/media/videos/motion-graphics-poster.webp' },
+    tone: '#23282b',
     depth: 1,
   },
   {
@@ -48,10 +59,11 @@ export const PROJECTS = [
     client: 'Independent release',
     role: 'Concept, kinetic type',
     tools: ['After Effects', 'Cinema 4D'],
-    summary: 'CRT wave distortion and 3D type, cut to the beat.',
+    summary: 'CRT wave distortion and dimensional type, cut to the beat.',
     description:
       'A kinetic typography piece for a music release: custom CRT distortion, dimensional type rotation and beat-locked edits that make the lyric feel physically present in the frame.',
-    cover: { type: 'video', src: '/media/videos/kinetic-type.mp4', poster: '/media/images/nike.png', alt: 'Kinetic typography music video' },
+    cover: still('/media/images/nike', 'Kinetic typography frame'),
+    reel: { src: '/media/videos/kinetic-type.mp4', poster: '/media/videos/kinetic-type-poster.webp' },
     tone: '#302028',
     depth: 2,
   },
@@ -66,8 +78,8 @@ export const PROJECTS = [
     tools: ['Photoshop', 'Blender'],
     summary: 'Alternate film posters and automotive studies in dual-tone light.',
     description:
-      'An ongoing print series: cinematic photo manipulation, single-source lighting and layouts that carry the whole story in one frame — from Titanic re-imagined to the Shelby in monochrome.',
-    cover: { type: 'image', src: '/media/posters/titanic.png', alt: 'Alternate Titanic film poster' },
+      'An ongoing print series: cinematic photo manipulation, single-source lighting, and layouts that carry the whole story in one frame — from Titanic re-imagined to the Shelby in monochrome.',
+    cover: still('/media/posters/titanic', 'Alternate Titanic film poster'),
     tone: '#262229',
     depth: 3,
   },
@@ -80,11 +92,12 @@ export const PROJECTS = [
     client: 'Self-initiated',
     role: 'Edit, sound design, grade',
     tools: ['Premiere Pro', 'After Effects', 'DaVinci'],
-    summary: 'Beat-matched transitions, custom grade, sound design cut to the frame.',
+    summary: 'Beat-matched transitions, a two-source grade, sound cut to the frame.',
     description:
       'A short-form cinematic edit engineered around impact: transitions placed on the beat, a grade built from two light sources, and sound design that carries the cut rather than decorating it.',
-    cover: { type: 'video', src: '/media/videos/cinematic-edit.mp4', poster: '/media/posters/mustang-cobra.png', alt: 'Cinematic beat-matched edit' },
-    tone: '#1F2630',
+    cover: still('/media/posters/mustang-cobra', 'Automotive cinematic still'),
+    reel: { src: '/media/videos/cinematic-edit.mp4', poster: '/media/videos/cinematic-edit-poster.webp' },
+    tone: '#1f2630',
     depth: 4,
   },
   {
@@ -98,9 +111,10 @@ export const PROJECTS = [
     tools: ['Three.js', 'GLSL', 'After Effects'],
     summary: 'Ongoing research into distortion, depth and real-time material.',
     description:
-      'A running experiment in real-time image making: refraction, displacement and the point where a rendered surface stops reading as a render and starts reading as material.',
-    cover: { type: 'video', src: '/media/videos/eye.mp4', poster: '/media/images/wildcraft.png', alt: 'Experimental refraction study' },
-    tone: '#1C2321',
+      'A running experiment in real-time image making: refraction, displacement, and the point where a rendered surface stops reading as a render and starts reading as material.',
+    cover: still('/media/images/wildcraft', 'Experimental refraction study'),
+    reel: { src: '/media/videos/eye.mp4', poster: '/media/videos/eye-poster.webp' },
+    tone: '#1c2321',
     depth: 5,
   },
 ];

@@ -6,13 +6,17 @@ import { useApp } from '../../hooks/useApp';
  * A single line of type rising out of a clipping mask — the site's primary
  * heading reveal.
  *
+ * The mask (which never moves) carries the intersection trigger and the
+ * child inherits the variant from it. Observing the inner element instead
+ * would deadlock: it starts translated a full line below the mask, so a
+ * heading near the bottom of the viewport would never intersect, and would
+ * therefore never be told to rise into view.
+ *
  * `trigger`:
  *   'inView'      reveal when the line scrolls into view (default)
  *   'parent'      stay silent and let a parent variant orchestration drive it
  *   'mount'       reveal immediately
  *   'controlled'  reveal when the `active` prop turns true (preloader handoff)
- *
- * Reduced motion collapses the travel to a plain fade automatically.
  */
 export function MaskLine({
   as: Tag = 'span',
@@ -41,10 +45,10 @@ export function MaskLine({
           : inViewProps(reducedMotion);
 
   return (
-    <span className={`mask${className ? ` ${className}` : ''}`} {...rest}>
-      <Inner className={innerClassName} variants={variants} {...orchestration}>
+    <motion.span className={`mask${className ? ` ${className}` : ''}`} {...orchestration} {...rest}>
+      <Inner className={innerClassName} variants={variants}>
         {children}
       </Inner>
-    </span>
+    </motion.span>
   );
 }
