@@ -1,0 +1,62 @@
+/* A text action, not a button shape: a label, a rule that wipes across, and
+   an arrow that leaves before the label does. */
+.action {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-xs);
+  position: relative;
+  padding-block: var(--sp-2xs);
+  color: var(--c-ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  font-variation-settings: 'wdth' var(--wdth-display), 'wght' 600;
+  letter-spacing: var(--tr-heading);
+  text-transform: uppercase;
+}
+
+.action--display {
+  font-size: var(--fs-h3);
+}
+
+.action__label {
+  display: block;
+  transition: transform var(--dur-mid) var(--ease-signature);
+}
+
+.action__arrow {
+  display: block;
+  transition: transform var(--dur-mid) var(--ease-signature);
+}
+
+.action::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--rule);
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition:
+    transform var(--dur-mid) var(--ease-signature),
+    background-color var(--dur-fast) var(--ease-signature);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .action:hover .action__label,
+  .action:focus-visible .action__label {
+    transform: translateX(0.35em);
+  }
+
+  .action:hover .action__arrow,
+  .action:focus-visible .action__arrow {
+    transform: translateX(0.7em);
+  }
+
+  .action:hover::after,
+  .action:focus-visible::after {
+    background: var(--c-accent);
+  }
+}

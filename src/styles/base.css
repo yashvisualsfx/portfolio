@@ -12,12 +12,16 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: auto; /* Lenis owns scrolling; never fight it with CSS. */
+  /* The ground colour lives on <html>, not <body>: a painted body background
+     covers negative z-index content, which would hide every element in
+     .layer-behind underneath the WebGL stage. */
+  background: var(--c-bg);
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--c-bg);
+  background: transparent;
   color: var(--c-ink);
   font-family: var(--font-body);
   font-size: var(--fs-md);

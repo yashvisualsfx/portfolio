@@ -1,0 +1,57 @@
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding-top: var(--nav-h);
+  padding-bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+}
+
+/* The wordmark sits BEHIND the canvas (.layer-behind), so the 3D form
+   passes in front of it. Everything interactive stays in .layer-front. */
+.hero__type {
+  align-self: center;
+  width: 100%;
+}
+
+.hero__word {
+  display: block;
+  /* Optically centred: the mega scale needs its own margin, not the grid's. */
+  margin-inline: auto;
+  max-width: var(--max-w);
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+.hero__foot {
+  display: grid;
+  gap: var(--sp-md);
+  padding-top: var(--sp-md);
+  border-top: var(--rule) solid var(--c-line-soft);
+}
+
+.hero__copy {
+  display: grid;
+  gap: var(--sp-2xs);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+}
+
+@media (min-width: 768px) {
+  .hero__foot {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: var(--sp-xl);
+  }
+
+  .hero__actions {
+    justify-content: flex-end;
+    gap: var(--sp-xl);
+  }
+}

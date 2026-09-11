@@ -1,0 +1,38 @@
+.scroll-cue {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2xs);
+}
+
+.scroll-cue__track {
+  position: relative;
+  width: 3.5rem;
+  height: var(--rule);
+  background: var(--c-line);
+  overflow: hidden;
+}
+
+.scroll-cue__seg {
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: var(--c-accent);
+  animation: scroll-cue 2.4s var(--ease-signature) infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateX(-100%);
+  }
+  60%,
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue__seg {
+    animation: none;
+    transform: translateX(0);
+  }
+}

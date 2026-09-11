@@ -1,0 +1,192 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  width: 100%;
+}
+
+.nav__inner > * {
+  pointer-events: auto;
+}
+
+/* A hairline that draws itself in once the hero is behind you. */
+.nav::after {
+  content: '';
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 0;
+  height: var(--rule);
+  background: var(--c-line-soft);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-mid) var(--ease-signature);
+}
+
+.nav[data-scrolled='true']::after {
+  transform: scaleX(1);
+}
+
+.nav__mark {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variation-settings: 'wdth' var(--wdth-display), 'wght' 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-ink);
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.25rem);
+}
+
+/* At the top of the page the navigation sits back into the hero; once the
+   page has moved it resolves to full contrast. */
+.nav__link {
+  color: var(--c-ink-dim);
+  transition: color var(--dur-fast) var(--ease-signature);
+}
+
+.nav[data-scrolled='true'] .nav__link {
+  color: var(--c-ink);
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  color: var(--c-accent);
+}
+
+.nav__link--desk {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav__link--desk {
+    display: inline-block;
+  }
+}
+
+/* Menu trigger: two rules that become a cross. */
+.nav__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2xs);
+  color: var(--c-ink);
+}
+
+.nav__burger {
+  position: relative;
+  width: 1.25rem;
+  height: 0.6rem;
+  flex: none;
+}
+
+.nav__burger span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--rule);
+  background: currentColor;
+  transition: transform var(--dur-fast) var(--ease-signature);
+}
+
+.nav__burger span:first-child {
+  top: 0;
+}
+.nav__burger span:last-child {
+  bottom: 0;
+}
+
+.nav__menu[aria-expanded='true'] .nav__burger span:first-child {
+  transform: translateY(0.29rem) rotate(45deg);
+}
+.nav__menu[aria-expanded='true'] .nav__burger span:last-child {
+  transform: translateY(-0.29rem) rotate(-45deg);
+}
+
+/* ---------------------------------------------------------- FULLSCREEN MENU */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--c-void);
+  display: grid;
+  grid-template-rows: var(--nav-h) 1fr auto;
+  padding-inline: var(--gutter);
+  padding-bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.menu__list {
+  align-self: center;
+  padding-block: var(--sp-lg);
+}
+
+.menu__item {
+  border-top: var(--rule) solid var(--c-line-soft);
+}
+
+.menu__item:last-child {
+  border-bottom: var(--rule) solid var(--c-line-soft);
+}
+
+.menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.75rem, 3vw, 2.5rem);
+  padding-block: clamp(0.5rem, 1.4vw, 1rem);
+  color: var(--c-ink);
+}
+
+.menu__label {
+  transition:
+    transform var(--dur-mid) var(--ease-signature),
+    color var(--dur-fast) var(--ease-signature);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .menu__link:hover .menu__label,
+  .menu__link:focus-visible .menu__label {
+    transform: translateX(clamp(0.75rem, 2.5vw, 2.5rem));
+    color: var(--c-accent);
+  }
+
+  /* The hovered link takes the room; its neighbours recede. */
+  .menu__list:hover .menu__link:not(:hover) .menu__label {
+    color: var(--c-ink-faint);
+  }
+}
+
+.menu__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-sm) var(--sp-lg);
+  justify-content: space-between;
+  padding-block: var(--sp-md);
+  border-top: var(--rule) solid var(--c-line-soft);
+}
+
+.menu__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-md);
+}

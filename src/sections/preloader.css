@@ -1,0 +1,73 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  /* Blocks interaction with the page underneath until the split begins. */
+  pointer-events: auto;
+}
+
+.preloader--splitting {
+  pointer-events: none;
+}
+
+/* Two halves that part at 100% — the reveal is a cut, not a fade. */
+.preloader__panel {
+  position: absolute;
+  inset: 0;
+  background: var(--c-void);
+  will-change: transform;
+}
+
+.preloader__panel--top {
+  clip-path: inset(0 0 50% 0);
+}
+
+.preloader__panel--bottom {
+  clip-path: inset(50% 0 0 0);
+}
+
+.preloader__inner {
+  position: relative;
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  padding: var(--gutter);
+  padding-bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+}
+
+.preloader__mark {
+  place-self: center;
+  text-align: center;
+}
+
+.preloader__count {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
+}
+
+.preloader__digits {
+  font-variant-numeric: tabular-nums;
+}
+
+.preloader__track {
+  position: relative;
+  height: var(--rule);
+  width: 100%;
+  background: var(--c-line-soft);
+  overflow: hidden;
+}
+
+.preloader__bar {
+  position: absolute;
+  inset: 0;
+  background: var(--c-ink);
+  transform-origin: left;
+  transform: scaleX(0);
+  will-change: transform;
+}

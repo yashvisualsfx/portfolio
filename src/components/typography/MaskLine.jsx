@@ -7,15 +7,17 @@ import { useApp } from '../../hooks/useApp';
  * heading reveal.
  *
  * `trigger`:
- *   'inView'  reveal when the line scrolls into view (default)
- *   'parent'  stay silent and let a parent variant orchestration drive it
- *   'mount'   reveal immediately (hero, preloader handoff)
+ *   'inView'      reveal when the line scrolls into view (default)
+ *   'parent'      stay silent and let a parent variant orchestration drive it
+ *   'mount'       reveal immediately
+ *   'controlled'  reveal when the `active` prop turns true (preloader handoff)
  *
  * Reduced motion collapses the travel to a plain fade automatically.
  */
 export function MaskLine({
   as: Tag = 'span',
   trigger = 'inView',
+  active = false,
   delay = 0,
   duration,
   distance,
@@ -34,7 +36,9 @@ export function MaskLine({
       ? {}
       : trigger === 'mount'
         ? { initial: 'hidden', animate: 'visible' }
-        : inViewProps(reducedMotion);
+        : trigger === 'controlled'
+          ? { initial: 'hidden', animate: active ? 'visible' : 'hidden' }
+          : inViewProps(reducedMotion);
 
   return (
     <span className={`mask${className ? ` ${className}` : ''}`} {...rest}>

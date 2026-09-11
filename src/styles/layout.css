@@ -114,8 +114,25 @@
   pointer-events: none;
 }
 
-/* All DOM content scrolls above the stage. */
+/* All DOM content scrolls around the stage.
+   `.content` deliberately creates NO stacking context (no z-index, no
+   opacity, no transform) so its children can sit on either side of the
+   canvas in the root stacking order — that is what makes real depth
+   possible with a single persistent WebGL layer:
+
+     .layer-behind  z-index -1   type the 3D object passes in front of
+     .stage         z-index  0   the canvas
+     .layer-front   z-index  1   type and interface in front of the object   */
 .content {
   position: relative;
-  z-index: var(--z-content);
+}
+
+.layer-behind {
+  position: relative;
+  z-index: -1;
+}
+
+.layer-front {
+  position: relative;
+  z-index: 1;
 }
