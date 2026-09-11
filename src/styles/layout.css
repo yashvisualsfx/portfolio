@@ -1,0 +1,121 @@
+/* =========================================================================
+   LAYOUT — one container, one editorial grid, one section rhythm.
+   Sections compose these; they never invent their own page margins.
+   ========================================================================= */
+
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--flush {
+  padding-inline: 0;
+}
+
+/* Editorial grid: 6 columns on phones, 12 from 768px up (set in tokens). */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  row-gap: var(--sp-md);
+}
+
+/* Column spans. Mobile spans are capped to the 6-column grid by `min()`,
+   so a `col-7` on a phone simply becomes full-bleed instead of overflowing. */
+.col-1 { grid-column: span min(1, var(--grid-cols)); }
+.col-2 { grid-column: span min(2, var(--grid-cols)); }
+.col-3 { grid-column: span min(3, var(--grid-cols)); }
+.col-4 { grid-column: span min(4, var(--grid-cols)); }
+.col-5 { grid-column: span min(5, var(--grid-cols)); }
+.col-6 { grid-column: span min(6, var(--grid-cols)); }
+.col-7 { grid-column: span min(7, var(--grid-cols)); }
+.col-8 { grid-column: span min(8, var(--grid-cols)); }
+.col-9 { grid-column: span min(9, var(--grid-cols)); }
+.col-10 { grid-column: span min(10, var(--grid-cols)); }
+.col-11 { grid-column: span min(11, var(--grid-cols)); }
+.col-12 { grid-column: span min(12, var(--grid-cols)); }
+.col-full { grid-column: 1 / -1; }
+
+/* Phone-specific spans (out of 6). A layout restates itself below 768px
+   instead of just compressing the desktop arrangement. */
+@media (max-width: 767.98px) {
+  .col-sm-1 { grid-column: span 1; }
+  .col-sm-2 { grid-column: span 2; }
+  .col-sm-3 { grid-column: span 3; }
+  .col-sm-4 { grid-column: span 4; }
+  .col-sm-5 { grid-column: span 5; }
+  .col-sm-6 { grid-column: span 6; }
+}
+
+/* Section rhythm ------------------------------------------------------- */
+
+.section {
+  position: relative;
+  padding-block: var(--sp-3xl);
+}
+
+.section--tight {
+  padding-block: var(--sp-2xl);
+}
+
+.section--flush {
+  padding-block: 0;
+}
+
+.section--viewport {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Section header: index + label on a hairline rule. */
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2xs) var(--sp-md);
+  padding-bottom: var(--sp-sm);
+  border-bottom: var(--rule) solid var(--c-line-soft);
+  margin-bottom: var(--sp-xl);
+}
+
+/* Stacks & rules -------------------------------------------------------- */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, var(--sp-md));
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--row-gap, var(--sp-sm));
+}
+
+.rule {
+  height: var(--rule);
+  width: 100%;
+  background: var(--c-line-soft);
+  border: 0;
+}
+
+/* Layers ---------------------------------------------------------------- */
+
+/* The persistent WebGL canvas lives here for the whole session. */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-canvas);
+  pointer-events: none;
+}
+
+/* All DOM content scrolls above the stage. */
+.content {
+  position: relative;
+  z-index: var(--z-content);
+}

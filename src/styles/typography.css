@@ -1,0 +1,161 @@
+/* =========================================================================
+   TYPOGRAPHY — type is the primary visual element of this site, so the
+   scale is expressed once here and consumed through <Text> components.
+   ========================================================================= */
+
+.t-mega,
+.t-display,
+.t-h1,
+.t-h2,
+.t-h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'wdth' var(--wdth-display), 'wght' 600;
+  text-transform: uppercase;
+  text-wrap: balance;
+  /* Oversized type must break rather than push the page sideways at 390px. */
+  overflow-wrap: break-word;
+}
+
+.t-mega {
+  font-size: var(--fs-mega);
+  line-height: var(--lh-mega);
+  letter-spacing: var(--tr-mega);
+}
+
+.t-display {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+}
+
+.t-h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+}
+
+.t-h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
+}
+
+.t-h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-heading);
+  text-transform: none;
+  font-variation-settings: 'wdth' var(--wdth-body), 'wght' 500;
+}
+
+/* Supporting copy ------------------------------------------------------- */
+
+.t-lead {
+  font-size: var(--fs-lg);
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+  max-width: 34ch;
+  color: var(--c-ink);
+}
+
+.t-body {
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  color: var(--c-ink-dim);
+}
+
+.t-small {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--c-ink-dim);
+}
+
+/* Meta type: monospaced, tracked-out, uppercase. Used for labels, section
+   indices, project numbers and every piece of interface furniture. */
+.t-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+  /* Tracked-out mono strings are the most common overflow risk at 390px. */
+  overflow-wrap: anywhere;
+}
+
+.t-label--ink {
+  color: var(--c-ink);
+}
+
+.t-label--accent {
+  color: var(--c-accent);
+}
+
+.t-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--c-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Colour modifiers ------------------------------------------------------ */
+.t-dim {
+  color: var(--c-ink-dim);
+}
+.t-faint {
+  color: var(--c-ink-faint);
+}
+.t-accent {
+  color: var(--c-accent);
+}
+.t-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--c-line);
+}
+
+/* Inline link: a rule that wipes in from the left on hover/focus. */
+.t-link {
+  position: relative;
+  display: inline-block;
+}
+
+.t-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.12em;
+  width: 100%;
+  height: var(--rule);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-fast) var(--ease-signature);
+}
+
+.t-link:hover::after,
+.t-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* -------------------------------------------------------------- REVEALS
+   Mask reveal primitive. The outer element clips; the inner element is what
+   animation systems translate. Shared by CSS-only and JS-driven reveals so
+   markup never has to change when a section gains scroll choreography. */
+.mask {
+  display: block;
+  overflow: hidden;
+  /* Slight breathing room so descenders and expanded axes are never clipped. */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.mask > * {
+  display: block;
+  will-change: transform;
+}

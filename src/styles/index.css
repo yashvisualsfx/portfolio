@@ -1,0 +1,7 @@
+/* Order matters: faces load first, tokens define the vocabulary, base resets the document,
+   typography and layout build on both. Component styles are co-located. */
+@import './fonts.css';
+@import './tokens.css';
+@import './base.css';
+@import './typography.css';
+@import './layout.css';
