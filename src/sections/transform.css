@@ -1,0 +1,45 @@
+/* 03 — the transformation. The section is mostly scroll distance: the 3D
+   layer does the work and the type stays out of its way. */
+.transform {
+  position: relative;
+}
+
+.transform__sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--sp-md);
+  text-align: center;
+  padding-inline: var(--gutter);
+}
+
+.transform__line {
+  /* The measure is set by the display type itself, not by the body em —
+     `ch` here would resolve against the wrong font size. */
+  max-width: 14em;
+  font-size: var(--fs-h1);
+}
+
+.transform__readout {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.transform__track {
+  position: relative;
+  width: clamp(6rem, 22vw, 14rem);
+  height: var(--rule);
+  background: var(--c-line);
+}
+
+.transform__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-accent);
+  transform-origin: left;
+  transform: scaleX(0);
+}

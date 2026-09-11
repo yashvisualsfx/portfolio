@@ -1,50 +1,82 @@
+import { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Container } from '../components/layout';
-import { Text, MaskLine } from '../components/typography';
+import { Container, SceneSection } from '../components/layout';
+import { Text, SplitWord } from '../components/typography';
 import { ActionLink, ScrollCue } from '../components/ui';
 import { useApp } from '../hooks/useApp';
 import { PHASE } from '../context/app-context';
-import { DUR, EASE } from '../animations/easings';
+import { DUR, EASE, GSAP_EASE } from '../animations/easings';
+import { useScrollChoreography } from '../animations/useScrollChoreography';
+import { gsap } from '../animations/gsap-setup';
 import { SITE } from '../data/site';
 import './hero.css';
 
 /**
- * 02 — HERO
+ * 02 — HERO  ·  03 — the opening of the transformation
  *
- * Nothing animates at once. The wordmark clears its mask first, the
- * supporting copy follows, the action arrives after that and the navigation
- * lands last — while the 3D form is still rotating into position behind it.
+ * Nothing animates at once. The wordmark arrives letter by letter, the
+ * supporting copy follows, the action lands after that and the navigation
+ * comes last — while the form is still turning into position behind it.
  *
- * The beats are offsets from the moment the preloader begins its split, so
- * the two read as one continuous move.
+ * Then, as soon as the page moves, the letters begin to draw apart and the
+ * interface recedes: the hero does not "scroll away", it opens.
  */
 
-const BEAT = {
-  word: 0.15,
-  copy: 0.75,
-  meta: 0.95,
-  action: 1.05,
-  cue: 1.3,
-};
+const BEAT = { word: 0.15, copy: 0.8, meta: 1, action: 1.1, cue: 1.35 };
 
 export function Hero() {
   const { phase, reducedMotion } = useApp();
+  const sectionRef = useRef(null);
   const started = phase !== PHASE.loading;
   const beat = (value) => (reducedMotion ? 0 : value);
 
+  useScrollChoreography(
+    sectionRef,
+    (_, section) => {
+      const letters = gsap.utils.toArray('.split__inner', section);
+      const middle = (letters.length - 1) / 2;
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.6,
+        },
+      });
+
+      timeline
+        .to(
+          letters,
+          {
+            // Outer letters travel furthest: the word opens rather than slides.
+            xPercent: (index) => (index - middle) * 46,
+            opacity: 0.08,
+            ease: GSAP_EASE.signature,
+          },
+          0,
+        )
+        .to('.hero__foot', { opacity: 0, y: -24, ease: 'none' }, 0);
+    },
+    { enabled: !reducedMotion, deps: [reducedMotion] },
+  );
+
   return (
-    <section id="top" className="hero" aria-label="Introduction">
+    <SceneSection
+      id="top"
+      scene="hero"
+      label="Introduction"
+      className="hero"
+      ref={sectionRef}
+    >
       <div className="hero__type layer-behind">
         <h1 className="t-mega hero__word">
-          <MaskLine
-            as="span"
-            trigger="controlled"
+          <SplitWord
+            word={SITE.name}
             active={started}
-            duration={reducedMotion ? DUR.fast : 1.4}
             delay={beat(BEAT.word)}
-          >
-            {SITE.name}
-          </MaskLine>
+            duration={reducedMotion ? DUR.fast : 1.25}
+          />
         </h1>
       </div>
 
@@ -87,6 +119,6 @@ export function Hero() {
           </motion.div>
         </div>
       </Container>
-    </section>
+    </SceneSection>
   );
 }

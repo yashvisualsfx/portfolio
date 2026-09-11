@@ -1,0 +1,21 @@
+.split {
+  display: block;
+}
+
+/* A word is atomic: it may never break between its own characters. The
+   space that follows it is an ordinary text node, so a phrase still wraps
+   between words at narrow widths. */
+.split__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.split__char {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.split__inner {
+  display: inline-block;
+  will-change: transform;
+}

@@ -48,8 +48,9 @@
   --fs-h2: clamp(2.5rem, 1.19rem + 5.34vw, 6rem);
   --fs-h1: clamp(3.25rem, 0.15rem + 12.6vw, 9rem);
   --fs-display: clamp(4rem, -1.7rem + 23.3vw, 15rem);
-  /* Hero wordmark: intentionally viewport-bound so it always spans the grid. */
-  --fs-mega: clamp(4.5rem, 25.5vw, 23rem);
+  /* Hero wordmark: viewport-bound so it always spans the grid, and sized so
+     five characters of the display face fit the measure without wrapping. */
+  --fs-mega: clamp(4rem, 21.5vw, 19.5rem);
 
   --lh-mega: 0.78;
   --lh-display: 0.84;

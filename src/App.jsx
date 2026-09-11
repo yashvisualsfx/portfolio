@@ -4,6 +4,9 @@ import { SkipLink } from './components/layout';
 import { Navigation, Menu } from './components/ui';
 import { Preloader } from './sections/Preloader';
 import { Hero } from './sections/Hero';
+import { Transform } from './sections/Transform';
+import { useSmoothScroll } from './hooks/useSmoothScroll';
+import { useScrollScenes } from './hooks/useScrollScenes';
 import { useApp } from './hooks/useApp';
 import { hasWebGL } from './three/webgl-support';
 
@@ -24,7 +27,13 @@ const Stage = lazy(() => import('./three/Stage'));
  */
 function Experience() {
   const menuTriggerRef = useRef(null);
-  const { toggleMenu } = useApp();
+  const { toggleMenu, reducedMotion } = useApp();
+
+  // Lenis owns the scroll position and GSAP's ticker owns the clock; the
+  // scenes are bound to the real measured sections. Both live at the root so
+  // there is exactly one of each for the whole session.
+  useSmoothScroll({ reduced: reducedMotion });
+  useScrollScenes([reducedMotion]);
 
   return (
     <>
@@ -42,6 +51,7 @@ function Experience() {
 
       <main id="main" className="content">
         <Hero />
+        <Transform />
       </main>
     </>
   );

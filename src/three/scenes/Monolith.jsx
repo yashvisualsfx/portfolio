@@ -4,7 +4,7 @@ import { RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { damp, clamp, mapRange } from '../../animations/easings';
 import { pointer } from '../pointer-state';
-import { scroll, getSceneProgress } from '../../animations/scroll-state';
+import { getSceneProgress } from '../../animations/scroll-state';
 
 /**
  * THE MONOLITH — the hero form and the site's signature interaction.
@@ -35,17 +35,19 @@ export function Monolith({ count = 11, reduced = false, accentIndex = 6 }) {
     for (let i = 0; i < count; i += 1) {
       const t = (i - half) / half; // -1 → 1, 0 at the waist
       const taper = 1 - Math.abs(t) ** 1.8 * 0.44;
+      // The accent is a seam set into the waist, not a plate laid across it.
+      const inset = i === accentIndex ? 0.56 : 1;
       items.push({
         i,
         t,
-        width: 2.9 * taper,
-        depth: 1.15 * taper,
+        width: 2.9 * taper * inset,
+        depth: 1.15 * taper * inset,
         y: (i - half) * (SLAB_HEIGHT + SLAB_GAP),
         phase: i * 0.6,
       });
     }
     return items;
-  }, [count]);
+  }, [count, accentIndex]);
 
   const material = useMemo(
     () =>
@@ -65,7 +67,7 @@ export function Monolith({ count = 11, reduced = false, accentIndex = 6 }) {
         metalness: 0.6,
         roughness: 0.32,
         emissive: new THREE.Color('#e2552d'),
-        emissiveIntensity: 0.9,
+        emissiveIntensity: 0.7,
       }),
     [],
   );
@@ -89,8 +91,10 @@ export function Monolith({ count = 11, reduced = false, accentIndex = 6 }) {
     group.current.rotation.y = state.current.ry;
     group.current.rotation.x = state.current.rx;
 
-    // Once the camera is past it, the stack drifts away rather than popping.
-    const past = mapRange(scroll.progress, 0.12, 0.2, 0, 1);
+    // Once the camera is through it, the stack drifts away rather than
+    // popping. Driven by the transformation's own progress, so it is
+    // unaffected by how long the rest of the page happens to be.
+    const past = mapRange(open, 0.8, 1, 0, 1);
     group.current.position.z = -past * 10;
     group.current.visible = past < 0.999;
 
