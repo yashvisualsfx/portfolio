@@ -7,8 +7,6 @@ import { Monolith } from './scenes/Monolith';
 import { Gallery } from './scenes/Gallery';
 import { Dust } from './scenes/Dust';
 import { OrbitForm } from './scenes/OrbitForm';
-import { StatementBar } from './scenes/StatementBar';
-import { Finale } from './scenes/Finale';
 import { GALLERY_PROJECTS } from '../data/projects';
 import { CameraRig } from './rig/CameraRig';
 import { pointer } from './pointer-state';
@@ -18,13 +16,18 @@ import { damp } from '../animations/easings';
  * Everything inside the persistent canvas. Scenes are mounted once and live
  * for the whole session at their own depth in the corridor — they are never
  * created or destroyed on scroll, only travelled past.
+ *
+ * Three forms, deliberately. An earlier version also put a slab across the
+ * closing statement and re-formed the stack behind the contact section; with
+ * the gallery panels that made five things competing for attention, and the
+ * back half of the site started reading as a showreel for the renderer
+ * rather than for the work. The statement and the contact are now pure type.
  */
 export function SceneRoot({
   tier,
   isMobile,
   reduced,
   started,
-  ctaPressure = 0,
   onReady,
   onPerformanceChange,
 }) {
@@ -55,7 +58,9 @@ export function SceneRoot({
     }
   });
 
-  const slabCount = isMobile ? 7 : tier === 'high' ? 13 : 11;
+  // Fewer, heavier slabs: the stack reads as one carved object rather than a
+  // pile of plates, and it costs a third of the draw calls it used to.
+  const slabCount = isMobile ? 5 : tier === 'high' ? 7 : 7;
 
   return (
     <>
@@ -71,10 +76,8 @@ export function SceneRoot({
       <CameraRig started={started} reduced={reduced} intensity={isMobile ? 0.4 : 1} />
       <Lighting resolution={isMobile ? 128 : 256} reduced={reduced} />
       <Monolith count={slabCount} reduced={reduced} accentIndex={Math.floor(slabCount / 2)} />
-      <StatementBar reduced={reduced} />
-      <Finale count={isMobile ? 7 : 9} reduced={reduced} pressure={ctaPressure} />
       <OrbitForm detail={isMobile ? 1 : tier === 'high' ? 2 : 1} reduced={reduced} />
-      <Dust count={isMobile ? 280 : tier === 'high' ? 800 : 500} reduced={reduced} />
+      <Dust count={isMobile ? 120 : 260} reduced={reduced} />
 
       {/* Gallery textures are fetched when the chunk resolves, not at boot;
           until then the corridor simply has nothing in it. */}

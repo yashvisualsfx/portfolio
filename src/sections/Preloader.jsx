@@ -6,6 +6,7 @@ import { useLoadProgress } from '../hooks/useLoadProgress';
 import { completeAll } from '../animations/loader-registry';
 import { PHASE } from '../context/app-context';
 import { DUR, EASE } from '../animations/easings';
+import { SITE } from '../data/site';
 import './preloader.css';
 
 /**
@@ -100,7 +101,7 @@ export function Preloader() {
               transition={{ duration: DUR.fast, ease: EASE.inQuart }}
             >
               <Text as="p" variant="display">
-                HARSH
+                {SITE.name}
               </Text>
             </motion.div>
 

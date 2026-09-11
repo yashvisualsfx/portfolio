@@ -75,9 +75,9 @@ export function Monolith({ count = 11, reduced = false, accentIndex = 6 }) {
   });
 
   return (
-    /* Set off-centre: the wordmark stays readable and the form occupies the
-       negative space rather than the middle of the composition. */
-    <group ref={group} name="monolith" position={[1.05, 0, 0]}>
+    /* Set off-centre and low: the wordmark runs across the upper half, so the
+       form sits in the space the type leaves rather than underneath it. */
+    <group ref={group} name="monolith" position={[1.75, -0.35, 0]}>
       {slabs.map((slab) => (
         <RoundedBox
           key={slab.i}

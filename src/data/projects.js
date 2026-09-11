@@ -7,7 +7,12 @@
  * Media contract (see scripts/optimize-media.mjs):
  *   cover   a still, always present — nothing ever waits on video to paint
  *   reel    an optional muted loop, requested only on hover / in view
- *   texture the 1024px variant, used by the WebGL gallery
+ *
+ * `orientation` is the shape of the artwork, not a style choice. Poster work
+ * is 3:4 and product work is 4:3; forcing one frame on both crops a movie
+ * poster down to a horizontal strip. The layout gives each orientation its
+ * own column span so every cover lands at roughly the same HEIGHT — which is
+ * what makes the sequence feel even as you scroll, rather than equal widths.
  */
 
 import { asset } from './asset';
@@ -23,6 +28,8 @@ const reel = (src, poster) => ({ src: asset(src), poster: asset(poster) });
 export const PROJECTS = [
   {
     id: 'realme',
+    orientation: 'landscape',
+    aspect: '4 / 3',
     index: '01',
     title: 'Realme Earbuds',
     category: 'Brand Identity',
@@ -39,6 +46,8 @@ export const PROJECTS = [
   },
   {
     id: 'motion',
+    orientation: 'landscape',
+    aspect: '4 / 3',
     index: '02',
     title: 'Vision Explainer',
     category: 'Motion Design',
@@ -56,6 +65,8 @@ export const PROJECTS = [
   },
   {
     id: 'kinetic',
+    orientation: 'square',
+    aspect: '1 / 1',
     index: '03',
     title: 'Piche Tere',
     category: 'UI / UX Experience',
@@ -73,6 +84,8 @@ export const PROJECTS = [
   },
   {
     id: 'posters',
+    orientation: 'portrait',
+    aspect: '3 / 4',
     index: '04',
     title: 'Poster Series',
     category: '3D Visual',
@@ -89,6 +102,8 @@ export const PROJECTS = [
   },
   {
     id: 'cinematic',
+    orientation: 'portrait',
+    aspect: '3 / 4',
     index: '05',
     title: 'Cinematic Edit',
     category: 'Film / Video',
@@ -106,6 +121,8 @@ export const PROJECTS = [
   },
   {
     id: 'experimental',
+    orientation: 'portrait',
+    aspect: '3 / 4',
     index: '06',
     title: 'Signal / Iris',
     category: 'Experimental',

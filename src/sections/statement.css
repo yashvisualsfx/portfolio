@@ -1,6 +1,7 @@
 /* 09 — MARQUEE & STATEMENT
-   The same two-sticky-layer pattern as the interlude: the words straddle the
-   slab so the letters pass physically behind and in front of it. */
+   All three words in one layer, in front of the canvas. They used to straddle
+   a slab, which cost a third of the sentence's legibility to buy one moment
+   of depth — a bad trade on the line the section exists to deliver. */
 
 .statement {
   position: relative;
@@ -22,22 +23,16 @@
   pointer-events: none;
 }
 
-/* The three lines are positioned against the same centre line in both
-   layers, so the word behind the canvas lands exactly between the two in
-   front of it. Stacking them in flow would not work: each layer only holds
-   part of the statement, so neither knows the other's height. */
+/* The lines are positioned against a common centre rather than stacked in
+   flow, so the three-word block stays optically centred whatever the
+   viewport does to the type scale. */
 .statement__layer .container {
   position: absolute;
   inset: 0;
 }
 
-.statement__layer--behind {
-  z-index: -1;
-}
-
 .statement__layer--front {
   z-index: 1;
-  margin-top: -100dvh;
 }
 
 .statement__line {
@@ -63,7 +58,6 @@
   transform: translateY(-155%);
 }
 
-/* The middle word is the one the slab passes in front of. */
 .statement__line--2 {
   text-align: center;
   transform: translateY(-50%);

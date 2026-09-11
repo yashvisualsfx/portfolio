@@ -75,7 +75,8 @@ export function ProjectScene({ project, position, onOpen }) {
   return (
     <article
       ref={ref}
-      className={`project${position % 2 === 1 ? ' project--flip' : ''}`}
+      className={`project project--${project.orientation}${position % 2 === 1 ? ' project--flip' : ''}`}
+      style={{ '--cover-aspect': project.aspect }}
       aria-labelledby={`project-${project.id}-title`}
     >
       <div className="project__grid">

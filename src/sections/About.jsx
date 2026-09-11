@@ -9,7 +9,7 @@ import { SITE } from '../data/site';
 import './about.css';
 
 /**
- * 08 — ABOUT HARSH
+ * 08 — ABOUT
  *
  * Asymmetric on purpose: the portrait holds a narrow sticky column on the
  * left while the writing runs long on the right, so the section reads like a
@@ -44,14 +44,14 @@ export function About() {
   );
 
   return (
-    <SceneSection id="about" scene="about" label="About Harsh" className="section" ref={ref}>
+    <SceneSection id="about" scene="about" label={`About ${SITE.name}`} className="section" ref={ref}>
       <Container className="layer-front">
         <header className="about__head">
           <h2 className="t-display">
-            <span className="sr-only">About Harsh</span>
+            <span className="sr-only">About {SITE.name}</span>
             <MaskLine as="span" aria-hidden="true">About</MaskLine>
             <MaskLine as="span" delay={0.08} aria-hidden="true">
-              Harsh
+              {SITE.name}
             </MaskLine>
           </h2>
           <Reveal>

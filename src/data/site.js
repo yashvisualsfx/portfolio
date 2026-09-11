@@ -4,13 +4,13 @@
  */
 
 export const SITE = {
-  name: 'HARSH',
+  name: 'SHIVANK',
   role: 'Creative Designer',
   tagline: 'Building visual experiences through design, motion & technology.',
   location: 'Gurugram, India',
   timezone: 'IST — GMT+5:30',
   availability: 'Available for select projects — 2026',
-  email: 'hello@harsh.studio',
+  email: 'hello@shivank.studio',
   year: 2026,
   footerNote: 'Designed & developed with intention',
 };
@@ -32,10 +32,10 @@ export const MENU_LINKS = [
 ];
 
 export const SOCIALS = [
-  { id: 'email', label: 'Email', handle: 'hello@harsh.studio', href: 'mailto:hello@harsh.studio' },
-  { id: 'instagram', label: 'Instagram', handle: '@harsh.visuals', href: '#' },
-  { id: 'behance', label: 'Behance', handle: '/harsh', href: '#' },
-  { id: 'linkedin', label: 'LinkedIn', handle: '/in/harsh', href: '#' },
+  { id: 'email', label: 'Email', handle: 'hello@shivank.studio', href: 'mailto:hello@shivank.studio' },
+  { id: 'instagram', label: 'Instagram', handle: '@shivank.visuals', href: '#' },
+  { id: 'behance', label: 'Behance', handle: '/shivank', href: '#' },
+  { id: 'linkedin', label: 'LinkedIn', handle: '/in/shivank', href: '#' },
 ];
 
 /** Infinite marquee statement. Rendered as one repeating unit. */

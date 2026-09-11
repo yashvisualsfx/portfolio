@@ -69,7 +69,7 @@ export function Hero() {
       className="hero"
       ref={sectionRef}
     >
-      <div className="hero__type layer-behind">
+      <div className="hero__type layer-front">
         <h1 className="t-mega hero__word">
           <SplitWord
             word={SITE.name}

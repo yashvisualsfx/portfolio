@@ -35,6 +35,22 @@
   display: grid;
   align-content: center;
   padding-block: var(--sp-2xl);
+
+  /* Column spans per artwork shape. Chosen so a 3:4 poster and a 4:3 product
+     shot land at roughly the same height — an even scroll rhythm comes from
+     matching heights, not from matching widths. */
+  --media-span: 7;
+  --body-span: 5;
+}
+
+.project--square {
+  --media-span: 5;
+  --body-span: 6;
+}
+
+.project--portrait {
+  --media-span: 4;
+  --body-span: 6;
 }
 
 .project__grid {
@@ -45,7 +61,8 @@
 
 .project__media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  /* The artwork's own shape, never a shape imposed on it. */
+  aspect-ratio: var(--cover-aspect, 4 / 3);
   width: 100%;
 }
 
@@ -99,22 +116,21 @@
   }
 
   .project__media {
-    grid-column: 1 / span 7;
-    aspect-ratio: 16 / 11;
+    grid-column: 1 / span var(--media-span);
   }
 
   .project__body {
-    grid-column: 8 / span 5;
+    grid-column: calc(var(--media-span) + 2) / span var(--body-span);
   }
 
   /* Alternate sides so the eye crosses the page as it descends. */
   .project--flip .project__media {
-    grid-column: 6 / span 7;
+    grid-column: calc(13 - var(--media-span)) / span var(--media-span);
     grid-row: 1;
   }
 
   .project--flip .project__body {
-    grid-column: 1 / span 5;
+    grid-column: 1 / span var(--body-span);
     grid-row: 1;
   }
 

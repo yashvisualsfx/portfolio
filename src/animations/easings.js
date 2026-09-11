@@ -39,9 +39,9 @@ export const STAGGER = {
 
 /** GSAP ease strings registered by `registerCustomEases()` in gsap-setup.js. */
 export const GSAP_EASE = {
-  signature: 'harsh.signature',
-  outExpo: 'harsh.outExpo',
-  outQuart: 'harsh.outQuart',
+  signature: 'site.signature',
+  outExpo: 'site.outExpo',
+  outQuart: 'site.outQuart',
 };
 
 /**

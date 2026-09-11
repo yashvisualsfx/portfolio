@@ -71,10 +71,10 @@ export function OrbitForm({ detail = 1, reduced = false }) {
       <mesh geometry={geometry}>
         <meshStandardMaterial
           ref={shell}
-          color="#b9b7b1"
+          color="#8d8b86"
           metalness={0.9}
           roughness={0.29}
-          envMapIntensity={1.5}
+          envMapIntensity={1.1}
           transparent
           opacity={0}
           flatShading

@@ -49,8 +49,9 @@
   --fs-h1: clamp(3.25rem, 0.15rem + 12.6vw, 9rem);
   --fs-display: clamp(4rem, -1.7rem + 23.3vw, 15rem);
   /* Hero wordmark: viewport-bound so it always spans the grid, and sized so
-     five characters of the display face fit the measure without wrapping. */
-  --fs-mega: clamp(4rem, 21.5vw, 19.5rem);
+     the seven characters of the name fit the measure without wrapping.
+     Changing the name changes this number — count the characters. */
+  --fs-mega: clamp(2.75rem, 18.5vw, 22rem);
 
   --lh-mega: 0.78;
   --lh-display: 0.84;

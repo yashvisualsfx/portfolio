@@ -10,11 +10,10 @@ import './break.css';
  * A pause between the work and the person: the camera orbits the form for
  * the length of the section and the page contributes two words.
  *
- * The two lines of the statement sit on opposite sides of the canvas — the
- * first in front of the form, the second behind it — so the object passes
- * physically between them. It is the one moment where the depth layering is
- * the content rather than the technique, which is why each line is its own
- * sticky layer rather than two spans in one (see break.css).
+ * Both lines sit in front of the form. They used to straddle it — one layer
+ * either side of the canvas — which looked striking in a screenshot and hid
+ * half the sentence in motion. The form reads as behind because it is, and
+ * the words stay readable the whole way through.
  */
 export function Break() {
   const ref = useRef(null);
@@ -22,14 +21,6 @@ export function Break() {
 
   return (
     <SceneSection scene="orbit" label="Ideas in motion" className="break" hold={260} ref={ref}>
-      <div className="break__layer break__layer--behind" aria-hidden="true">
-        <Container>
-          <p className="t-display break__line break__line--behind">
-            <MaskLine as="span">{second}</MaskLine>
-          </p>
-        </Container>
-      </div>
-
       <div className="break__layer break__layer--front">
         <Container>
           <Text variant="label" tone="accent">
@@ -44,6 +35,9 @@ export function Break() {
             <span className="sr-only">{`${first} ${second}`}</span>
             <MaskLine as="span" aria-hidden="true">
               {first}
+            </MaskLine>
+            <MaskLine as="span" delay={0.1} aria-hidden="true">
+              {second}
             </MaskLine>
           </p>
         </Container>

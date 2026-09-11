@@ -1,13 +1,10 @@
 /* 07 — THE PAUSE
-   Full viewport, the form fills it, the type frames it.
+   Full viewport, the form behind, the type in front of it.
 
-   The two halves of the statement are two SEPARATE sticky layers, not two
-   spans inside one sticky block. `position: sticky` always forms a stacking
-   context, so nested depth layers would be trapped inside it and both lines
-   would end up on the same side of the canvas. As siblings inside the
-   (non-stacking) content layer, each one's own z-index places it against
-   the stage directly — which is what lets the form pass physically between
-   the two lines. */
+   Both lines live in one sticky layer. An earlier version put them on
+   opposite sides of the canvas so the form passed physically between them;
+   it photographed well and hid half the sentence while you were reading it.
+   Depth still reads, because the form genuinely is behind the words. */
 
 .break {
   position: relative;
@@ -20,16 +17,8 @@
   pointer-events: none;
 }
 
-.break__layer--behind {
-  z-index: -1;
-  display: grid;
-  align-content: center;
-}
-
 .break__layer--front {
   z-index: 1;
-  /* Pulled back over its sibling so the two occupy the same frame. */
-  margin-top: -100dvh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding-block: calc(var(--nav-h) + var(--sp-md)) var(--sp-lg);
@@ -48,15 +37,27 @@
   text-align: center;
 }
 
-/* The lines straddle the form: the first crosses its upper third, the
-   second its lower third, so the object is genuinely between them. */
 .break__line--front {
   align-self: center;
-  transform: translateY(-0.62em);
+  position: relative;
 }
 
-.break__line--behind {
-  transform: translateY(0.5em);
+/* The form turns underneath these words, so no single material value can
+   guarantee contrast for the whole orbit. A soft pool of ground colour
+   travels with the type instead. */
+.break__line--front::before {
+  content: '';
+  position: absolute;
+  /* Vertical bleed only. The line already runs gutter to gutter, so any
+     horizontal bleed lands outside the page and widens the document. */
+  inset: -35% 0;
+  z-index: -1;
+  background: radial-gradient(
+    closest-side,
+    rgba(5, 5, 6, 0.78),
+    rgba(5, 5, 6, 0.55) 55%,
+    transparent 80%
+  );
 }
 
 .break__foot {

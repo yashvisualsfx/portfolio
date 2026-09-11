@@ -7,8 +7,11 @@
   padding-bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
 }
 
-/* The wordmark sits BEHIND the canvas (.layer-behind), so the 3D form
-   passes in front of it. Everything interactive stays in .layer-front. */
+/* The wordmark sits IN FRONT of the canvas. An earlier version put it
+   behind, so the form crossed over the letters — it read as depth in a still
+   frame and as an obstruction while actually reading the name. Depth now
+   comes from the form sitting behind the type and from the dust between
+   them, and the name is never covered. */
 .hero__type {
   align-self: center;
   width: 100%;

@@ -1,4 +1,4 @@
-# HARSH — Creative Designer
+# SHIVANK — Creative Designer
 
 A cinematic, scroll-driven 3D portfolio. One persistent WebGL scene sits
 behind an editorial typographic layer, and scrolling drives the camera, the
@@ -36,9 +36,14 @@ one ended (`src/three/camera-path.js`), so a seam cannot open up between two
 sections without someone deliberately putting one there.
 
 The form follows the same logic. A stack of chamfered slabs reads as one
-sculptural object in the hero, opens into a corridor the camera flies
-through, returns as the bar the closing statement straddles, and re-forms
-into itself behind the contact section. It is one object, seen four times.
+sculptural object in the hero and opens into a corridor the camera flies
+through; a faceted mass marks the interlude. Three forms in total — the back
+half of the site is type, not geometry, because by then the visitor is
+reading rather than looking.
+
+Type always sits in front of the canvas. An earlier version had the forms
+crossing over the headings, which read as depth in a still frame and as an
+obstruction while actually reading.
 
 ## Architecture
 

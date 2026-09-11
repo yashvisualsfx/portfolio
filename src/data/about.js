@@ -1,10 +1,10 @@
 import { asset } from './asset';
 
-/** About Harsh — editorial, asymmetric, fact-led. */
+/** About Shivank — editorial, asymmetric, fact-led. */
 
 export const ABOUT = {
   statement:
-    'I’m Harsh, a multidisciplinary creative focused on crafting memorable visual experiences across design, motion and digital interaction.',
+    'I’m Shivank, a multidisciplinary creative focused on crafting memorable visual experiences across design, motion and digital interaction.',
   paragraphs: [
     'I work between design and motion — building campaigns, identities and real-time experiences that hold attention past the first second. Most of my work starts as a still frame and ends as something that moves.',
     'The approach stays the same regardless of medium: find the one idea worth building the whole piece around, then remove everything that competes with it.',
@@ -12,7 +12,7 @@ export const ABOUT = {
   portrait: {
     src: asset('/media/images/portrait.webp'),
     small: asset('/media/images/portrait@sm.webp'),
-    alt: 'Portrait of Harsh',
+    alt: 'Portrait of Shivank',
   },
   facts: [
     { label: 'Based in', value: 'Gurugram, India' },

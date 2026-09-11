@@ -36,7 +36,6 @@ function Experience() {
   const menuTriggerRef = useRef(null);
   const { toggleMenu, reducedMotion } = useApp();
   const [openProject, setOpenProject] = useState(null);
-  const [ctaPressure, setCtaPressure] = useState(0);
 
   const showProject = useCallback((id) => setOpenProject(id), []);
   const closeProject = useCallback(() => setOpenProject(null), []);
@@ -55,7 +54,7 @@ function Experience() {
 
       {hasWebGL() && (
         <Suspense fallback={null}>
-          <Stage ctaPressure={ctaPressure} paused={Boolean(openProject)} />
+          <Stage paused={Boolean(openProject)} />
         </Suspense>
       )}
 
@@ -73,7 +72,7 @@ function Experience() {
         <Break />
         <About />
         <Statement />
-        <Contact onCtaPressure={setCtaPressure} />
+        <Contact />
       </main>
 
       <Footer />

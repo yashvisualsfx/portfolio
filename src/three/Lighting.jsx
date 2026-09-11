@@ -80,8 +80,8 @@ export function Lighting({ resolution = 256, reduced = false }) {
         />
         <Lightformer
           form="rect"
-          intensity={2.1}
-          color="#ffd9c2"
+          intensity={1.15}
+          color="#ffe2d0"
           position={[6, 0.5, 1]}
           rotation={[0, -Math.PI / 2, 0]}
           scale={[8, 5, 1]}

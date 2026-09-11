@@ -18,7 +18,7 @@ import { SECTION_POSES } from './camera-path';
  * layers, so it never intercepts a click and type can pass in front of or
  * behind the 3D world.
  */
-export default function Stage({ ctaPressure = 0, paused = false }) {
+export default function Stage({ paused = false }) {
   const { device, reducedMotion, phase } = useApp();
   const [dprScale, setDprScale] = useState(1);
   const floorRef = useRef(0.6);
@@ -69,7 +69,6 @@ export default function Stage({ ctaPressure = 0, paused = false }) {
           isMobile={device.isMobile}
           reduced={reducedMotion}
           started={phase !== PHASE.loading}
-          ctaPressure={ctaPressure}
           onReady={() => completeTask('webgl')}
           onPerformanceChange={onPerformanceChange}
         />

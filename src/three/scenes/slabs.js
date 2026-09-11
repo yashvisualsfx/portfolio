@@ -42,10 +42,10 @@ export function buildSlabs(count, accentIndex) {
  */
 export function createSlabMaterial({ fadeable = false } = {}) {
   return new THREE.MeshStandardMaterial({
-    color: '#d9d7d1',
+    color: '#96938e',
     metalness: 0.96,
     roughness: 0.17,
-    envMapIntensity: 1.6,
+    envMapIntensity: 1.15,
     transparent: fadeable,
     opacity: 1,
   });

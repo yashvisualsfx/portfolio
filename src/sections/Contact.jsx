@@ -11,11 +11,10 @@ import './contact.css';
  * left so the block has a diagonal edge rather than a justified one, and the
  * last line carries the only full-strength accent in the site.
  *
- * Hovering the action reports pressure up to the stage, where the re-forming
- * stack pulls itself a little tighter — the closing interaction reaches the
- * 3D world rather than stopping at the DOM.
+ * No 3D here: by this point the visitor has come to read a sentence and act
+ * on it, and a moving object behind the words only competes with them.
  */
-export function Contact({ onCtaPressure }) {
+export function Contact() {
   const ref = useRef(null);
   const lines = STATEMENTS.contact;
 
@@ -38,10 +37,6 @@ export function Contact({ onCtaPressure }) {
             className="contact__cta"
             href={`mailto:${SITE.email}`}
             data-cursor="open"
-            onPointerEnter={() => onCtaPressure?.(1)}
-            onPointerLeave={() => onCtaPressure?.(0)}
-            onFocus={() => onCtaPressure?.(1)}
-            onBlur={() => onCtaPressure?.(0)}
           >
             <span className="contact__cta-label">Start a project</span>
             <span className="contact__cta-arrow" aria-hidden="true">
