@@ -7,6 +7,9 @@ import { Hero } from './sections/Hero';
 import { Transform } from './sections/Transform';
 import { Work } from './sections/Work';
 import { Gallery } from './sections/Gallery';
+import { Capabilities } from './sections/Capabilities';
+import { Break } from './sections/Break';
+import { About } from './sections/About';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useScrollScenes } from './hooks/useScrollScenes';
 import { useApp } from './hooks/useApp';
@@ -60,6 +63,9 @@ function Experience() {
         <Transform />
         <Work onOpenProject={showProject} />
         <Gallery />
+        <Capabilities />
+        <Break />
+        <About />
       </main>
 
       <ProjectDetail

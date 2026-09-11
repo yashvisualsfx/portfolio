@@ -5,6 +5,7 @@ import { Lighting } from './Lighting';
 import { Monolith } from './scenes/Monolith';
 import { Gallery } from './scenes/Gallery';
 import { Dust } from './scenes/Dust';
+import { OrbitForm } from './scenes/OrbitForm';
 import { GALLERY_PROJECTS } from '../data/projects';
 import { CameraRig } from './rig/CameraRig';
 import { pointer } from './pointer-state';
@@ -44,6 +45,7 @@ export function SceneRoot({ tier, isMobile, reduced, started, onReady }) {
       <CameraRig started={started} reduced={reduced} intensity={isMobile ? 0.4 : 1} />
       <Lighting resolution={isMobile ? 128 : 256} reduced={reduced} />
       <Monolith count={slabCount} reduced={reduced} accentIndex={Math.floor(slabCount / 2)} />
+      <OrbitForm detail={isMobile ? 1 : tier === 'high' ? 2 : 1} reduced={reduced} />
       <Dust count={isMobile ? 280 : tier === 'high' ? 800 : 500} reduced={reduced} />
 
       {/* Gallery textures are fetched when the chunk resolves, not at boot;

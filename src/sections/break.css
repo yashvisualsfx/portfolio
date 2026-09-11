@@ -1,0 +1,70 @@
+/* 07 — THE PAUSE
+   Full viewport, the form fills it, the type frames it.
+
+   The two halves of the statement are two SEPARATE sticky layers, not two
+   spans inside one sticky block. `position: sticky` always forms a stacking
+   context, so nested depth layers would be trapped inside it and both lines
+   would end up on the same side of the canvas. As siblings inside the
+   (non-stacking) content layer, each one's own z-index places it against
+   the stage directly — which is what lets the form pass physically between
+   the two lines. */
+
+.break {
+  position: relative;
+}
+
+.break__layer {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  pointer-events: none;
+}
+
+.break__layer--behind {
+  z-index: -1;
+  display: grid;
+  align-content: center;
+}
+
+.break__layer--front {
+  z-index: 1;
+  /* Pulled back over its sibling so the two occupy the same frame. */
+  margin-top: -100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding-block: calc(var(--nav-h) + var(--sp-md)) var(--sp-lg);
+  padding-bottom: calc(var(--sp-lg) + env(safe-area-inset-bottom, 0px));
+}
+
+.break__layer--front > * {
+  pointer-events: auto;
+}
+
+.break__line {
+  /* Sized so the longer line fits the measure: the statement bleeds toward
+     the gutters but is never cut off by them. */
+  font-size: clamp(2.75rem, 13vw, 11rem);
+  line-height: var(--lh-display);
+  text-align: center;
+}
+
+/* The lines straddle the form: the first crosses its upper third, the
+   second its lower third, so the object is genuinely between them. */
+.break__line--front {
+  align-self: center;
+  transform: translateY(-0.62em);
+}
+
+.break__line--behind {
+  transform: translateY(0.5em);
+}
+
+.break__foot {
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  padding-top: var(--sp-sm);
+  border-top: var(--rule) solid var(--c-line-soft);
+}
